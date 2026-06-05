@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-05 14:59:10
+Aggiornato: 2026-06-05 16:48:33
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 14 |
+| Skill totali | 15 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -16,6 +16,7 @@ Aggiornato: 2026-06-05 14:59:10
 
 | Skill | Name dichiarato | Description | References | Examples | Errors | Warnings |
 |---|---|---|---:|---:|---:|---:|
+| as-common-agent-context-governor | as-common-agent-context-governor | Use this skill when reviewing, creating, or reconciling project instructions, AGENTS.md files, Codex prompts, skill usage, repository rules, handoff summaries, or context conflicts before starting or closing an agentic coding step. | sì | sì | 0 | 0 |
 | as-common-business-email-draft | as-common-business-email-draft | Usa questa skill quando Alberto vuole correggere, riscrivere o preparare email commerciali, tecniche o delicate in italiano o inglese per clienti, fornitori e collaboratori. | no | no | 0 | 0 |
 | as-common-codex-command-pack | as-common-codex-command-pack | Use when preparing, saving, reviewing, or updating Codex prompts/task packets for Alberto. Creates numbered and LAST files in codex_command, copies LAST-Prompt_Codex.md to clipboard, and enforces safety, tests, and report contracts. | sì | sì | 0 | 0 |
 | as-common-codex-step-manager | as-common-codex-step-manager | Usa questa skill quando Alberto chiede di preparare, eseguire o verificare uno step Codex/Git numerato con branch dedicato, test, verify gate, report finale e prossimo step. | no | no | 0 | 0 |

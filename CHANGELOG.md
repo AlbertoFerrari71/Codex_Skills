@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 050) Agent Context Governor Skill
+
+Creazione della prima skill strategica nuova per governare il contesto operativo degli step Codex.
+
+- aggiunta skill `as-common-agent-context-governor`;
+- creati file `references/` per governance contesto, source map, AGENTS.md, conflitti e handoff;
+- creati file `examples/` con prompt dimostrativi e sample review;
+- aggiornata roadmap con 050 completato e prossimi step 060/070;
+- rigenerati `SKILLS_INDEX.md` e `SKILL_SCORE.md`.
+
 ## 040) Skill Quality Cleanup
 
 Pulizia e uniformazione dopo la fondazione del catalogo skill.
