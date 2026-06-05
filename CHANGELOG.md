@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 100) Skill Release Workflow Pack
+
+Creazione del workflow stabile per rilasciare nuove skill o modificare skill esistenti.
+
+- release workflow documentato;
+- checklist release;
+- authoring/modification flow;
+- AI Software Factory handoff;
+- release decision gate;
+- template release prompt;
+- release checker opzionale;
+- cataloghi rigenerati.
+
 ## 090) Skill Smoke Trial Pack
 
 Creazione del pacchetto di smoke trial per skill strategiche e command pack.

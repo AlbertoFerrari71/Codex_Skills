@@ -27,3 +27,7 @@ Usare `--write-index --write-score` quando serve aggiornare:
 
 Se una modifica produce backup temporanei, archiviarli fuori dalle skill operative oppure rimuoverli dopo verifica. I backup storici temporanei vivono in `_archive/backup-skills/`.
 
+## Release workflow
+
+Per pubblicare una nuova skill o una modifica sostanziale, seguire `docs/release-workflow/100_SKILL_RELEASE_WORKFLOW_PACK.md`.
+

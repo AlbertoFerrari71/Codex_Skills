@@ -2,7 +2,7 @@
 
 Pagella automatica delle skill.
 
-Aggiornato: 2026-06-05 19:19:18
+Aggiornato: 2026-06-05 19:34:24
 
 | Skill | Score | Grade | Errori | Warning | Azione consigliata |
 |---|---:|---|---:|---:|---|

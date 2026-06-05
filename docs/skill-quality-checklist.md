@@ -128,3 +128,7 @@ Per un solo comando utile da copiare/incollare, usare due righe fake innocue dop
 
 I command pack PowerShell non banali devono seguire lo standard `as-common-pwsh-command-pack/references/pwsh-command-pack-hardening-standard.md`.
 
+## Release workflow
+
+Prima di pubblicare nuove skill o modifiche sostanziali, usare `docs/release-workflow/100_SKILL_RELEASE_WORKFLOW_PACK.md`.
+

@@ -8,11 +8,12 @@
 - 080) PowerShell Paste Termination Hotfix
 - 085) PowerShell Command Pack Hardening Rules
 - 090) Skill Smoke Trial Pack
+- 100) Skill Release Workflow Pack
 
 ## Next strategic skills
 
-- 100. Skill Release Workflow Pack
 - 110. Skill Trigger Optimization Pack
+- 120. AI Software Factory Skill Adoption Step
 
 ## Future skills
 
