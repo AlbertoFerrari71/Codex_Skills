@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-TECHNICAL_DIRS = {".git", "docs", "templates", "validators", "__pycache__"}
+TECHNICAL_DIRS = {".git", "_archive", "docs", "templates", "validators", "__pycache__"}
 SKILL_PREFIXES = ("as-common-", "as-")
 
 BACKUP_PATTERNS = ("*.bak.md", "*.backup.md", "*~", "*.tmp")

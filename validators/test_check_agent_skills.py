@@ -145,6 +145,18 @@ Eseguire il controllo.
             self.assertIn("backup_file", issue_codes(report))
             self.assertEqual(report.backup_files, ["as-common-valid-skill/SKILL.20260604.bak.md"])
 
+    def test_archive_directory_is_ignored(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(root, "as-common-valid-skill")
+            archive_skill = root / "_archive" / "as-common-archived-skill"
+            archive_skill.mkdir(parents=True)
+            (archive_skill / "SKILL.md").write_text("archived", encoding="utf-8")
+
+            reports = validator.scan_skills(root)
+
+            self.assertEqual([report.name for report in reports], ["as-common-valid-skill"])
+
     def test_index_generation(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

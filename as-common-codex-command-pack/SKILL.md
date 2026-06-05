@@ -80,7 +80,14 @@ Unless Alberto explicitly says otherwise, every Codex prompt must state:
 - Do not use destructive commands.
 - Do not delete files or folders.
 - Do not run git reset, git clean, or force push.
-- Do not modify credentials or secrets.
+- Do not modify credentials or sensitive values.
+
+## Reference files
+
+Use these support files for non-trivial prompt packs:
+
+- `references/codex-command-pack-standard.md` for the standard structure and guardrails.
+- `examples/demo-prompts.md` for compact examples of acceptable task packets.
 - Stop and report if the working tree is dirty before making changes.
 - Prefer small, reversible, testable changes.
 - No new dependencies unless clearly justified.

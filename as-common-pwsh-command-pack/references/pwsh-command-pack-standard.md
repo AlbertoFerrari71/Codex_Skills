@@ -88,7 +88,7 @@ Publication must not proceed when tests, verify, health check, or guardrails fai
 - Use `git --no-pager` for long Git output.
 - Never run `git reset --hard`, `git clean`, force push, merge, deploy, release, or destructive commands unless the current prompt explicitly authorizes that action and the generated pack keeps it in a separate human-gated phase.
 - Do not use `setx PATH`; prefer process-local environment variables or explicit executable paths.
-- Keep secrets out of request files, logs, compact outputs, DOCX outputs, and clipboard output.
+- Keep sensitive values out of request files, logs, compact outputs, DOCX outputs, and clipboard output.
 - For Codex/ASF command packs, keep target repository behavior read-only unless Alberto explicitly asks for a later write-controlled phase.
 - If a gate fails, produce the compact report and stop before publication.
 

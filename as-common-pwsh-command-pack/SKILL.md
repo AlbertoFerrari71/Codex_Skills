@@ -16,7 +16,7 @@ Use this skill when Alberto asks for PowerShell command packs, robust Windows co
 - Always generate numbered artifacts and matching `LAST-*` files, including compact Markdown and DOCX outputs, then copy `LAST-Output_Compatto.md` to the clipboard with `Set-Clipboard`.
 - Split FASE A / FASE B / FASE C when commit, push, PR, merge, release, deploy, restart, or publication may appear. Publication phases must stop if tests, verify, health checks, or guardrails fail.
 - Use `git --no-pager` for potentially long Git output.
-- Avoid `setx PATH`, unrequested destructive commands, secret leakage, and any attempt to bypass failed gates.
+- Avoid `setx PATH`, unrequested destructive commands, sensitive-value leakage, and any attempt to bypass failed gates.
 - Treat `gh pr checks --watch` with `no checks reported` or exit code `1` as a controlled warning only when all other local gates pass.
 - Prefer UTF-8 without BOM for generated text and recommend `.gitattributes` line-ending policy for mixed Windows/Git work.
 

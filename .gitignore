@@ -3,7 +3,11 @@ __pycache__/
 .env
 .env.*
 *.log
+*.bak.md
+*.backup.md
+*~
 *.tmp
+*.temp
 *.bak
 Thumbs.db
 .DS_Store

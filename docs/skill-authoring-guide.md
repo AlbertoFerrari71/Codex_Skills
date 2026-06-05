@@ -25,3 +25,5 @@ Usare `--write-index --write-score` quando serve aggiornare:
 - `SKILLS_INDEX.md`
 - `SKILL_SCORE.md`
 
+Se una modifica produce backup temporanei, archiviarli fuori dalle skill operative oppure rimuoverli dopo verifica. I backup storici temporanei vivono in `_archive/backup-skills/`.
+

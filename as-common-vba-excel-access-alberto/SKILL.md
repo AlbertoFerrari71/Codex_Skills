@@ -39,15 +39,23 @@ Usala per:
 Per progetti collegati a eSolver, default preferito:
 
 ```text
-DSN=eSolver;UID=lettore;PWD=lettore;LANGUAGE=italiano;DATABASE=ESOLVER
+DSN=eSolver;USER=<UID_PLACEHOLDER>;PASS=<PWD_PLACEHOLDER>;LANGUAGE=italiano;DATABASE=ESOLVER
 ```
 
 Regole:
 - accesso read-only;
+- usare placeholder nei materiali versionati e configurare le credenziali reali solo fuori repository;
 - non assumere foreign key fisiche;
 - documentare join ipotizzati;
 - separare query, parsing e output;
 - evitare modifiche DB.
+
+## Reference files
+
+Usa questi file di supporto per richieste non banali:
+
+- `references/vba-excel-access-standard.md` per regole operative e struttura codice.
+- `examples/demo-prompts.md` per esempi compatti di richiesta.
 
 # UserForm generati via codice
 

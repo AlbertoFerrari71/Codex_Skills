@@ -86,6 +86,7 @@ Non lasciare nelle skill:
 - `credentials*`
 
 I file backup non vanno cancellati automaticamente dal validator: vanno valutati e rimossi o archiviati in uno step dedicato.
+Per backup storici temporanei usare `_archive/backup-skills/`, mantenendoli fuori dalle skill operative.
 
 ## Warning su segreti
 
