@@ -120,3 +120,7 @@ python validators/test_check_agent_skills.py
 
 Non dichiarare mai un test superato se non e' stato eseguito. Se una verifica non e' applicabile o non puo' essere eseguita, indicarla come non eseguita con motivo.
 
+## PowerShell paste termination
+
+Per un solo comando utile da copiare/incollare, usare due righe fake innocue dopo il comando. Per due o piu' comandi utili, usare una riga fake finale. Per flussi lunghi o critici, preferire un file `.ps1` eseguito con `pwsh -NoProfile -ExecutionPolicy Bypass -File`.
+

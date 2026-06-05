@@ -38,13 +38,34 @@ When returning a command pack to Alberto, keep the answer concise:
 4. State that the compact Markdown is copied to clipboard by the generated script.
 5. Do not claim commit, push, PR, merge, release, deploy, or restart unless Alberto explicitly asked for and ran those phases.
 
-### Regola PowerShell per copia/incolla
+## PowerShell paste termination
 
-Quando generi comandi PowerShell per Alberto:
+Do not describe a final `Write-Host ";";` as an execution guarantee. It is only a visual marker.
 
-- per comandi a riga singola, chiudi con una riga finale innocua eseguibile, preferibilmente:
-  `Write-Host "";`
-- assicurati che l’ultimo comando venga realmente eseguito dopo l’incolla, senza lasciare PowerShell in attesa di Enter;
-- per blocchi multilinea, termina sempre il blocco con newline reale adeguato;
-- evita di affidarti solo a `Write-Host ""` se manca l’invio finale;
-- questa regola vale anche per prompt Codex, report operativi, step Git e istruzioni di progetto.
+For one useful PowerShell command meant for copy/paste, prefer a three-line block:
+
+```powershell
+<useful command>
+Write-Host "Linea fake 1 - termina il comando utile precedente"
+Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
+```
+
+For two or more useful commands, add one harmless fake line after the useful commands:
+
+```powershell
+<useful command 1>
+<useful command 2>
+Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+```
+
+For long or critical workflows, prefer writing a `.ps1` file and executing it:
+
+```powershell
+$ScriptPath = Join-Path $env:TEMP "task.ps1"
+@'
+<commands here>
+'@ | Set-Content -LiteralPath $ScriptPath -Encoding UTF8
+pwsh -NoProfile -ExecutionPolicy Bypass -File $ScriptPath
+```
+
+The fake line is intentionally harmless. Its purpose is paste termination: if the final newline is lost, the useful command has already been terminated by the following line. If the terminal remains waiting, it should wait on a fake line, not on the useful command.

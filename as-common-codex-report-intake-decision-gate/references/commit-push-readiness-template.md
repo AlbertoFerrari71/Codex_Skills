@@ -12,7 +12,8 @@ Use this only after the decision gate is GO or GO_WITH_WARNINGS and Alberto expl
 - Push only after commit succeeds.
 - Verify final status, log, and remote.
 - Use `$ErrorActionPreference = "Stop"`.
-- End multiline PowerShell blocks with a real executable final line.
+- Prefer `.ps1` execution for long or critical flows.
+- If a multiline block is still provided for paste, end with explicit harmless fake lines.
 - Treat CRLF/LF notices as attention only when `git --no-pager diff --check` exits successfully.
 
 ## Generic PowerShell Template
@@ -65,7 +66,8 @@ git status --short
 git --no-pager log --oneline --max-count=5
 git remote -v
 
-Write-Host ""
+Write-Host "Fine blocco PowerShell. Se il terminale resta qui, premere Enter."
+Write-Host "Linea fake - terminazione incolla"
 ```
 
 ## Readiness Checklist

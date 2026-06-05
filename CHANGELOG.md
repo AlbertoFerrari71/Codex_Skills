@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 080) PowerShell Paste Termination Hotfix
+
+Correzione della guida sulla terminazione dei blocchi PowerShell copiati/incollati.
+
+- corrected PowerShell paste termination guidance;
+- removed reliance on final `Write-Host ";";`;
+- documented one useful command plus two fake lines rule;
+- documented two or more useful commands plus one fake line rule;
+- recommended `.ps1` execution for long or critical flows;
+- regenerated catalog and score.
+
 ## 070) Codex Report Intake Decision Gate Skill
 
 Creazione della terza skill strategica per verificare report finali Codex prima di decisioni GO/NO-GO.

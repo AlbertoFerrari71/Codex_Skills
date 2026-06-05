@@ -19,17 +19,26 @@ Usala per:
 
 # Regole PowerShell per Alberto
 
-1. Nei blocchi PowerShell multilinea, lascia una riga finale vuota.
-2. Nei comandi PowerShell a riga singola destinati al copia/incolla, aggiungi una seconda riga innocua:
+1. Non usare `Write-Host ";";` come garanzia tecnica di esecuzione: è solo un marker visivo.
+2. Per un solo comando utile destinato al copia/incolla, usa due righe fake dopo il comando:
    ```powershell
-   Write-Host ""
+   <comando utile>
+   Write-Host "Linea fake 1 - termina il comando utile precedente"
+   Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
    ```
-3. Non usare `setx PATH ...` per modifiche permanenti del PATH: può troncare il PATH. Usa invece:
+3. Per due o più comandi utili, aggiungi una sola riga fake finale:
+   ```powershell
+   <comando utile 1>
+   <comando utile 2>
+   Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+   ```
+4. Per blocchi lunghi o critici, preferisci un file `.ps1` eseguito con `pwsh -NoProfile -ExecutionPolicy Bypass -File ...`.
+5. Non usare `setx PATH ...` per modifiche permanenti del PATH: può troncare il PATH. Usa invece:
    ```powershell
    [Environment]::SetEnvironmentVariable("Path", $nuovoPath, "User")
    ```
-4. Evita comandi distruttivi (`Remove-Item -Recurse -Force`, reset, clean, checkout forzati) senza spiegare cosa eliminano e senza conferma esplicita.
-5. Se uno script `.ps1` è bloccato da Execution Policy, preferisci soluzioni trasparenti:
+6. Evita comandi distruttivi (`Remove-Item -Recurse -Force`, reset, clean, checkout forzati) senza spiegare cosa eliminano e senza conferma esplicita.
+7. Se uno script `.ps1` è bloccato da Execution Policy, preferisci soluzioni trasparenti:
    - comando manuale;
    - `.cmd`/`.bat` controllabile;
    - oppure `powershell.exe -NoProfile -ExecutionPolicy Bypass -File ...` solo se serve davvero.

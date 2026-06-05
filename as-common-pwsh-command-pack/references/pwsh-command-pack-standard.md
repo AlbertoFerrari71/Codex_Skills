@@ -14,6 +14,34 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File "D:\FG-SAB Dropbox\Alberto Ferrari
 
 For long or conditional work, do not ask Alberto to paste a large inline command. Generate a script file and give only the short launcher.
 
+## PowerShell Paste Termination
+
+Do not rely on a final `Write-Host ";";` to force execution. It is only a visual marker.
+
+For one useful command provided as copy/paste text, use two harmless fake lines after the useful command:
+
+```powershell
+<useful command>
+Write-Host "Linea fake 1 - termina il comando utile precedente"
+Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
+```
+
+For two or more useful commands, use one harmless fake line after the useful commands:
+
+```powershell
+<useful command 1>
+<useful command 2>
+Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+```
+
+For long or critical workflows, write a `.ps1` file and run it with:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File <script.ps1>
+```
+
+The fake line is a paste-termination safety line. If the final newline is lost, the useful command should already be complete, and any waiting prompt should sit on a harmless fake line.
+
 ## Output Roots
 
 Standard Bridge root:
