@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 090) Skill Smoke Trial Pack
+
+Creazione del pacchetto di smoke trial per skill strategiche e command pack.
+
+- smoke trial delle tre skill strategiche;
+- edge cases strani;
+- PowerShell command pack trial;
+- report intake trial;
+- validator smoke cases;
+- cataloghi rigenerati.
+
 ## 085) PowerShell Command Pack Hardening Rules
 
 Rafforzamento dello standard per command pack PowerShell/Git non banali.

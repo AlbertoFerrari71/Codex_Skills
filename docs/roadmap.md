@@ -7,14 +7,15 @@
 - 070) as-common-codex-report-intake-decision-gate
 - 080) PowerShell Paste Termination Hotfix
 - 085) PowerShell Command Pack Hardening Rules
+- 090) Skill Smoke Trial Pack
 
 ## Next strategic skills
 
-- 90. Skill Smoke Trial Pack
+- 100. Skill Release Workflow Pack
+- 110. Skill Trigger Optimization Pack
 
 ## Future skills
 
-- Skill Release Workflow Pack
 - as-common-security-supply-chain-auditor
 - as-common-mcp-connector-bridge-planner
 
