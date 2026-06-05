@@ -3,10 +3,10 @@
 ## Completed
 
 - 050) as-common-agent-context-governor
-
-## Next strategic skills
-
 - 060) as-common-verification-gate-test-eval-pack
+
+## Next strategic skill
+
 - 070) as-common-codex-report-intake-decision-gate
 
 ## Future skills

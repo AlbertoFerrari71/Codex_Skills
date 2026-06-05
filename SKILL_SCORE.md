@@ -2,7 +2,7 @@
 
 Pagella automatica delle skill.
 
-Aggiornato: 2026-06-05 16:48:33
+Aggiornato: 2026-06-05 18:16:30
 
 | Skill | Score | Grade | Errori | Warning | Azione consigliata |
 |---|---:|---|---:|---:|---|
@@ -21,3 +21,4 @@ Aggiornato: 2026-06-05 16:48:33
 | as-common-skill-authoring | 80 | B | 0 | 0 | Valutare references/examples |
 | as-common-technical-patent-draft | 80 | B | 0 | 0 | Valutare references/examples |
 | as-common-vba-excel-access-alberto | 100 | A | 0 | 0 | Mantenere |
+| as-common-verification-gate-test-eval-pack | 100 | A | 0 | 0 | Mantenere |

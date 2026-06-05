@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-05 16:48:33
+Aggiornato: 2026-06-05 18:16:30
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 15 |
+| Skill totali | 16 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -31,6 +31,7 @@ Aggiornato: 2026-06-05 16:48:33
 | as-common-skill-authoring | as-common-skill-authoring | Usa questa skill quando Alberto vuole creare, rinominare, migliorare o organizzare skill Codex secondo il naming as-common-* e as-<project-key>-*. | no | no | 0 | 0 |
 | as-common-technical-patent-draft | as-common-technical-patent-draft | Usa questa skill per preparare bozze tecniche, relazioni inventive e documenti per consulente brevettuale su algoritmi, materiali, processi e sistemi R&D di Alberto. | no | no | 0 | 0 |
 | as-common-vba-excel-access-alberto | as-common-vba-excel-access-alberto | Usa questa skill per codice VBA/Excel/Access di Alberto, inclusi UserForm generati via codice, eSolver read-only, ADODB/ODBC, performance, debug flag e fogli Excel. | sì | sì | 0 | 0 |
+| as-common-verification-gate-test-eval-pack | as-common-verification-gate-test-eval-pack | Use this skill when designing, reviewing, or enforcing tests, smoke checks, health checks, evals, golden samples, verification gates, stop policies, or go/no-go release decisions for Codex-driven software and documentation steps. | sì | sì | 0 | 0 |
 
 ## File backup rilevati
 

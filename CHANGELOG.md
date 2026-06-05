@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 060) Verification Gate Test Eval Pack Skill
+
+Creazione della seconda skill strategica per progettare e applicare verification gate.
+
+- aggiunta skill `as-common-verification-gate-test-eval-pack`;
+- creati file `references/` per gate, test matrix, eval, golden sample, stop policy e report finale;
+- creati file `examples/` con prompt dimostrativi e sample verification gate;
+- aggiornata roadmap con 060 completato e prossimo step 070;
+- rigenerati `SKILLS_INDEX.md` e `SKILL_SCORE.md`.
+
 ## 050) Agent Context Governor Skill
 
 Creazione della prima skill strategica nuova per governare il contesto operativo degli step Codex.

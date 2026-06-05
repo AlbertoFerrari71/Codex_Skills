@@ -116,3 +116,7 @@ python validators/check_agent_skills.py --fail-on-warning
 python validators/test_check_agent_skills.py
 ```
 
+## Regola verifica
+
+Non dichiarare mai un test superato se non e' stato eseguito. Se una verifica non e' applicabile o non puo' essere eseguita, indicarla come non eseguita con motivo.
+
