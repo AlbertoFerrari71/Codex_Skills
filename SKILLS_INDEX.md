@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-05 18:16:30
+Aggiornato: 2026-06-05 18:29:13
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 16 |
+| Skill totali | 17 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -19,6 +19,7 @@ Aggiornato: 2026-06-05 18:16:30
 | as-common-agent-context-governor | as-common-agent-context-governor | Use this skill when reviewing, creating, or reconciling project instructions, AGENTS.md files, Codex prompts, skill usage, repository rules, handoff summaries, or context conflicts before starting or closing an agentic coding step. | sì | sì | 0 | 0 |
 | as-common-business-email-draft | as-common-business-email-draft | Usa questa skill quando Alberto vuole correggere, riscrivere o preparare email commerciali, tecniche o delicate in italiano o inglese per clienti, fornitori e collaboratori. | no | no | 0 | 0 |
 | as-common-codex-command-pack | as-common-codex-command-pack | Use when preparing, saving, reviewing, or updating Codex prompts/task packets for Alberto. Creates numbered and LAST files in codex_command, copies LAST-Prompt_Codex.md to clipboard, and enforces safety, tests, and report contracts. | sì | sì | 0 | 0 |
+| as-common-codex-report-intake-decision-gate | as-common-codex-report-intake-decision-gate | Use this skill when reviewing a final Codex report, comparing it with the original prompt, Git status, diffs, tests, warnings, and verification evidence to decide GO, GO_WITH_WARNINGS, NO_GO, clarification needs, or a corrective follow-up prompt. | sì | sì | 0 | 0 |
 | as-common-codex-step-manager | as-common-codex-step-manager | Usa questa skill quando Alberto chiede di preparare, eseguire o verificare uno step Codex/Git numerato con branch dedicato, test, verify gate, report finale e prossimo step. | no | no | 0 | 0 |
 | as-common-deep-research-industriale | as-common-deep-research-industriale | Usa questa skill quando Alberto vuole impostare, organizzare o scrivere una ricerca tecnica industriale approfondita su materiali, processi, prodotti, norme, brevetti o mercato. | no | no | 0 | 0 |
 | as-common-docs-runbook-builder | as-common-docs-runbook-builder | Usa questa skill quando Alberto vuole creare o migliorare README, runbook, AGENTS.md, decision log, roadmap, prompt operativi o documentazione tecnica di progetto. | no | no | 0 | 0 |

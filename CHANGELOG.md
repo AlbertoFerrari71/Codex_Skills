@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 070) Codex Report Intake Decision Gate Skill
+
+Creazione della terza skill strategica per verificare report finali Codex prima di decisioni GO/NO-GO.
+
+- aggiunta skill `as-common-codex-report-intake-decision-gate`;
+- creati file `references/` per intake report, diff review, decision matrix, evidence check, prompt correttivi e readiness commit/push;
+- creati file `examples/` con prompt dimostrativi, sample intake e prompt correttivo NO-GO;
+- aggiornata roadmap con 070 completato e prossimi step 080/090;
+- rigenerati `SKILLS_INDEX.md` e `SKILL_SCORE.md`.
+
 ## 060) Verification Gate Test Eval Pack Skill
 
 Creazione della seconda skill strategica per progettare e applicare verification gate.

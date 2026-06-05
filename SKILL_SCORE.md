@@ -2,13 +2,14 @@
 
 Pagella automatica delle skill.
 
-Aggiornato: 2026-06-05 18:16:30
+Aggiornato: 2026-06-05 18:29:13
 
 | Skill | Score | Grade | Errori | Warning | Azione consigliata |
 |---|---:|---|---:|---:|---|
 | as-common-agent-context-governor | 100 | A | 0 | 0 | Mantenere |
 | as-common-business-email-draft | 80 | B | 0 | 0 | Valutare references/examples |
 | as-common-codex-command-pack | 100 | A | 0 | 0 | Mantenere |
+| as-common-codex-report-intake-decision-gate | 100 | A | 0 | 0 | Mantenere |
 | as-common-codex-step-manager | 80 | B | 0 | 0 | Valutare references/examples |
 | as-common-deep-research-industriale | 80 | B | 0 | 0 | Valutare references/examples |
 | as-common-docs-runbook-builder | 80 | B | 0 | 0 | Valutare references/examples |
