@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 085) PowerShell Command Pack Hardening Rules
+
+Rafforzamento dello standard per command pack PowerShell/Git non banali.
+
+- integrated 20 hardening rules;
+- documented direct main push policy D3-C;
+- added robust Git parsing and diff cached checks;
+- added real `.ps1` payload requirement;
+- added DOCX non-blocking and temp path rule;
+- added clipboard-on-failure rule;
+- regenerated catalog and score.
+
 ## 080) PowerShell Paste Termination Hotfix
 
 Correzione della guida sulla terminazione dei blocchi PowerShell copiati/incollati.

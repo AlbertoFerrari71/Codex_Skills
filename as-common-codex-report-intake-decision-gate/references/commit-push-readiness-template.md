@@ -6,10 +6,14 @@ Use this only after the decision gate is GO or GO_WITH_WARNINGS and Alberto expl
 
 - Use `git --no-pager` for long output.
 - Run tests, validators, and diff checks first.
-- Check Git status before staging.
+- Check Git status with `git status --porcelain=v1` before staging.
+- Block unexpected paths with an explicit `$allowedPaths` list.
 - Stage only intended paths.
+- Run `git --no-pager diff --cached --check` after staging and before commit.
 - Commit only after gates pass.
 - Push only after commit succeeds.
+- Direct push to `main` is allowed when Alberto requested publication and all local gates pass.
+- Use branch plus PR as an alternative when the repository is protected or Alberto asks for review.
 - Verify final status, log, and remote.
 - Use `$ErrorActionPreference = "Stop"`.
 - Prefer `.ps1` execution for long or critical flows.
@@ -21,6 +25,7 @@ Use this only after the decision gate is GO or GO_WITH_WARNINGS and Alberto expl
 ```powershell
 $ErrorActionPreference = "Stop"
 
+$RepoRoot = (Resolve-Path ".").Path
 $Branch = "main"
 $CommitMessage = "070) Add codex report intake decision gate skill"
 $PathsToAdd = @(
@@ -30,7 +35,9 @@ $PathsToAdd = @(
     "docs/roadmap.md",
     "as-common-codex-report-intake-decision-gate"
 )
+$allowedPaths = $PathsToAdd
 
+Set-Location -Path $RepoRoot
 $currentBranch = git --no-pager branch --show-current
 if ($currentBranch -ne $Branch) {
     throw "Unexpected branch: $currentBranch"
@@ -51,10 +58,37 @@ if ($LASTEXITCODE -ne 0) { throw "Final skill validator failed." }
 git --no-pager diff --check
 if ($LASTEXITCODE -ne 0) { throw "Git diff check failed." }
 
-git status --short
+$statusLines = @(git status --porcelain=v1)
+$unexpected = @()
+foreach ($line in $statusLines) {
+    if ([string]::IsNullOrWhiteSpace($line)) { continue }
+    $path = $line.Substring(3).Trim('"') -replace "\\", "/"
+    $isAllowed = $false
+    foreach ($allowedPath in $allowedPaths) {
+        $normalized = $allowedPath.TrimStart(".", "/") -replace "\\", "/"
+        if ($normalized.EndsWith("/")) {
+            if ($path.StartsWith($normalized)) {
+                $isAllowed = $true
+                break
+            }
+        } elseif ($path -eq $normalized -or $path.StartsWith("$normalized/")) {
+            $isAllowed = $true
+            break
+        }
+    }
+    if (-not $isAllowed) { $unexpected += $line }
+}
+if ($unexpected.Count -gt 0) {
+    throw "Unexpected Git changes:`n$($unexpected -join "`n")"
+}
+
+git status --porcelain=v1
 
 git add -- $PathsToAdd
 if ($LASTEXITCODE -ne 0) { throw "git add failed." }
+
+git --no-pager diff --cached --check
+if ($LASTEXITCODE -ne 0) { throw "Cached diff check failed." }
 
 git commit -m $CommitMessage
 if ($LASTEXITCODE -ne 0) { throw "git commit failed." }

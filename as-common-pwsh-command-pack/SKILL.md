@@ -20,11 +20,32 @@ Use this skill when Alberto asks for PowerShell command packs, robust Windows co
 - Treat `gh pr checks --watch` with `no checks reported` or exit code `1` as a controlled warning only when all other local gates pass.
 - Prefer UTF-8 without BOM for generated text and recommend `.gitattributes` line-ending policy for mixed Windows/Git work.
 
+## Hardening rules
+
+For non-trivial PowerShell command packs, apply:
+
+- single wrapper `& { ... }`;
+- real `.ps1` payload saved and launched;
+- standard helper functions;
+- UTF-8 without BOM via .NET;
+- Git parsing with `--porcelain=v1`;
+- `$allowedPaths` guardrail;
+- `git --no-pager diff --check` and `git --no-pager diff --cached --check`;
+- compact output copied to clipboard in both success and failure;
+- DOCX as non-blocking output;
+- direct push to `main` allowed only when local gates pass;
+- PR workflow available as an alternative for protected repositories;
+- fake line rule for pasted PowerShell;
+- `.ps1` files for long or critical flows.
+
 ## Reference Files
 
 Read these files when preparing a non-trivial command pack:
 
 - `references/pwsh-command-pack-standard.md` for the full operating standard, guardrails, source principles, file contract, and phase rules.
+- `references/pwsh-command-pack-hardening-standard.md` for the 20-point hardening audit.
+- `references/pwsh-git-pr-workflow-standard.md` for direct main push and optional PR workflow rules.
+- `references/pwsh-known-bugs-regression-tests.md` for historical regression scenarios.
 - `references/pwsh-command-pack-template.ps1` for the robust PowerShell template to adapt.
 - `examples/demo-prompts.md` for progressive demo prompts and expected pack shapes.
 

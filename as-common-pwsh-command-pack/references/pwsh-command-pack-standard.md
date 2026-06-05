@@ -42,6 +42,166 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File <script.ps1>
 
 The fake line is a paste-termination safety line. If the final newline is lost, the useful command should already be complete, and any waiting prompt should sit on a harmless fake line.
 
+## Command Wrapper
+
+For pasteable PowerShell payloads, use one wrapper:
+
+```powershell
+& {
+    # all logic here
+}
+```
+
+Do not generate separable `if` / `else` blocks for paste-heavy work. For long or critical work, save a real `.ps1` payload and launch it.
+
+## Success/Failure State
+
+Use a controlled state variable:
+
+```powershell
+$StepOk = $false
+```
+
+Print completion only after all mandatory gates pass:
+
+```powershell
+if ($StepOk) {
+    Add-Log "=== COMPLETATO ==="
+}
+```
+
+Do not print success text outside the controlled success path.
+
+## Encoding
+
+Use `.NET` UTF-8 without BOM helpers for generated text. Do not rely on `Set-Content -Encoding utf8NoBOM` for compatibility with older Windows PowerShell hosts.
+
+## Parameters and Empty Strings
+
+Helpers that write logs or files must allow empty content where valid:
+
+```powershell
+[AllowNull()]
+[AllowEmptyString()]
+```
+
+## Native Command Capture
+
+Non-trivial packs should include:
+
+- `Invoke-NativeCapture`;
+- `Invoke-NativeStep`;
+- `Get-NativeText`.
+
+Capture output and `$LASTEXITCODE` immediately. Never infer success from printed text alone.
+
+## Git Status Parsing
+
+Use `git status --porcelain=v1` for parsing. Do not parse `git status --short` with `.Trim()`, and do not blindly remove the first two characters of each row. Parse status and path separately.
+
+## Allowed Paths Guardrail
+
+When a script modifies, stages, or commits files, define:
+
+```powershell
+$allowedPaths = @(
+    "path/expected-file-1",
+    "path/expected-folder/"
+)
+```
+
+Block if porcelain status reports paths outside the allow-list.
+
+## Diff Checks
+
+Before commit, both checks are mandatory:
+
+```powershell
+git --no-pager diff --check
+git --no-pager diff --cached --check
+```
+
+## EOF/Whitespace Cleanup
+
+Use only conservative cleanup on text files:
+
+- add missing newline at EOF;
+- remove trailing whitespace only when safe and scoped;
+- never run cleanup on binary files or broad paths.
+
+## Direct Main Push Policy
+
+Alberto decision D3-C applies: direct `git push origin main` is allowed when every local gate passes and the current step allows publication. Do not make PR workflow mandatory for this skill.
+
+## Optional PR Workflow
+
+Document branch + PR as an alternative for protected repositories:
+
+- push branch;
+- create/view PR;
+- run `gh pr checks`;
+- merge only after gates pass;
+- fetch and realign local `main`.
+
+## Reset Hard Backup Policy
+
+Before any authorized `git reset --hard` realignment, create a backup branch named:
+
+```text
+backup/main-before-YYYYMMDD-HHMMSS
+```
+
+## Compact Output and DOCX
+
+Compact Markdown is mandatory. DOCX is useful but non-blocking: if DOCX generation fails, log a warning and continue with Markdown.
+
+## Repository Location Guard
+
+Before final Git evidence collection, return to the repository:
+
+```powershell
+Set-Location -Path $RepoRoot
+```
+
+## GitHub CLI Checks
+
+`gh pr checks --watch` exit code `1` for no checks and exit code `8` for pending checks can be controlled warnings only when local gates pass and command output confirms the condition.
+
+## LF/CRLF Warning Policy
+
+LF/CRLF warnings do not block when `git --no-pager diff --check` or `git --no-pager diff --cached --check` exits with code 0. Real diff-check errors still block.
+
+## Standard Functions
+
+Non-trivial packs should include or adapt:
+
+- `Write-Utf8NoBomFile`;
+- `Append-Utf8NoBomFile`;
+- `Add-Log`;
+- `Invoke-NativeCapture`;
+- `Invoke-NativeStep`;
+- `Get-NativeText`;
+- `Assert-CleanWorkingTree`;
+- `Write-CompactOutput`.
+
+## Real `.ps1` Payload
+
+The generated payload must be saved as:
+
+```text
+NNNN-Comando_Eseguito_<nome>.ps1
+```
+
+Then launch that file. Do not save only a narrative description of the command.
+
+## Clipboard in Success and Failure
+
+The `finally` path must try to create and copy `Output_Compatto.md` to the clipboard even when a command fails.
+
+## Regression/Demo Trial
+
+Validate this skill with demo trials that reproduce the historical bugs documented in `pwsh-known-bugs-regression-tests.md`, including STEP 490 and later command-pack failures.
+
 ## Output Roots
 
 Standard Bridge root:
@@ -108,7 +268,7 @@ Use phases whenever the pack contains publication or state-changing steps.
 - FASE B: commit, push, PR creation, or PR checks. This phase is human-gated and must stop if FASE A fails.
 - FASE C: merge, release, deploy, restart, publication, or cleanup that affects external state. This phase is human-gated and must stop if FASE A or FASE B gates fail.
 
-Publication must not proceed when tests, verify, health check, or guardrails fail. Do not hide failures behind warnings. The known `gh pr checks --watch` case with `no checks reported` or exit code `1` can be reported as a controlled warning only when every other required local gate has passed.
+Publication must not proceed when tests, verify, health check, or guardrails fail. Do not hide failures behind warnings. The known `gh pr checks --watch` cases with `no checks reported`, exit code `1`, or pending exit code `8` can be reported as controlled warnings only when every other required local gate has passed.
 
 ## Git, Codex, and ASF Guardrails
 

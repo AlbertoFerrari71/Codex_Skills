@@ -29,15 +29,19 @@ param(
     [switch]$AllowPublication
 )
 
+& {
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSDefaultParameterValues['Out-File:Width'] = 2000
-$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8NoBOM'
 
 if (Get-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Global -ErrorAction SilentlyContinue) {
     $PSNativeCommandUseErrorActionPreference = $true
 }
 
+$StepOk = $false
+$script:StepOk = $false
+$RepoRoot = $RepositoryRoot
+$allowedPaths = @()
 $script:FullLogLines = [System.Collections.Generic.List[string]]::new()
 $script:Warnings = [System.Collections.Generic.List[string]]::new()
 $script:Failures = [System.Collections.Generic.List[string]]::new()
@@ -89,32 +93,86 @@ function Get-NextCommandPackNumber {
     return ('{0:0000}' -f (($numbers | Measure-Object -Maximum).Maximum + 1))
 }
 
+function Write-Utf8NoBomFile {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [Parameter()]
+        [AllowNull()]
+        [AllowEmptyString()]
+        [string]$Content
+    )
+
+    if ($null -eq $Content) {
+        $Content = ''
+    }
+    $encoding = [System.Text.UTF8Encoding]::new($false)
+    [System.IO.File]::WriteAllText($Path, $Content, $encoding)
+}
+
+function Append-Utf8NoBomFile {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [Parameter()]
+        [AllowNull()]
+        [AllowEmptyString()]
+        [string]$Content
+    )
+
+    if ($null -eq $Content) {
+        $Content = ''
+    }
+    $encoding = [System.Text.UTF8Encoding]::new($false)
+    [System.IO.File]::AppendAllText($Path, $Content, $encoding)
+}
+
 function Out-Utf8NoBomFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         [string]$LiteralPath,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
+        [AllowNull()]
         [AllowEmptyString()]
         [string]$Content
     )
 
-    $encoding = [System.Text.UTF8Encoding]::new($false)
-    [System.IO.File]::WriteAllText($LiteralPath, $Content, $encoding)
+    Write-Utf8NoBomFile -Path $LiteralPath -Content $Content
 }
 
 function Add-LogLine {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
+        [Parameter()]
+        [AllowNull()]
         [AllowEmptyString()]
         [string]$Message
     )
 
+    if ($null -eq $Message) {
+        $Message = ''
+    }
     $line = '[{0}] {1}' -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $Message
     $script:FullLogLines.Add($line)
     Write-Output $line
+}
+
+function Add-Log {
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [AllowNull()]
+        [AllowEmptyString()]
+        [string]$Message
+    )
+
+    Add-LogLine -Message $Message
 }
 
 function Add-WarningLine {
@@ -161,15 +219,105 @@ function Test-NativeExitCode {
     }
 
     $isNoChecksWarning = $TreatGhNoChecksAsWarning -and
-        $ExitCode -eq 1 -and
-        ($OutputText -match '(?i)no checks reported|no checks|could not find any checks')
+        $ExitCode -in @(1, 8) -and
+        ($OutputText -match '(?i)no checks reported|no checks|could not find any checks|pending|in progress|queued')
 
     if ($isNoChecksWarning) {
-        Add-WarningLine "$Label returned exit code 1 with no checks reported. Treating as controlled warning because local gates must still pass."
+        Add-WarningLine "$Label returned exit code $ExitCode with pending/no-check output. Treating as controlled warning because local gates must still pass."
         return
     }
 
     throw "$Label failed with exit code $ExitCode."
+}
+
+function Invoke-NativeCapture {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Label,
+
+        [Parameter(Mandatory)]
+        [string]$FilePath,
+
+        [Parameter()]
+        [string[]]$ArgumentList = @(),
+
+        [Parameter()]
+        [string]$WorkingDirectory = (Get-Location).Path,
+
+        [Parameter()]
+        [switch]$TreatGhNoChecksAsWarning
+    )
+
+    Push-Location -LiteralPath $WorkingDirectory
+    try {
+        $commandOutput = & $FilePath @ArgumentList 2>&1
+        $nativeExitCode = $LASTEXITCODE
+    }
+    finally {
+        Pop-Location
+    }
+
+    $outputText = ($commandOutput | Out-String).TrimEnd()
+    [pscustomobject]@{
+        Label = $Label
+        FilePath = $FilePath
+        ArgumentList = $ArgumentList
+        WorkingDirectory = $WorkingDirectory
+        ExitCode = $nativeExitCode
+        Output = $commandOutput
+        OutputText = $outputText
+        TreatGhNoChecksAsWarning = [bool]$TreatGhNoChecksAsWarning
+    }
+}
+
+function Get-NativeText {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Result
+    )
+
+    return [string]$Result.OutputText
+}
+
+function Invoke-NativeStep {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Label,
+
+        [Parameter(Mandatory)]
+        [string]$FilePath,
+
+        [Parameter()]
+        [string[]]$ArgumentList = @(),
+
+        [Parameter()]
+        [string]$WorkingDirectory = (Get-Location).Path,
+
+        [Parameter()]
+        [switch]$TreatGhNoChecksAsWarning
+    )
+
+    Add-Log "START $Label"
+    Add-Log ('COMMAND {0} {1}' -f $FilePath, ($ArgumentList -join ' '))
+    Add-Log "WORKDIR $WorkingDirectory"
+
+    $result = Invoke-NativeCapture -Label $Label -FilePath $FilePath -ArgumentList $ArgumentList -WorkingDirectory $WorkingDirectory -TreatGhNoChecksAsWarning:$TreatGhNoChecksAsWarning
+    $outputText = Get-NativeText -Result $result
+    if (-not [string]::IsNullOrWhiteSpace($outputText)) {
+        foreach ($line in ($outputText -split "`r?`n")) {
+            Add-Log $line
+        }
+    }
+    else {
+        Add-Log '<no output>'
+    }
+
+    Test-NativeExitCode -ExitCode $result.ExitCode -Label $Label -OutputText $outputText -TreatGhNoChecksAsWarning:$TreatGhNoChecksAsWarning
+    Add-Log "END $Label exit=$($result.ExitCode)"
+    return $result
 }
 
 function Invoke-LoggedNativeCommand {
@@ -191,31 +339,7 @@ function Invoke-LoggedNativeCommand {
         [switch]$TreatGhNoChecksAsWarning
     )
 
-    Add-LogLine "START $Label"
-    Add-LogLine ('COMMAND {0} {1}' -f $FilePath, ($ArgumentList -join ' '))
-    Add-LogLine "WORKDIR $WorkingDirectory"
-
-    Push-Location -LiteralPath $WorkingDirectory
-    try {
-        $commandOutput = & $FilePath @ArgumentList 2>&1
-        $nativeExitCode = $LASTEXITCODE
-    }
-    finally {
-        Pop-Location
-    }
-
-    $outputText = ($commandOutput | Out-String).TrimEnd()
-    if (-not [string]::IsNullOrWhiteSpace($outputText)) {
-        foreach ($line in ($outputText -split "`r?`n")) {
-            Add-LogLine $line
-        }
-    }
-    else {
-        Add-LogLine '<no output>'
-    }
-
-    Test-NativeExitCode -ExitCode $nativeExitCode -Label $Label -OutputText $outputText -TreatGhNoChecksAsWarning:$TreatGhNoChecksAsWarning
-    Add-LogLine "END $Label exit=$nativeExitCode"
+    Invoke-NativeStep -Label $Label -FilePath $FilePath -ArgumentList $ArgumentList -WorkingDirectory $WorkingDirectory -TreatGhNoChecksAsWarning:$TreatGhNoChecksAsWarning | Out-Null
 }
 
 function Invoke-GhPrChecksWarningAware {
@@ -226,6 +350,101 @@ function Invoke-GhPrChecksWarningAware {
     )
 
     Invoke-LoggedNativeCommand -Label 'gh pr checks --watch' -FilePath 'gh' -ArgumentList @('pr', 'checks', '--watch') -WorkingDirectory $WorkingDirectory -TreatGhNoChecksAsWarning
+}
+
+function Test-AllowedPath {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [Parameter()]
+        [string[]]$AllowedPaths = @()
+    )
+
+    if (-not $AllowedPaths -or $AllowedPaths.Count -eq 0) {
+        return $true
+    }
+
+    $normalizedPath = $Path.Replace('\', '/')
+    foreach ($allowedPath in $AllowedPaths) {
+        $normalizedAllowed = $allowedPath.Replace('\', '/')
+        if ($normalizedAllowed.EndsWith('/')) {
+            if ($normalizedPath.StartsWith($normalizedAllowed, [System.StringComparison]::OrdinalIgnoreCase)) {
+                return $true
+            }
+        }
+        elseif ($normalizedPath.Equals($normalizedAllowed, [System.StringComparison]::OrdinalIgnoreCase)) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Assert-CleanWorkingTree {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$WorkingDirectory,
+
+        [Parameter()]
+        [string[]]$AllowedPaths = @()
+    )
+
+    $result = Invoke-NativeCapture -Label 'git status --porcelain=v1' -FilePath 'git' -ArgumentList @('status', '--porcelain=v1') -WorkingDirectory $WorkingDirectory
+    Test-NativeExitCode -ExitCode $result.ExitCode -Label 'git status --porcelain=v1' -OutputText $result.OutputText
+
+    if ([string]::IsNullOrWhiteSpace($result.OutputText)) {
+        return
+    }
+
+    foreach ($line in ($result.OutputText -split "`r?`n")) {
+        if ([string]::IsNullOrWhiteSpace($line)) {
+            continue
+        }
+        if ($line -notmatch '^(?<status>.{2}) (?<path>.+)$') {
+            throw "Unable to parse git porcelain row: $line"
+        }
+
+        $pathText = $Matches['path']
+        $pathsToCheck = @($pathText)
+        if ($pathText -match ' -> ') {
+            $pathsToCheck = $pathText -split ' -> '
+        }
+
+        foreach ($changedPath in $pathsToCheck) {
+            if (-not (Test-AllowedPath -Path $changedPath -AllowedPaths $AllowedPaths)) {
+                throw "Unexpected changed path outside allowedPaths: $changedPath"
+            }
+        }
+    }
+}
+
+function Repair-TextFileEndings {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string[]]$Paths
+    )
+
+    foreach ($path in $Paths) {
+        if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+            continue
+        }
+        $bytes = [System.IO.File]::ReadAllBytes($path)
+        if ($bytes -contains 0) {
+            continue
+        }
+        $text = [System.Text.Encoding]::UTF8.GetString($bytes)
+        $cleaned = ($text -split "`r?`n" | ForEach-Object { $_.TrimEnd() }) -join [Environment]::NewLine
+        if (-not $cleaned.EndsWith([Environment]::NewLine)) {
+            $cleaned += [Environment]::NewLine
+        }
+        if ($cleaned -ne $text) {
+            Write-Utf8NoBomFile -Path $path -Content $cleaned
+        }
+    }
 }
 
 function Test-PublicationGate {
@@ -350,15 +569,93 @@ function Invoke-LastArtifactCopy {
     Copy-Item -LiteralPath $Artifacts.Script -Destination (Join-Path $Path 'LAST-Comando_Eseguito.ps1') -Force
     Copy-Item -LiteralPath $Artifacts.FullOutput -Destination (Join-Path $Path 'LAST-Output_Completo.txt') -Force
     Copy-Item -LiteralPath $Artifacts.CompactMarkdown -Destination (Join-Path $Path 'LAST-Output_Compatto.md') -Force
-    Copy-Item -LiteralPath $Artifacts.CompactDocx -Destination (Join-Path $Path 'LAST-Output_Compatto.docx') -Force
+    if (Test-Path -LiteralPath $Artifacts.CompactDocx) {
+        Copy-Item -LiteralPath $Artifacts.CompactDocx -Destination (Join-Path $Path 'LAST-Output_Compatto.docx') -Force
+    }
+    else {
+        Add-WarningLine 'Compact DOCX was not available; continuing with Markdown output.'
+    }
 
     try {
         Get-Content -Raw -LiteralPath (Join-Path $Path 'LAST-Output_Compatto.md') | Set-Clipboard
-        Add-LogLine 'Copied LAST-Output_Compatto.md to clipboard.'
+        Add-Log 'Copied LAST-Output_Compatto.md to clipboard.'
     }
     catch {
         Add-WarningLine "Set-Clipboard failed: $($_.Exception.Message)"
     }
+}
+
+function Write-CompactOutput {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [hashtable]$Artifacts,
+
+        [Parameter(Mandatory)]
+        [string]$FinalStatus,
+
+        [Parameter(Mandatory)]
+        [string]$RepoRoot,
+
+        [Parameter(Mandatory)]
+        [string]$Phase,
+
+        [Parameter(Mandatory)]
+        [string]$OutputRoot
+    )
+
+    Set-Location -Path $RepoRoot
+
+    $endedAt = Get-Date
+    $duration = New-TimeSpan -Start $script:StartedAt -End $endedAt
+    $fullOutput = $script:FullLogLines -join [Environment]::NewLine
+    Write-Utf8NoBomFile -Path $Artifacts.FullOutput -Content ($fullOutput + [Environment]::NewLine)
+
+    $warningBlock = if ($script:Warnings.Count -gt 0) { $script:Warnings -join [Environment]::NewLine } else { 'None' }
+    $failureBlock = if ($script:Failures.Count -gt 0) { $script:Failures -join [Environment]::NewLine } else { 'None' }
+    $compactMarkdown = @"
+# PowerShell Command Pack Output
+
+- Status: $FinalStatus
+- Started: $($script:StartedAt.ToString('o'))
+- Ended: $($endedAt.ToString('o'))
+- DurationSeconds: $([math]::Round($duration.TotalSeconds, 2))
+- Phase: $Phase
+- OutputRoot: $OutputRoot
+- RepositoryRoot: $RepoRoot
+
+## Artifacts
+
+- Request: $($Artifacts.Request)
+- Script: $($Artifacts.Script)
+- FullOutput: $($Artifacts.FullOutput)
+- CompactMarkdown: $($Artifacts.CompactMarkdown)
+- CompactDocx: $($Artifacts.CompactDocx)
+
+## Guardrails
+
+- Launcher: pwsh -NoProfile -ExecutionPolicy Bypass -File
+- Git long output: git --no-pager
+- Publication requires explicit phase and passing tests, verify, health check, and guardrails.
+- No commit, push, PR, merge, release, deploy, or restart is executed by default.
+- setx PATH is forbidden.
+
+## Warnings
+
+$warningBlock
+
+## Failures
+
+$failureBlock
+"@
+    Write-Utf8NoBomFile -Path $Artifacts.CompactMarkdown -Content $compactMarkdown
+    try {
+        ConvertTo-CompactDocx -MarkdownPath $Artifacts.CompactMarkdown -DocxPath $Artifacts.CompactDocx
+    }
+    catch {
+        Add-WarningLine "Compact DOCX generation failed: $($_.Exception.Message)"
+    }
+    Invoke-LastArtifactCopy -Artifacts $Artifacts -Path $OutputRoot
 }
 
 function Invoke-CommandPack {
@@ -398,10 +695,12 @@ function Invoke-CommandPack {
         Add-LogLine "Repository root: $RepositoryRoot"
         Add-LogLine "Phase: $Phase"
 
-        Invoke-LoggedNativeCommand -Label 'git status --short' -FilePath 'git' -ArgumentList @('--no-pager', 'status', '--short') -WorkingDirectory $RepositoryRoot
+        Invoke-LoggedNativeCommand -Label 'git status --porcelain=v1' -FilePath 'git' -ArgumentList @('status', '--porcelain=v1') -WorkingDirectory $RepositoryRoot
+        Assert-CleanWorkingTree -WorkingDirectory $RepositoryRoot -AllowedPaths $allowedPaths
         $guardrailsPassed = $true
 
         Invoke-LoggedNativeCommand -Label 'git diff --check' -FilePath 'git' -ArgumentList @('--no-pager', 'diff', '--check') -WorkingDirectory $RepositoryRoot
+        Invoke-LoggedNativeCommand -Label 'git diff --cached --check' -FilePath 'git' -ArgumentList @('--no-pager', 'diff', '--cached', '--check') -WorkingDirectory $RepositoryRoot
 
         if (Test-Path -LiteralPath (Join-Path $RepositoryRoot 'scripts\verify.ps1')) {
             Invoke-LoggedNativeCommand -Label 'scripts/verify.ps1' -FilePath 'pwsh' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/verify.ps1') -WorkingDirectory $RepositoryRoot
@@ -429,6 +728,11 @@ function Invoke-CommandPack {
             Add-LogLine 'Publication gate passed, but this template does not run commit, push, PR, merge, release, deploy, or restart automatically.'
         }
 
+        $script:StepOk = $true
+        $StepOk = $true
+        if ($StepOk) {
+            Add-Log "=== COMPLETATO ==="
+        }
         $finalStatus = 'PASSED'
     }
     catch {
@@ -436,51 +740,7 @@ function Invoke-CommandPack {
         $finalStatus = 'FAILED'
     }
     finally {
-        $endedAt = Get-Date
-        $duration = New-TimeSpan -Start $script:StartedAt -End $endedAt
-        $fullOutput = $script:FullLogLines -join [Environment]::NewLine
-        Out-Utf8NoBomFile -LiteralPath $artifacts.FullOutput -Content ($fullOutput + [Environment]::NewLine)
-
-        $warningBlock = if ($script:Warnings.Count -gt 0) { $script:Warnings -join [Environment]::NewLine } else { 'None' }
-        $failureBlock = if ($script:Failures.Count -gt 0) { $script:Failures -join [Environment]::NewLine } else { 'None' }
-        $compactMarkdown = @"
-# PowerShell Command Pack Output
-
-- Status: $finalStatus
-- Started: $($script:StartedAt.ToString('o'))
-- Ended: $($endedAt.ToString('o'))
-- DurationSeconds: $([math]::Round($duration.TotalSeconds, 2))
-- Phase: $Phase
-- OutputRoot: $OutputRoot
-- RepositoryRoot: $RepositoryRoot
-
-## Artifacts
-
-- Request: $($artifacts.Request)
-- Script: $($artifacts.Script)
-- FullOutput: $($artifacts.FullOutput)
-- CompactMarkdown: $($artifacts.CompactMarkdown)
-- CompactDocx: $($artifacts.CompactDocx)
-
-## Guardrails
-
-- Launcher: pwsh -NoProfile -ExecutionPolicy Bypass -File
-- Git long output: git --no-pager
-- Publication requires explicit phase and passing tests, verify, health check, and guardrails.
-- No commit, push, PR, merge, release, deploy, or restart is executed by default.
-- setx PATH is forbidden.
-
-## Warnings
-
-$warningBlock
-
-## Failures
-
-$failureBlock
-"@
-        Out-Utf8NoBomFile -LiteralPath $artifacts.CompactMarkdown -Content $compactMarkdown
-        ConvertTo-CompactDocx -MarkdownPath $artifacts.CompactMarkdown -DocxPath $artifacts.CompactDocx
-        Invoke-LastArtifactCopy -Artifacts $artifacts -Path $OutputRoot
+        Write-CompactOutput -Artifacts $artifacts -FinalStatus $finalStatus -RepoRoot $RepoRoot -Phase $Phase -OutputRoot $OutputRoot
     }
 
     if ($finalStatus -ne 'PASSED') {
@@ -489,3 +749,4 @@ $failureBlock
 }
 
 Invoke-CommandPack
+}

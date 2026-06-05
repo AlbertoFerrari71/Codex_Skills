@@ -124,3 +124,7 @@ Non dichiarare mai un test superato se non e' stato eseguito. Se una verifica no
 
 Per un solo comando utile da copiare/incollare, usare due righe fake innocue dopo il comando. Per due o piu' comandi utili, usare una riga fake finale. Per flussi lunghi o critici, preferire un file `.ps1` eseguito con `pwsh -NoProfile -ExecutionPolicy Bypass -File`.
 
+## PowerShell command pack hardening
+
+I command pack PowerShell non banali devono seguire lo standard `as-common-pwsh-command-pack/references/pwsh-command-pack-hardening-standard.md`.
+

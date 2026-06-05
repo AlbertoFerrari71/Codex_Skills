@@ -51,19 +51,22 @@ Usala per:
    - `git --no-pager show ...`
 2. Prima di modifiche importanti verifica:
    - `git branch --show-current`
-   - `git status --short`
+   - `git status --porcelain=v1` per parsing robusto;
+   - `git status --short` solo per output umano rapido;
    - `git --no-pager log --oneline --max-count=N`
 3. Prima del commit esegui, quando applicabile:
    - test automatici;
-   - `git diff --check`;
+   - `git --no-pager diff --check`;
+   - `git --no-pager diff --cached --check` dopo lo staging;
    - verify gate del progetto;
    - controllo file modificati.
 4. Per repository Windows valuta `.gitattributes` standard, ma non mischiare normalizzazione line endings a step funzionali salvo richiesta.
 5. I warning LF/CRLF non sono fallimento se test, verify gate e `git diff --check` passano.
+6. Il push diretto su `main` e' consentito quando Alberto lo richiede e tutti i gate locali passano; branch + PR resta alternativa per repository protette o step che richiedono review.
 
 # Gestione `gh pr checks --watch`
 
-Quando usi `gh pr checks --watch`, gestisci il caso "no checks reported" / exit code 1 senza errore rosso invasivo:
+Quando usi `gh pr checks --watch`, gestisci i casi "no checks reported" o pending con exit code 1 oppure 8 senza errore rosso invasivo, se l'output testuale conferma che non si tratta di fallimento reale:
 
 ```powershell
 $oldPref = $PSNativeCommandUseErrorActionPreference
@@ -76,8 +79,8 @@ $PSNativeCommandUseErrorActionPreference = $oldPref
 
 if ($ghExitCode -eq 0) {
     Write-Host "Checks completati correttamente."
-} elseif ($ghExitCode -eq 1) {
-    Write-Host "Attenzione: gh pr checks ha restituito exit code 1. Verificare se è solo 'no checks reported'."
+} elseif ($ghExitCode -eq 1 -or $ghExitCode -eq 8) {
+    Write-Host "Attenzione: gh pr checks ha restituito exit code $ghExitCode. Verificare se e' solo no-checks/pending."
 } else {
     throw "gh pr checks fallito con exit code $ghExitCode"
 }
