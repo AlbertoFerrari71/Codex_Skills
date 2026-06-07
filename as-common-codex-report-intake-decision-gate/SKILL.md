@@ -1,6 +1,6 @@
 ---
 name: as-common-codex-report-intake-decision-gate
-description: Use this skill when reviewing a final Codex report, comparing it with the original prompt, Git status, diffs, tests, warnings, and verification evidence to decide GO, GO_WITH_WARNINGS, NO_GO, clarification needs, or a corrective follow-up prompt.
+description: Use this skill when Alberto provides a completed Codex final report and needs it compared with the original prompt, Git status, diffs, tests, warnings, and evidence to decide GO, GO_WITH_WARNINGS, NO_GO, clarification needs, or corrective follow-up. Do not use it to design test gates before work starts.
 ---
 
 # as-common-codex-report-intake-decision-gate
@@ -20,6 +20,17 @@ Transform a final Codex report into a verified decision. Use this skill to compa
 - deciding whether a corrective prompt is needed;
 - preparing a final PowerShell command;
 - closing a step in a traceable way.
+
+## Do Not Use This Skill When
+
+- The work is still planning tests, smoke checks, evals, or evidence before implementation.
+- Alberto needs a new verification matrix or golden sample policy, not a decision on a received report.
+- The task is a generic repository readiness review before starting a step.
+
+## Use Instead
+
+- `as-common-verification-gate-test-eval-pack` to design verification gates, test matrices, smoke checks, evals, and stop policies.
+- `as-common-repo-readiness-review` for read-only technical repository readiness before work begins.
 
 ## Workflow
 

@@ -9,6 +9,11 @@ Use this skill when Alberto asks for PowerShell command packs, robust Windows co
 
 Do not use this skill as the default wrapper for Codex prompts. The default Codex handoff is a clean, self-contained prompt. Use PowerShell only when Alberto asks for Bridge output, audit trail, controlled verification, or controlled publication.
 
+## Use Instead
+
+- `as-common-powershell-git-safe-flow` when Alberto needs Git/PowerShell safety review, command rules, or short command guidance rather than a full logged command pack.
+- `as-common-codex-command-pack` when Alberto needs a plain Codex prompt handoff without PowerShell artifacts.
+
 ## Canonical Standard
 
 Safe Bootstrap PowerShell Command Pack:

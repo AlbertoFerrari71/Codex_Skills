@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 140) Skill Trigger & Content Cleanup Pack
+
+Pulizia mirata dei confini di triggering tra skill vicine.
+
+- chiariti description, anti-trigger e cross-reference delle skill in overlap;
+- separati prompt Codex, lifecycle step e documentazione persistente;
+- separati riepilogo di ripartenza e runbook persistente;
+- aggiunte micro-regole per distinguere PowerShell command pack e Git safe flow;
+- separati gate/test design da intake di report finale Codex;
+- separati repo readiness tecnica e governance del contesto agente;
+- documentata policy lingua/trigger delle description.
+
 ## 130) Scoring v2 & Trigger Eval Foundation
 
 Fondazione dello scoring v2 e della base trigger-eval deterministica.

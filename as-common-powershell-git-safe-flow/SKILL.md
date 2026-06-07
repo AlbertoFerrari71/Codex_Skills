@@ -1,6 +1,6 @@
 ---
 name: as-common-powershell-git-safe-flow
-description: Usa questa skill quando devi generare o verificare comandi PowerShell/Git sicuri per Alberto su Windows, inclusi branch, test, commit, push, PR, merge, log, diff e gh checks.
+description: Usa questa skill quando devi generare o verificare comandi PowerShell/Git sicuri, linee guida Git o blocchi brevi per Alberto su Windows. Non usarla per costruire command pack PowerShell completi con Bridge, report e artifact riutilizzabili.
 ---
 
 # Scopo
@@ -16,6 +16,19 @@ Usala per:
 - controlli `pytest`, script `verify.ps1`, `git diff --check`;
 - gestione `gh pr checks --watch`;
 - correzioni PATH o configurazioni Windows.
+
+# Quando NON usarla
+
+Non usarla per:
+- generare un command pack operativo completo con file `.ps1`, log, report e output Bridge;
+- preparare un prompt Codex temporaneo senza comandi PowerShell;
+- governare tutto il lifecycle di uno step numerato.
+
+# Usa invece
+
+- `as-common-pwsh-command-pack` quando serve un pacchetto operativo completo con script, Bridge, report e artifact.
+- `as-common-codex-command-pack` quando serve solo un prompt Codex.
+- `as-common-codex-step-manager` quando il lavoro e' gestire uno step numerato end-to-end.
 
 # Regole PowerShell per Alberto
 

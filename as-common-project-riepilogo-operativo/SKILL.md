@@ -1,6 +1,6 @@
 ---
 name: as-common-project-riepilogo-operativo
-description: Usa questa skill quando Alberto chiede "fai riepilogo", "prepara riassunto" o vuole chiudere una chat lunga e aprirne una nuova nello stesso progetto senza perdere continuità.
+description: Usa questa skill quando Alberto chiede un riepilogo operativo di continuità per chiudere una chat lunga e ripartire in una nuova chat dello stesso progetto. Non usarla per README, runbook o documentazione persistente di repository.
 ---
 
 # Scopo
@@ -16,6 +16,19 @@ Usala quando Alberto scrive:
 - "fai un prompt di ripartenza"
 - "chiudiamo questa chat"
 - "ripartiamo in una nuova chat"
+
+# Quando NON usarla
+
+Non usarla per:
+- creare o aggiornare README, AGENTS.md, runbook o documentazione stabile;
+- gestire il ciclo completo di uno step Codex numerato;
+- preparare solo un prompt temporaneo per Codex.
+
+# Usa invece
+
+- `as-common-docs-runbook-builder` quando il risultato deve restare come documentazione persistente nel repository.
+- `as-common-codex-step-manager` quando Alberto sta governando uno step numerato.
+- `as-common-codex-command-pack` quando serve solo un prompt operativo da incollare in Codex.
 
 # Metodo
 

@@ -1,6 +1,6 @@
 ---
 name: as-common-verification-gate-test-eval-pack
-description: Use this skill when designing, reviewing, or enforcing tests, smoke checks, health checks, evals, golden samples, verification gates, stop policies, or go/no-go release decisions for Codex-driven software and documentation steps.
+description: Use this skill when designing or enforcing tests, smoke checks, health checks, evals, golden samples, verification gates, evidence requirements, or stop policies before or during a Codex-driven step. Do not use it to intake a completed Codex final report; use the report-intake decision gate instead.
 ---
 
 # as-common-verification-gate-test-eval-pack
@@ -17,9 +17,19 @@ Build and apply clear, repeatable verification gates for Codex-driven software a
 - defining smoke tests or health checks;
 - creating golden samples;
 - designing evals for AI/Codex workflows;
-- reviewing a Codex report before publication;
-- deciding GO / NO-GO;
+- defining evidence requirements before a Codex report is produced;
+- deciding GO / NO-GO criteria before the final report is reviewed;
 - documenting failure and corrective action.
+
+## Do Not Use This Skill When
+
+- Alberto has already received a final Codex report and needs a GO/NO_GO decision from that report.
+- The main task is comparing report claims with Git status, diff, tests, and warnings.
+- The output should be a corrective follow-up prompt based on a completed report.
+
+## Use Instead
+
+- `as-common-codex-report-intake-decision-gate` for final report intake, evidence comparison, warning classification, and commit/push readiness.
 
 ## Workflow
 

@@ -1,6 +1,6 @@
 ---
 name: as-common-agent-context-governor
-description: Use this skill when reviewing, creating, or reconciling project instructions, AGENTS.md files, Codex prompts, skill usage, repository rules, handoff summaries, or context conflicts before starting or closing an agentic coding step.
+description: Use this skill when reviewing, creating, or reconciling project instructions, AGENTS.md files, Codex prompts, skill usage, repository rules, handoff summaries, or context conflicts before starting or closing an agentic coding step. Do not use it for a purely technical repository readiness review.
 ---
 
 # as-common-agent-context-governor
@@ -19,6 +19,18 @@ Govern the operational context for Alberto's ChatGPT and Codex work. Use it to p
 - preparing a context map for a repo;
 - deciding which skill should be used;
 - cleaning project docs before an agent task.
+
+## Do Not Use This Skill When
+
+- Alberto only needs read-only technical repository readiness: branch, Git status, diff, tests, structure, and immediate risks.
+- The requested output is a persistent README/runbook rather than a context conflict review.
+- The task is only to design a verification gate.
+
+## Use Instead
+
+- `as-common-repo-readiness-review` for technical repository readiness before starting a step.
+- `as-common-docs-runbook-builder` for persistent README, AGENTS.md, runbook, or workflow documentation.
+- `as-common-verification-gate-test-eval-pack` for test matrix and verification gate design.
 
 ## Workflow
 

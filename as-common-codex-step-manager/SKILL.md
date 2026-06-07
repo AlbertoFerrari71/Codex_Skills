@@ -1,6 +1,6 @@
 ---
 name: as-common-codex-step-manager
-description: Usa questa skill quando Alberto chiede di preparare, eseguire o verificare uno step Codex/Git numerato con branch dedicato, test, verify gate, report finale e prossimo step.
+description: Use this skill when Alberto is managing a numbered Codex/ASF step, including scope, phases, acceptance criteria, report format, completion status, and next recommended step. Do not use it only to draft a one-shot Codex prompt, write persistent runbook documentation, or summarize a chat restart.
 ---
 
 # Scopo
@@ -12,10 +12,11 @@ Gestire step operativi Codex/Git nei progetti software di Alberto in modo ordina
 Usala quando Alberto scrive frasi come:
 - "vai con STEP ..."
 - "procedi con ..."
-- "prepara prompt Codex"
+- "gestisci lo STEP ..."
 - "continuiamo dal prossimo step"
 - "chiudi/mergea/verifica lo step"
 - "fai il prossimo step del progetto"
+- "verifica acceptance criteria e report finale"
 
 # Quando non usarla
 
@@ -23,7 +24,16 @@ Non usarla per:
 - domande teoriche semplici;
 - email commerciali;
 - ricerche industriali non legate a una repository;
-- modifiche rapide senza workflow Git.
+- modifiche rapide senza workflow Git;
+- scrivere solo un prompt Codex temporaneo;
+- creare README, AGENTS.md, runbook o documentazione persistente;
+- fare un riepilogo di ripartenza per una nuova chat.
+
+# Usa invece
+
+- `as-common-codex-command-pack` quando serve solo un prompt operativo da incollare in Codex.
+- `as-common-docs-runbook-builder` quando il risultato deve restare come documentazione di repository.
+- `as-common-project-riepilogo-operativo` quando Alberto vuole chiudere una chat lunga e ripartire.
 
 # Metodo operativo
 

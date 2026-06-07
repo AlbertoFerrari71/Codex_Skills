@@ -1,6 +1,6 @@
 ---
 name: as-common-docs-runbook-builder
-description: Usa questa skill quando Alberto vuole creare o migliorare README, runbook, AGENTS.md, decision log, roadmap, prompt operativi o documentazione tecnica di progetto.
+description: Use this skill when Alberto asks to create or update persistent repository documentation, runbooks, AGENTS.md, README sections, workflow guides, or operational manuals. Do not use it for temporary Codex handoff prompts, numbered step lifecycle management, or chat restart summaries.
 ---
 
 # Scopo
@@ -16,9 +16,24 @@ Usala per:
 - ROADMAP.md;
 - DECISIONI.md;
 - STATO_ATTUALE.md;
-- prompt per Codex;
+- prompt operativi persistenti come template documentati;
 - checklist di rilascio/test;
 - documentazione di onboarding.
+
+# Quando NON usarla
+
+Non usarla per:
+- prompt temporanei da incollare in Codex per una singola esecuzione;
+- gestione completa di uno step numerato;
+- riepiloghi di chat o prompt di ripartenza;
+- review tecnica read-only dello stato di una repository.
+
+# Usa invece
+
+- `as-common-codex-command-pack` per prompt temporanei o command packet Codex.
+- `as-common-codex-step-manager` per lifecycle di step numerati.
+- `as-common-project-riepilogo-operativo` per riepiloghi di ripartenza nuova chat.
+- `as-common-repo-readiness-review` per review iniziale read-only di una repository.
 
 # Principi
 

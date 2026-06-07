@@ -1,6 +1,6 @@
 ---
 name: as-common-codex-command-pack
-description: Use when preparing, saving, reviewing, or updating Codex prompts/task packets for Alberto. Creates numbered and LAST files in codex_command, copies LAST-Prompt_Codex.md to clipboard, and enforces safety, tests, and report contracts.
+description: Use this skill when Alberto asks to prepare one executable Codex prompt or command packet for implementation, debugging, review, or repository work. Use it for temporary handoff prompts to Codex. Do not use it for numbered step governance, durable docs, or restart summaries.
 ---
 
 # as-common-codex-command-pack
@@ -17,6 +17,24 @@ Every Codex prompt must be:
 - stored in codex_command;
 - available as LAST-Prompt_Codex.md;
 - copied to clipboard when possible.
+
+## Use This Skill When
+
+- Alberto needs one executable prompt or command packet to paste into Codex.
+- The output is a temporary handoff prompt for implementation, debugging, review, verification, or repository work.
+- The prompt must be saved in the Bridge with numbered and `LAST-Prompt_Codex.md` files.
+
+## Do Not Use This Skill When
+
+- Alberto is managing the full lifecycle of a numbered step.
+- The requested output is persistent README, AGENTS.md, runbook, or workflow documentation.
+- The goal is to close a long chat and prepare a restart summary.
+
+## Use Instead
+
+- `as-common-codex-step-manager` for numbered step scope, phases, status, final report, and next step.
+- `as-common-docs-runbook-builder` for persistent repository documentation.
+- `as-common-project-riepilogo-operativo` for chat restart summaries.
 
 ## Default folders
 
