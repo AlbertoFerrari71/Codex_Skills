@@ -16,6 +16,7 @@ Il comando esegue:
 - validazione catalogo skill in modalita severa;
 - controllo catalog freshness di `SKILLS_INDEX.md` e `SKILL_SCORE.md`;
 - unit test dei validator;
+- installed skills sync check;
 - smoke trial temporanei;
 - controllo wiring del release workflow;
 - `git --no-pager diff --check`;
@@ -30,11 +31,38 @@ senza fallire il gate se tutti i controlli bloccanti passano.
 python validators\check_agent_skills.py --root .
 python validators\check_agent_skills.py --root . --fail-on-warning
 python validators\check_agent_skills.py --root . --fail-on-warning --check-catalog-freshness
+python validators\installed_skills_sync_check.py --root .
 python -m unittest discover -s validators -p "test_*.py"
 python validators\smoke_trial_cases.py
 python validators\release_workflow_check.py
 git --no-pager diff --check
 ```
+
+## Installed skills sync check
+
+`validators/installed_skills_sync_check.py` diagnostica lo stato installato
+delle skill quando la repository coincide con `C:\Users\alberto.ferrari\.agents\skills`
+o quando viene copiata in un'altra posizione.
+
+Il controllo e' read-only e non installa, copia, cancella o modifica file. In
+particolare verifica:
+
+- root e posizione rispetto a `.agents\skills`;
+- skill attive `as-common-*` con `SKILL.md`;
+- coerenza `name:` del frontmatter;
+- presenza in `SKILLS_INDEX.md` e `SKILL_SCORE.md`;
+- tracking Git di `SKILL.md` e file locali untracked/ignored;
+- backup/temp file dentro skill attive;
+- policy `_archive/backup-skills/`, trattata come area inattiva;
+- file `.env` e nomi locali a rischio.
+
+Errori bloccanti includono skill attive non tracciate, `SKILL.md` non tracciato,
+`name:` diverso dalla cartella, mismatch nei cataloghi e backup/temp dentro una
+skill attiva. Warning non bloccanti includono cache/ignored file e file locali
+non tracciati fuori dalle skill attive quando non sono pericolosi.
+
+Fuori da `.agents\skills`, come in GitHub Actions, il controllo segnala solo
+informazione e non fallisce per la posizione della root.
 
 ## Aggiornare file generati
 

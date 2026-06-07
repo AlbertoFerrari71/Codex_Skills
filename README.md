@@ -28,6 +28,16 @@ python validators\repo_health_check.py
 
 Il comando esegue i controlli locali di base senza dipendenze esterne: validatore catalogo in modalita severa, catalog freshness, unit test, smoke trial, release workflow check, `git --no-pager diff --check` e report EOL non bloccante.
 
+Include anche lo sync checker installato:
+
+```powershell
+python validators\installed_skills_sync_check.py --root .
+```
+
+Il controllo e' read-only: confronta cartelle skill attive, Git tracking,
+`SKILLS_INDEX.md`, `SKILL_SCORE.md` e file locali a rischio. Non installa, non
+copia, non cancella e non modifica file.
+
 Per rigenerare gli artefatti tracciati:
 
 ```powershell

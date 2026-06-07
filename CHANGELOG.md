@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 150) Installed Skills Sync Checker
+
+Controllo read-only dello stato installato delle skill rispetto a Git e ai cataloghi generati.
+
+- aggiunto `validators/installed_skills_sync_check.py`;
+- controllate skill attive, `SKILL.md`, frontmatter `name:`, Git tracking e cataloghi;
+- gestiti `_archive/backup-skills/` e file locali a rischio con policy esplicita;
+- integrato lo sync checker nel repository health check;
+- aggiunti test unitari dedicati;
+- documentato il comando principale e i limiti read-only.
+
 ## 140) Skill Trigger & Content Cleanup Pack
 
 Pulizia mirata dei confini di triggering tra skill vicine.

@@ -15,7 +15,14 @@ def display_command(args: list[str]) -> str:
     return " ".join(args)
 
 
-def run_check(label: str, args: list[str]) -> int:
+def extract_result_status(output: str) -> str | None:
+    for line in output.splitlines():
+        if line.startswith("RESULT:"):
+            return line.split(":", 1)[1].strip()
+    return None
+
+
+def run_check(label: str, args: list[str]) -> tuple[int, str | None]:
     print()
     print(f"== {label} ==", flush=True)
     print(display_command(args), flush=True)
@@ -30,10 +37,13 @@ def run_check(label: str, args: list[str]) -> int:
         )
     except FileNotFoundError:
         print(f"Command not found: {args[0]}")
-        return 1
+        return 1, None
     if result.stdout:
         print(result.stdout, end="")
-    return result.returncode
+    status = extract_result_status(result.stdout)
+    if label == "Installed Skills Sync Check" and status:
+        print(f"Installed Skills Sync Check: {status}")
+    return result.returncode, status
 
 
 def run_eol_report() -> list[str]:
@@ -91,6 +101,15 @@ def main() -> int:
             ],
         ),
         (
+            "Installed Skills Sync Check",
+            [
+                sys.executable,
+                str(REPO_ROOT / "validators" / "installed_skills_sync_check.py"),
+                "--root",
+                str(REPO_ROOT),
+            ],
+        ),
+        (
             "Smoke trial cases",
             [sys.executable, str(REPO_ROOT / "validators" / "smoke_trial_cases.py")],
         ),
@@ -105,12 +124,15 @@ def main() -> int:
     ]
 
     failures: list[tuple[str, int]] = []
+    non_blocking_warnings: list[str] = []
     for label, args in checks:
-        exit_code = run_check(label, args)
+        exit_code, status = run_check(label, args)
         if exit_code != 0:
             failures.append((label, exit_code))
+        elif label == "Installed Skills Sync Check" and status == "PASS WITH NON-BLOCKING WARNINGS":
+            non_blocking_warnings.append("Installed Skills Sync Check: PASS WITH NON-BLOCKING WARNINGS")
 
-    non_blocking_warnings = run_eol_report()
+    non_blocking_warnings.extend(run_eol_report())
 
     print()
     if failures:
