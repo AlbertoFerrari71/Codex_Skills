@@ -38,6 +38,10 @@ def write_skill(root: Path, name: str, content: str | None = VALID_SKILL) -> Pat
     return skill_dir
 
 
+def valid_skill_content(name: str) -> str:
+    return VALID_SKILL.replace("as-common-valid-skill", name)
+
+
 def issue_codes(report: validator.SkillReport) -> set[str]:
     return {issue.code for issue in report.errors + report.warnings}
 
@@ -318,7 +322,9 @@ Eseguire il controllo.
             root = Path(tmp)
             skill_dir = write_skill(root, "as-common-valid-skill")
             (skill_dir / "references").mkdir()
+            (skill_dir / "references" / "standard.md").write_text("# Standard\n", encoding="utf-8")
             (skill_dir / "examples").mkdir()
+            (skill_dir / "examples" / "demo.md").write_text("# Demo\n", encoding="utf-8")
 
             reports = validator.scan_skills(root)
             output = validator.write_score(root, reports, now=datetime(2026, 6, 5, 12, 0, 0))
@@ -326,7 +332,152 @@ Eseguire il controllo.
             text = output.read_text(encoding="utf-8")
             self.assertIn("# SKILL_SCORE", text)
             self.assertIn("as-common-valid-skill", text)
-            self.assertIn("| as-common-valid-skill | 100 | A |", text)
+            self.assertIn("| Skill | StructureScore | OperationalQualityScore | Grade | Errors | Warnings | Recommendation |", text)
+            self.assertIn("| as-common-valid-skill |", text)
+
+    def test_empty_reference_example_dirs_do_not_add_cosmetic_points(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(root, "as-common-plain-skill", valid_skill_content("as-common-plain-skill"))
+            empty_skill = write_skill(
+                root,
+                "as-common-empty-dirs-skill",
+                valid_skill_content("as-common-empty-dirs-skill"),
+            )
+            (empty_skill / "references").mkdir()
+            (empty_skill / "examples").mkdir()
+
+            reports = {report.name: report for report in validator.scan_skills(root)}
+
+            self.assertFalse(reports["as-common-empty-dirs-skill"].has_real_references)
+            self.assertFalse(reports["as-common-empty-dirs-skill"].has_real_examples)
+            self.assertLessEqual(
+                reports["as-common-empty-dirs-skill"].structure_score,
+                reports["as-common-plain-skill"].structure_score,
+            )
+
+    def test_real_reference_example_files_add_structure_credit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            empty_skill = write_skill(
+                root,
+                "as-common-empty-dirs-skill",
+                valid_skill_content("as-common-empty-dirs-skill"),
+            )
+            (empty_skill / "references").mkdir()
+            (empty_skill / "examples").mkdir()
+            real_skill = write_skill(
+                root,
+                "as-common-real-dirs-skill",
+                valid_skill_content("as-common-real-dirs-skill"),
+            )
+            (real_skill / "references").mkdir()
+            (real_skill / "references" / "standard.md").write_text("# Standard\n", encoding="utf-8")
+            (real_skill / "examples").mkdir()
+            (real_skill / "examples" / "demo.md").write_text("# Demo\n", encoding="utf-8")
+
+            reports = {report.name: report for report in validator.scan_skills(root)}
+
+            self.assertTrue(reports["as-common-real-dirs-skill"].has_real_references)
+            self.assertTrue(reports["as-common-real-dirs-skill"].has_real_examples)
+            self.assertGreater(
+                reports["as-common-real-dirs-skill"].structure_score,
+                reports["as-common-empty-dirs-skill"].structure_score,
+            )
+
+    def test_operational_quality_rewards_anti_trigger(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(
+                root,
+                "as-common-without-anti-trigger",
+                """---
+name: as-common-without-anti-trigger
+description: Usa questa skill quando serve preparare verifiche operative per Alberto in Codex.
+---
+
+# Scopo
+
+Preparare verifiche operative.
+
+# Output
+
+Restituire un report sintetico.
+""",
+            )
+            write_skill(
+                root,
+                "as-common-with-anti-trigger",
+                """---
+name: as-common-with-anti-trigger
+description: Usa questa skill quando serve preparare verifiche operative per Alberto in Codex.
+---
+
+# Scopo
+
+Preparare verifiche operative.
+
+# Quando non usarla
+
+Non usarla per generare codice o modificare repository.
+
+# Output
+
+Restituire un report sintetico.
+""",
+            )
+
+            reports = {report.name: report for report in validator.scan_skills(root)}
+
+            self.assertGreater(
+                reports["as-common-with-anti-trigger"].operational_quality_score,
+                reports["as-common-without-anti-trigger"].operational_quality_score,
+            )
+
+    def test_operational_quality_penalizes_generic_description(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(
+                root,
+                "as-common-generic-description",
+                """---
+name: as-common-generic-description
+description: Validare skill.
+---
+
+# Scopo
+
+Validare.
+""",
+            )
+            write_skill(
+                root,
+                "as-common-specific-description",
+                """---
+name: as-common-specific-description
+description: Usa questa skill quando Alberto deve preparare un gate locale Codex con report e verifiche Git.
+---
+
+# Scopo
+
+Preparare gate riproducibili per repository Codex.
+
+# Quando non usarla
+
+Non usarla per implementare feature applicative.
+
+# Output
+
+Restituire report, evidenze e prossimo step.
+""",
+            )
+
+            reports = {report.name: report for report in validator.scan_skills(root)}
+
+            self.assertLess(
+                reports["as-common-generic-description"].operational_quality_score,
+                reports["as-common-specific-description"].operational_quality_score,
+            )
 
     def test_catalog_write_preserves_timestamp_when_unchanged(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

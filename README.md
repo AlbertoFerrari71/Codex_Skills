@@ -34,6 +34,18 @@ Per rigenerare gli artefatti tracciati:
 python validators\check_agent_skills.py --root . --write-index --write-score
 ```
 
+`SKILL_SCORE.md` usa lo scoring v2:
+
+- `StructureScore`: igiene, installabilita e riproducibilita della skill;
+- `OperationalQualityScore`: score euristico sulla chiarezza operativa e sul rischio di collisione trigger.
+
+Le cartelle `references/` ed `examples/` vuote non aggiungono punti cosmetici.
+Per validare la base trigger-eval deterministica:
+
+```powershell
+python -m unittest validators.test_trigger_eval
+```
+
 Per eseguire solo il validator in modalita severa:
 
 ```powershell

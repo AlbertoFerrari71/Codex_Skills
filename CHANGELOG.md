@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 130) Scoring v2 & Trigger Eval Foundation
+
+Fondazione dello scoring v2 e della base trigger-eval deterministica.
+
+- separati `StructureScore` e `OperationalQualityScore`;
+- aggiornato `SKILL_SCORE.md` con i due punteggi e raccomandazioni;
+- rimossi punti cosmetici per cartelle `references/` ed `examples/` vuote;
+- aggiunta base trigger-eval deterministica con casi positivi/negativi;
+- aggiunti test unitari per scoring v2 e trigger-eval;
+- documentati comandi, limiti euristici e fuori scope.
+
 ## 120) Validator Hardening & Automation Gate
 
 Rafforzamento dei gate locali e remoti del catalogo skill.
@@ -123,4 +134,3 @@ Creazione Governance Pack iniziale.
 - validators
 - gitignore
 - gitattributes
-

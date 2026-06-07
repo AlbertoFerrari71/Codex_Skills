@@ -50,6 +50,41 @@ devono comparire in `SKILLS_INDEX.md`.
 Se il catalog freshness fallisce, rigenerare gli artefatti con il comando sopra
 e rieseguire `python validators\repo_health_check.py`.
 
+## Scoring v2
+
+`SKILL_SCORE.md` separa due dimensioni:
+
+- `StructureScore`: misura igiene della cartella skill, frontmatter,
+  coerenza `name:`, description valida, sezioni operative, assenza di
+  backup/temp file, link `references/`/`examples/` dichiarati e warning/errori;
+- `OperationalQualityScore`: misura in modo euristico trigger chiaro,
+  description specifica, anti-trigger, output contract, riferimenti o esempi
+  reali, cross-reference e collisione testuale semplice con skill vicine.
+
+Le cartelle `references/` ed `examples/` vuote non danno credito: contano solo
+file reali o link dichiarati che puntano a file esistenti. Lo score operativo
+non e' un classificatore semantico e non usa AI, API o embedding.
+
+## Trigger eval deterministico
+
+La base trigger-eval vive in:
+
+- `validators/trigger_eval_cases.json`
+- `validators/test_trigger_eval.py`
+
+Il test verifica formato JSON, ID univoci, input non vuoti, tags presenti e
+skill attese/negative esistenti. Per lanciarlo singolarmente:
+
+```powershell
+python -m unittest validators.test_trigger_eval
+```
+
+Il comando di discovery generale lo include automaticamente:
+
+```powershell
+python -m unittest discover -s validators -p "test_*.py"
+```
+
 ## Sensitive values scan
 
 Il validator intercetta valori sensibili verosimili in:

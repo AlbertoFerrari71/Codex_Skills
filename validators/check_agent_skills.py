@@ -120,6 +120,99 @@ OPERATIONAL_HEADING_TERMS = (
     "default safety",
     "final report",
 )
+OPERATIONAL_TRIGGER_TERMS = (
+    "use when",
+    "use this skill",
+    "usa questa skill",
+    "usa questa skill quando",
+    "usa quando",
+    "quando usarla",
+)
+OPERATIONAL_ANTI_TRIGGER_TERMS = (
+    "quando non usarla",
+    "quando non usare",
+    "non usare",
+    "non usarla",
+    "do not use",
+    "don't use",
+)
+OPERATIONAL_OUTPUT_TERMS = (
+    "output",
+    "report",
+    "risultato",
+    "deliverable",
+    "required outputs",
+    "formato",
+)
+OPERATIONAL_CROSS_REFERENCE_TERMS = (
+    "usa invece",
+    "use instead",
+    "instead use",
+    "preferisci",
+    "prefer",
+)
+ALBERTO_CONTEXT_TERMS = (
+    "alberto",
+    "codex",
+    "bridge",
+    "powershell",
+    "windows",
+    "git",
+    "github",
+    "repo",
+    "repository",
+    "workflow",
+    "gate",
+    "evidenze",
+    "safety",
+)
+GENERIC_DESCRIPTION_TERMS = {
+    "skill",
+    "tool",
+    "helper",
+    "utility",
+    "validare",
+    "gestire",
+    "usare",
+    "fare",
+    "creare",
+}
+TOKEN_STOP_WORDS = {
+    "a",
+    "ad",
+    "al",
+    "alla",
+    "anche",
+    "and",
+    "che",
+    "con",
+    "da",
+    "del",
+    "della",
+    "di",
+    "do",
+    "e",
+    "for",
+    "il",
+    "in",
+    "la",
+    "le",
+    "lo",
+    "non",
+    "o",
+    "of",
+    "per",
+    "se",
+    "skill",
+    "su",
+    "the",
+    "to",
+    "un",
+    "una",
+    "use",
+    "usa",
+    "when",
+}
 
 NAMING_ERROR_CODES = {
     "naming_lowercase",
@@ -156,12 +249,18 @@ class SkillReport:
     frontmatter_valid: bool = False
     has_references: bool = False
     has_examples: bool = False
+    has_real_references: bool = False
+    has_real_examples: bool = False
     has_operational_body: bool = False
+    body_text: str = ""
+    declared_reference_links: list[str] = field(default_factory=list)
     backup_files: list[str] = field(default_factory=list)
     sensitive_files: list[str] = field(default_factory=list)
     errors: list[Issue] = field(default_factory=list)
     warnings: list[Issue] = field(default_factory=list)
     score: int = 0
+    structure_score: int = 0
+    operational_quality_score: int = 0
     grade: str = "E"
     recommended_action: str = ""
 
@@ -400,7 +499,7 @@ def directory_has_files(path: Path) -> bool:
     return path.is_dir() and any(item.is_file() for item in path.rglob("*"))
 
 
-def validate_declared_links(report: SkillReport, body: str, root: Path) -> None:
+def validate_declared_links(report: SkillReport, body: str, root: Path) -> set[str]:
     declared_paths = declared_reference_paths(body)
     declared_kinds = {path.split("/", 1)[0] for path in declared_paths}
     for rel_link in sorted(declared_paths):
@@ -422,6 +521,7 @@ def validate_declared_links(report: SkillReport, body: str, root: Path) -> None:
                 f"Cartella {dirname}/ vuota e non dichiarata nel contenuto della skill.",
                 relative_display(root, folder),
             )
+    return declared_paths
 
 
 def validate_skill(skill_dir: Path, root: Path) -> SkillReport:
@@ -441,22 +541,25 @@ def validate_skill(skill_dir: Path, root: Path) -> SkillReport:
 
     report.has_references = (skill_dir / "references").is_dir()
     report.has_examples = (skill_dir / "examples").is_dir()
+    report.has_real_references = directory_has_files(skill_dir / "references")
+    report.has_real_examples = directory_has_files(skill_dir / "examples")
 
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.is_file():
         add_error(report, "missing_skill_md", "SKILL.md mancante.")
         scan_files(report, root)
-        calculate_score(report)
+        calculate_scores([report])
         return report
 
     text = read_text_file(skill_md)
     if text is None:
         add_error(report, "missing_skill_md", "SKILL.md non leggibile come file testuale.")
         scan_files(report, root)
-        calculate_score(report)
+        calculate_scores([report])
         return report
 
     frontmatter_valid, frontmatter, body = parse_frontmatter(text)
+    report.body_text = body
     report.frontmatter_valid = frontmatter_valid
     if not frontmatter_valid:
         add_error(report, "missing_frontmatter", "Frontmatter YAML delimitato da --- mancante o incompleto.")
@@ -498,9 +601,9 @@ def validate_skill(skill_dir: Path, root: Path) -> SkillReport:
             "Body senza una sezione operativa chiaramente riconoscibile.",
         )
 
-    validate_declared_links(report, body, root)
+    report.declared_reference_links = sorted(validate_declared_links(report, body, root))
     scan_files(report, root)
-    calculate_score(report)
+    calculate_scores([report])
     return report
 
 
@@ -565,49 +668,154 @@ def scan_repository_files(root: Path) -> list[Issue]:
     return issues
 
 
-def calculate_score(report: SkillReport) -> None:
+def has_issue(report: SkillReport, *codes: str) -> bool:
     error_codes = {issue.code for issue in report.errors}
     warning_codes = {issue.code for issue in report.warnings}
+    wanted = set(codes)
+    return bool((error_codes | warning_codes) & wanted)
 
+
+def has_errors(report: SkillReport, *codes: str) -> bool:
+    error_codes = {issue.code for issue in report.errors}
+    return bool(error_codes & set(codes))
+
+
+def text_contains_any(text: str, terms: Iterable[str]) -> bool:
+    lowered = text.lower()
+    return any(term in lowered for term in terms)
+
+
+def tokenize(text: str) -> set[str]:
+    tokens = set(re.findall(r"[a-z0-9]+", text.lower()))
+    return {token for token in tokens if len(token) >= 3 and token not in TOKEN_STOP_WORDS}
+
+
+def references_examples_are_real_or_absent(report: SkillReport) -> bool:
+    declared_links = set(report.declared_reference_links)
+    if not declared_links and not report.has_references and not report.has_examples:
+        return True
+    if declared_links and not has_errors(report, "missing_declared_link"):
+        declared_kinds = {path.split("/", 1)[0] for path in declared_links}
+        if "references" in declared_kinds and not report.has_real_references:
+            return False
+        if "examples" in declared_kinds and not report.has_real_examples:
+            return False
+        return True
+    return report.has_real_references or report.has_real_examples
+
+
+def link_check_passes(report: SkillReport) -> bool:
+    return not has_errors(report, "missing_declared_link")
+
+
+def calculate_structure_score(report: SkillReport) -> int:
+    error_codes = {issue.code for issue in report.errors}
+    warning_codes = {issue.code for issue in report.warnings}
     score = 0
 
-    score += 4 if "naming_lowercase" not in error_codes else 0
-    score += 4 if "naming_kebab_case" not in error_codes else 0
-    score += 4 if "naming_underscore" not in error_codes else 0
-    score += 4 if "naming_spaces" not in error_codes else 0
-    score += 4 if "naming_ascii" not in error_codes else 0
-
+    naming_errors = error_codes & NAMING_ERROR_CODES
+    if not naming_errors and any(report.name.startswith(prefix) for prefix in SKILL_PREFIXES):
+        score += 10
     score += 10 if "missing_skill_md" not in error_codes else 0
     score += 10 if report.frontmatter_valid else 0
-
     score += 10 if report.declared_name and report.declared_name == report.name else 0
-    score += 10 if report.description else 0
-
-    score += 15 if report.has_operational_body else 0
-    score += 10 if report.has_references else 0
-    score += 10 if report.has_examples else 0
-
-    if not (warning_codes & SAFETY_WARNING_CODES):
-        score += 5
+    if report.description and not has_issue(report, "description_short", "description_long"):
+        score += 10
+    score += 10 if report.has_operational_body else 0
+    score += 10 if "backup_file" not in warning_codes else 0
+    score += 10 if references_examples_are_real_or_absent(report) else 0
+    score += 10 if link_check_passes(report) else 0
+    score += 10 if not report.errors and not report.warnings else 0
 
     if error_codes & SEVERE_ERROR_CODES:
         score = min(score, 60)
+    return max(0, min(100, score))
 
-    report.score = max(0, min(100, score))
-    report.grade = grade_for_score(report.score)
-    report.recommended_action = recommended_action(report)
+
+def description_is_specific(description: str) -> bool:
+    tokens = tokenize(description)
+    if len(description.strip()) < 45:
+        return False
+    if len(tokens - GENERIC_DESCRIPTION_TERMS) < 5:
+        return False
+    return True
+
+
+def max_description_overlap(report: SkillReport, reports: list[SkillReport]) -> float:
+    own_tokens = tokenize(report.description)
+    if not own_tokens:
+        return 1.0
+    max_overlap = 0.0
+    for other in reports:
+        if other is report:
+            continue
+        other_tokens = tokenize(other.description)
+        if not other_tokens:
+            continue
+        overlap = len(own_tokens & other_tokens) / len(own_tokens | other_tokens)
+        max_overlap = max(max_overlap, overlap)
+    return max_overlap
+
+
+def calculate_operational_quality_score(report: SkillReport, reports: list[SkillReport]) -> int:
+    description = report.description
+    body = report.body_text
+    combined = f"{description}\n{body}"
+    score = 0
+
+    if text_contains_any(description, OPERATIONAL_TRIGGER_TERMS):
+        score += 15
+    elif description_is_specific(description):
+        score += 8
+
+    score += 10 if description_is_specific(description) else 0
+    score += 10 if text_contains_any(combined, OPERATIONAL_TRIGGER_TERMS) else 0
+    score += 15 if text_contains_any(combined, OPERATIONAL_ANTI_TRIGGER_TERMS) else 0
+    score += 10 if text_contains_any(combined, OPERATIONAL_OUTPUT_TERMS) else 0
+    score += 10 if report.has_real_references or report.has_real_examples else 0
+    score += 10 if text_contains_any(combined, OPERATIONAL_CROSS_REFERENCE_TERMS) else 0
+    score += 10 if text_contains_any(combined, ALBERTO_CONTEXT_TERMS) else 0
+
+    collision = max_description_overlap(report, reports)
+    if collision < 0.20:
+        score += 10
+    elif collision < 0.35:
+        score += 5
+
+    return max(0, min(100, score))
+
+
+def calculate_scores(reports: list[SkillReport]) -> None:
+    for report in reports:
+        report.structure_score = calculate_structure_score(report)
+    for report in reports:
+        report.operational_quality_score = calculate_operational_quality_score(report, reports)
+        report.score = report.structure_score
+        report.grade = grade_for_scores(report)
+        report.recommended_action = recommended_action(report)
+
+
+def grade_for_scores(report: SkillReport) -> str:
+    if report.errors:
+        return "BLOCKED"
+    minimum = min(report.structure_score, report.operational_quality_score)
+    if report.structure_score >= 85 and report.operational_quality_score >= 85:
+        return "A"
+    if minimum >= 70:
+        return "B"
+    if minimum >= 50:
+        return "C"
+    return "D"
 
 
 def grade_for_score(score: int) -> str:
-    if score >= 90:
+    if score >= 85:
         return "A"
-    if score >= 80:
-        return "B"
     if score >= 70:
+        return "B"
+    if score >= 50:
         return "C"
-    if score >= 60:
-        return "D"
-    return "E"
+    return "D"
 
 
 def recommended_action(report: SkillReport) -> str:
@@ -617,15 +825,24 @@ def recommended_action(report: SkillReport) -> str:
         return "Archiviare o rimuovere backup"
     if any(issue.code in {"sensitive_file", "suspicious_terms"} for issue in report.warnings):
         return "Verificare warning sicurezza"
-    if not report.has_references and not report.has_examples:
-        return "Valutare references/examples"
+    if report.operational_quality_score < 70 and not text_contains_any(
+        report.body_text,
+        OPERATIONAL_ANTI_TRIGGER_TERMS,
+    ):
+        return "Migliorare trigger/anti-trigger"
+    if not report.has_real_references and not report.has_real_examples:
+        return "Aggiungere examples/references reali"
+    if not description_is_specific(report.description):
+        return "Rivedere description"
     if report.warnings:
         return "Rivedere warning"
     return "Mantenere"
 
 
 def scan_skills(root: Path) -> list[SkillReport]:
-    return [validate_skill(skill_dir, root) for skill_dir in find_skill_dirs(root)]
+    reports = [validate_skill(skill_dir, root) for skill_dir in find_skill_dirs(root)]
+    calculate_scores(reports)
+    return reports
 
 
 def all_errors(reports: Iterable[SkillReport]) -> list[Issue]:
@@ -718,19 +935,21 @@ def build_score_text(reports: list[SkillReport], now: datetime | None = None) ->
     lines = [
         "# SKILL_SCORE",
         "",
-        "Pagella automatica delle skill.",
+        "Pagella automatica delle skill. `StructureScore` misura igiene e riproducibilita; "
+        "`OperationalQualityScore` e' euristico e misura chiarezza operativa e rischio di collisione trigger.",
         "",
         f"Aggiornato: {timestamp(now)}",
         "",
-        "| Skill | Score | Grade | Errori | Warning | Azione consigliata |",
-        "|---|---:|---|---:|---:|---|",
+        "| Skill | StructureScore | OperationalQualityScore | Grade | Errors | Warnings | Recommendation |",
+        "|---|---:|---:|---|---:|---:|---|",
     ]
 
     for report in reports:
         lines.append(
-            "| {skill} | {score} | {grade} | {errors} | {warnings} | {action} |".format(
+            "| {skill} | {structure} | {operational} | {grade} | {errors} | {warnings} | {action} |".format(
                 skill=escape_markdown_cell(report.name),
-                score=report.score,
+                structure=report.structure_score,
+                operational=report.operational_quality_score,
                 grade=report.grade,
                 errors=len(report.errors),
                 warnings=len(report.warnings),
@@ -831,18 +1050,21 @@ def check_catalog_freshness(root: Path, reports: list[SkillReport]) -> list[Issu
 
 
 def print_table(reports: list[SkillReport]) -> None:
-    print("| Skill | Name | References | Examples | Errors | Warnings | Score | Grade |")
-    print("|---|---|---:|---:|---:|---:|---:|---|")
+    print(
+        "| Skill | Name | References | Examples | Errors | Warnings | StructureScore | OperationalQualityScore | Grade |"
+    )
+    print("|---|---|---:|---:|---:|---:|---:|---:|---|")
     for report in reports:
         print(
-            "| {skill} | {declared} | {references} | {examples} | {errors} | {warnings} | {score} | {grade} |".format(
+            "| {skill} | {declared} | {references} | {examples} | {errors} | {warnings} | {structure} | {operational} | {grade} |".format(
                 skill=escape_markdown_cell(report.name),
                 declared=escape_markdown_cell(report.declared_name),
                 references=yes_no(report.has_references),
                 examples=yes_no(report.has_examples),
                 errors=len(report.errors),
                 warnings=len(report.warnings),
-                score=report.score,
+                structure=report.structure_score,
+                operational=report.operational_quality_score,
                 grade=report.grade,
             )
         )

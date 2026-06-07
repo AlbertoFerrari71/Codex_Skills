@@ -1,0 +1,156 @@
+[
+  {
+    "id": "codex_command_positive_001",
+    "input": "preparami il prompt Codex per implementare lo step 120 con vincoli e report finale",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-codex-step-manager", "as-common-docs-runbook-builder"],
+    "tags": ["codex", "prompt", "step", "bridge"]
+  },
+  {
+    "id": "codex_command_positive_002",
+    "input": "scrivi il pacchetto di comando Codex con file LAST-Prompt e checklist attesa",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-codex-step-manager", "as-common-project-riepilogo-operativo"],
+    "tags": ["codex", "prompt", "handoff"]
+  },
+  {
+    "id": "codex_step_manager_positive_001",
+    "input": "esegui lo step 130 nel repository, fai i gate finali e prepara il report",
+    "expected_skill": "as-common-codex-step-manager",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-docs-runbook-builder"],
+    "tags": ["step", "repository", "gate"]
+  },
+  {
+    "id": "codex_step_manager_positive_002",
+    "input": "gestisci uno step Codex numerato con branch, test, diff e stato finale",
+    "expected_skill": "as-common-codex-step-manager",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-repo-readiness-review"],
+    "tags": ["step", "git", "report"]
+  },
+  {
+    "id": "docs_runbook_positive_001",
+    "input": "migliora il README e crea un runbook operativo per il progetto",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-project-riepilogo-operativo"],
+    "tags": ["docs", "readme", "runbook"]
+  },
+  {
+    "id": "docs_runbook_positive_002",
+    "input": "scrivi una roadmap tecnica compatta e una guida di manutenzione",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-codex-step-manager", "as-common-project-riepilogo-operativo"],
+    "tags": ["documentazione", "roadmap", "runbook"]
+  },
+  {
+    "id": "project_summary_positive_001",
+    "input": "fai riepilogo operativo della chat lunga e prepara il contesto per ripartire",
+    "expected_skill": "as-common-project-riepilogo-operativo",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-codex-command-pack"],
+    "tags": ["riepilogo", "contesto", "chat"]
+  },
+  {
+    "id": "project_summary_positive_002",
+    "input": "prepara un riassunto di continuita del progetto con decisioni e prossime azioni",
+    "expected_skill": "as-common-project-riepilogo-operativo",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-agent-context-governor"],
+    "tags": ["riepilogo", "continuita", "progetto"]
+  },
+  {
+    "id": "pwsh_command_pack_positive_001",
+    "input": "genera un command pack PowerShell con script ps1, log e report markdown",
+    "expected_skill": "as-common-pwsh-command-pack",
+    "negative_skills": ["as-common-powershell-git-safe-flow", "as-common-codex-command-pack"],
+    "tags": ["powershell", "command-pack", "ps1"]
+  },
+  {
+    "id": "pwsh_command_pack_positive_002",
+    "input": "prepara una procedura PowerShell incollabile con fake line e output tracciato",
+    "expected_skill": "as-common-pwsh-command-pack",
+    "negative_skills": ["as-common-powershell-git-safe-flow", "as-common-docs-runbook-builder"],
+    "tags": ["powershell", "comandi", "clipboard"]
+  },
+  {
+    "id": "powershell_git_safe_flow_positive_001",
+    "input": "verifica se questi comandi git status diff commit sono sicuri su Windows",
+    "expected_skill": "as-common-powershell-git-safe-flow",
+    "negative_skills": ["as-common-pwsh-command-pack", "as-common-codex-step-manager"],
+    "tags": ["powershell", "git", "sicurezza"]
+  },
+  {
+    "id": "powershell_git_safe_flow_positive_002",
+    "input": "dammi il blocco PowerShell sicuro per git diff check e status senza fare push",
+    "expected_skill": "as-common-powershell-git-safe-flow",
+    "negative_skills": ["as-common-pwsh-command-pack", "as-common-codex-command-pack"],
+    "tags": ["git", "powershell", "diff"]
+  },
+  {
+    "id": "verification_gate_positive_001",
+    "input": "definisci una matrice di test e un verification gate prima del rilascio",
+    "expected_skill": "as-common-verification-gate-test-eval-pack",
+    "negative_skills": ["as-common-codex-report-intake-decision-gate", "as-common-repo-readiness-review"],
+    "tags": ["verification", "test", "gate"]
+  },
+  {
+    "id": "verification_gate_positive_002",
+    "input": "crea smoke test, golden sample e criteri go no-go per questo step",
+    "expected_skill": "as-common-verification-gate-test-eval-pack",
+    "negative_skills": ["as-common-codex-report-intake-decision-gate", "as-common-codex-step-manager"],
+    "tags": ["smoke", "eval", "gate"]
+  },
+  {
+    "id": "report_intake_positive_001",
+    "input": "leggi il report finale Codex e decidi se e GO o NO_GO",
+    "expected_skill": "as-common-codex-report-intake-decision-gate",
+    "negative_skills": ["as-common-verification-gate-test-eval-pack", "as-common-docs-runbook-builder"],
+    "tags": ["report", "decisione", "gate"]
+  },
+  {
+    "id": "report_intake_positive_002",
+    "input": "confronta prompt iniziale, diff e test eseguiti per decidere se committare",
+    "expected_skill": "as-common-codex-report-intake-decision-gate",
+    "negative_skills": ["as-common-verification-gate-test-eval-pack", "as-common-powershell-git-safe-flow"],
+    "tags": ["report", "diff", "commit"]
+  },
+  {
+    "id": "repo_readiness_positive_001",
+    "input": "fai una review iniziale read-only della repository prima di uno step Codex",
+    "expected_skill": "as-common-repo-readiness-review",
+    "negative_skills": ["as-common-agent-context-governor", "as-common-codex-step-manager"],
+    "tags": ["repo", "readiness", "read-only"]
+  },
+  {
+    "id": "repo_readiness_positive_002",
+    "input": "controlla branch status struttura test e rischi senza modificare file",
+    "expected_skill": "as-common-repo-readiness-review",
+    "negative_skills": ["as-common-agent-context-governor", "as-common-powershell-git-safe-flow"],
+    "tags": ["repository", "audit", "read-only"]
+  },
+  {
+    "id": "agent_context_positive_001",
+    "input": "riconcilia AGENTS.md, istruzioni developer e skill da usare prima di partire",
+    "expected_skill": "as-common-agent-context-governor",
+    "negative_skills": ["as-common-repo-readiness-review", "as-common-docs-runbook-builder"],
+    "tags": ["context", "agents", "istruzioni"]
+  },
+  {
+    "id": "agent_context_positive_002",
+    "input": "verifica conflitti tra prompt, policy del repository e regole delle skill",
+    "expected_skill": "as-common-agent-context-governor",
+    "negative_skills": ["as-common-repo-readiness-review", "as-common-codex-report-intake-decision-gate"],
+    "tags": ["contesto", "policy", "skill"]
+  },
+  {
+    "id": "report_vs_verification_collision_001",
+    "input": "il report dice che i test passano ma devo decidere se accettare il commit",
+    "expected_skill": "as-common-codex-report-intake-decision-gate",
+    "negative_skills": ["as-common-verification-gate-test-eval-pack", "as-common-codex-step-manager"],
+    "tags": ["report", "commit", "go-no-go"]
+  },
+  {
+    "id": "docs_vs_summary_collision_001",
+    "input": "trasforma le note sparse in un README stabile per nuovi collaboratori",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-project-riepilogo-operativo", "as-common-codex-command-pack"],
+    "tags": ["readme", "documentazione", "collaboratori"]
+  }
+]
