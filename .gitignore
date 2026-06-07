@@ -1,13 +1,22 @@
+# Python
 __pycache__/
 *.pyc
+.pytest_cache/
+
+# Local environment
 .env
 .env.*
+
+# Logs, temporary files, and local backups
 *.log
 *.bak.md
 *.backup.md
+*.bak
+*.bak.*
+*.orig
+*.rej
 *~
 *.tmp
 *.temp
-*.bak
 Thumbs.db
 .DS_Store

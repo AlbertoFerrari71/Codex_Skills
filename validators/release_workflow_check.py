@@ -21,6 +21,11 @@ REQUIRED_PATHS = (
     "docs/release-workflow/100_AI_SOFTWARE_FACTORY_HANDOFF.md",
     "docs/release-workflow/100_RELEASE_DECISION_GATE.md",
     "templates/skill-release-prompt-template.md",
+    "validators/README.md",
+    "validators/check_agent_skills.py",
+    "validators/repo_health_check.py",
+    "validators/smoke_trial_cases.py",
+    "validators/test_check_agent_skills.py",
 )
 
 STRATEGIC_SKILLS = (

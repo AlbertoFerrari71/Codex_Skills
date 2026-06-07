@@ -15,7 +15,17 @@ from typing import Iterable
 TECHNICAL_DIRS = {".git", "_archive", "docs", "templates", "validators", "__pycache__"}
 SKILL_PREFIXES = ("as-common-", "as-")
 
-BACKUP_PATTERNS = ("*.bak.md", "*.backup.md", "*~", "*.tmp")
+BACKUP_PATTERNS = (
+    "*.bak.md",
+    "*.backup.md",
+    "*.bak",
+    "*.bak.*",
+    "*.orig",
+    "*.rej",
+    "*~",
+    "*.tmp",
+    "*.temp",
+)
 SENSITIVE_FILE_PATTERNS = (
     ".env",
     "*.pem",
@@ -407,7 +417,7 @@ def escape_markdown_cell(value: object) -> str:
 
 
 def yes_no(value: bool) -> str:
-    return "sì" if value else "no"
+    return "si" if value else "no"
 
 
 def timestamp(now: datetime | None = None) -> str:

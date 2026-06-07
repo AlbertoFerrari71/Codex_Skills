@@ -1,92 +1,183 @@
 ---
-name: "as-common-pwsh-command-pack"
-description: "Generate safe logged PowerShell command packs for Alberto with robust .ps1 scripts, numbered and LAST outputs, compact Markdown/DOCX reports, clipboard copy, and Git/Codex/ASF guardrails."
+name: as-common-pwsh-command-pack
+description: Generate safe logged PowerShell command packs for Alberto with short safe bootstraps, generated .ps1 scripts, numbered and LAST outputs, compact Markdown/DOCX reports, clipboard copy, robust Git parsing, PR-first publication, and Git/Codex/ASF guardrails.
 ---
 
 # as-common-pwsh-command-pack
 
-Use this skill when Alberto asks for PowerShell command packs, robust Windows command sequences, ASF/Git/Codex verification command packs, or logged scripts that produce reusable output files.
+Use this skill when Alberto asks for PowerShell command packs, robust Windows command sequences, ASF/Git/Codex verification command packs, Bridge/audit artifacts, or logged scripts that produce reusable output files.
 
-## Core Rules
+Do not use this skill as the default wrapper for Codex prompts. The default Codex handoff is a clean, self-contained prompt. Use PowerShell only when Alberto asks for Bridge output, audit trail, controlled verification, or controlled publication.
 
-- Prefer a generated `.ps1` script over long inline PowerShell whenever commands are long, phased, conditional, logged, or likely to exceed shell limits.
-- Use `pwsh -NoProfile -ExecutionPolicy Bypass -File <script.ps1>` as the launcher.
-- Build scripts with `#Requires -Version 7.0`, `Set-StrictMode -Version Latest`, `$ErrorActionPreference = 'Stop'`, `try/catch/finally`, and explicit `$LASTEXITCODE` checks after native commands.
-- Write all generated command packs under `D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge`; for ASF use `D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge\AI_Software_Factory\pwsh_command`.
-- Always generate numbered artifacts and matching `LAST-*` files, including compact Markdown and DOCX outputs, then copy `LAST-Output_Compatto.md` to the clipboard with `Set-Clipboard`.
-- Split FASE A / FASE B / FASE C when commit, push, PR, merge, release, deploy, restart, or publication may appear. Publication phases must stop if tests, verify, health checks, or guardrails fail.
-- Use `git --no-pager` for potentially long Git output.
-- Avoid `setx PATH`, unrequested destructive commands, sensitive-value leakage, and any attempt to bypass failed gates.
-- Treat `gh pr checks --watch` with `no checks reported` or exit code `1` as a controlled warning only when all other local gates pass.
-- Prefer UTF-8 without BOM for generated text and recommend `.gitattributes` line-ending policy for mixed Windows/Git work.
+## Canonical Standard
 
-## Hardening rules
+Safe Bootstrap PowerShell Command Pack:
 
-For non-trivial PowerShell command packs, apply:
+1. Generate a short PowerShell bootstrap.
+2. The bootstrap writes a complete `.ps1` file in `pwsh_command`.
+3. The bootstrap validates parsing with `[scriptblock]::Create($ScriptText) | Out-Null`.
+4. Only if parse-check passes, execute `pwsh -NoProfile -ExecutionPolicy Bypass -File $CommandFile`.
+5. All complex logic lives in the generated `.ps1`.
+6. The pasted terminal block stays short and robust.
+7. The outer wrapper does not contain complex Git logic.
+8. The outer wrapper does not contain nested here-strings.
+9. The outer wrapper does not use fragile `try/finally`.
+10. The final line is actually executable, for example `Write-Host ";"`.
 
-- single wrapper `& { ... }`;
-- real `.ps1` payload saved and launched;
-- standard helper functions;
-- UTF-8 without BOM via .NET;
-- Git parsing with `--porcelain=v1`;
-- `$allowedPaths` guardrail;
-- `git --no-pager diff --check` and `git --no-pager diff --cached --check`;
-- compact output copied to clipboard in both success and failure;
-- DOCX as non-blocking output;
-- direct push to `main` allowed only when local gates pass;
-- PR workflow available as an alternative for protected repositories;
-- fake line rule for pasted PowerShell;
-- `.ps1` files for long or critical flows.
+## Bootstrap Requirements
 
-## Reference Files
+The bootstrap must include:
 
-Read these files when preparing a non-trivial command pack:
+- wrapper `& { ... }`;
+- `$ErrorActionPreference = "Stop"`;
+- `$PSNativeCommandUseErrorActionPreference = $false`;
+- Bridge directory creation;
+- request file generation;
+- command `.ps1` generation;
+- `LAST-Richiesta_Generazione.txt`;
+- `LAST-Comando_Eseguito.ps1`;
+- parse-check with `[scriptblock]::Create($ScriptText) | Out-Null`;
+- execution with `pwsh -NoProfile -ExecutionPolicy Bypass -File $CommandFile`;
+- explicit `$LASTEXITCODE` handling;
+- clear final message;
+- executable final line.
 
-- `references/pwsh-command-pack-standard.md` for the full operating standard, guardrails, source principles, file contract, and phase rules.
-- `references/pwsh-command-pack-hardening-standard.md` for the 20-point hardening audit.
-- `references/pwsh-git-pr-workflow-standard.md` for direct main push and optional PR workflow rules.
-- `references/pwsh-known-bugs-regression-tests.md` for historical regression scenarios.
-- `references/pwsh-command-pack-template.ps1` for the robust PowerShell template to adapt.
-- `examples/demo-prompts.md` for progressive demo prompts and expected pack shapes.
+## Generated Script Requirements
 
-## Response Pattern
+The `.ps1` script should contain, when pertinent:
 
-When returning a command pack to Alberto, keep the answer concise:
+- robust logging;
+- full output artifact;
+- compact Markdown artifact;
+- DOCX best-effort/non-blocking artifact;
+- `LAST` files always updated;
+- `Set-Clipboard` best-effort;
+- native command wrapper with allowed exit codes;
+- `git --no-pager` for long Git output;
+- robust Git status parser;
+- scope guard before staging;
+- tests;
+- workflow health check;
+- verify gate;
+- PR-first publication.
 
-1. State the output folder and the launcher command.
-2. State which phases are included and which are manual/human-gated.
-3. State the verification gates that block publication.
-4. State that the compact Markdown is copied to clipboard by the generated script.
-5. Do not claim commit, push, PR, merge, release, deploy, or restart unless Alberto explicitly asked for and ran those phases.
-
-## PowerShell paste termination
-
-Do not describe a final `Write-Host ";";` as an execution guarantee. It is only a visual marker.
-
-For one useful PowerShell command meant for copy/paste, prefer a three-line block:
+Use `ArgList` as the native-command argument parameter name:
 
 ```powershell
-<useful command>
-Write-Host "Linea fake 1 - termina il comando utile precedente"
-Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
+function Invoke-NativeCommand {
+    param(
+        [string] $FileName,
+        [string[]] $ArgList = @()
+    )
+}
 ```
 
-For two or more useful commands, add one harmless fake line after the useful commands:
+Do not use `$Args` as a parameter name. `$args` is a PowerShell automatic variable and can cause ambiguity and fragile diagnostics.
+
+## Robust Git Parser
+
+Use:
 
 ```powershell
-<useful command 1>
-<useful command 2>
-Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+git status --porcelain=v1 --untracked-files=all
 ```
 
-For long or critical workflows, prefer writing a `.ps1` file and executing it:
+Reason:
 
-```powershell
-$ScriptPath = Join-Path $env:TEMP "task.ps1"
-@'
-<commands here>
-'@ | Set-Content -LiteralPath $ScriptPath -Encoding UTF8
-pwsh -NoProfile -ExecutionPolicy Bypass -File $ScriptPath
+- untracked directories are expanded to individual files;
+- scope guards can validate exact new files;
+- `git add -- @AllowedPaths` becomes safer;
+- path slicing bugs are avoided.
+
+Avoid known bugs:
+
+- losing the first character of `AGENTS.md` and reading it as `GENTS.md`;
+- treating untracked `templates/pwsh_command_pack/` as an out-of-scope directory instead of checking files inside it;
+- using fragile `Substring(3)` without first requiring porcelain v1 format.
+
+## Forbidden Patterns
+
+Do not put these in the pasted bootstrap:
+
+- complex Git logic;
+- test suites;
+- long functions;
+- DOCX XML;
+- nested here-strings;
+- fragile `try/finally`;
+- separable outer `else` blocks;
+- direct publication to `main`;
+- `git push origin main` as the default;
+- function parameters named `$Args`.
+
+Do not expose sensitive values:
+
+- do not print keys;
+- do not save keys;
+- do not hash keys;
+- do not truncate keys;
+- do not print prefixes or suffixes;
+- do not record key length;
+- do not serialize sensitive values into output, artifacts, logs, DOCX, Markdown, JSON, or clipboard.
+
+## Output Contract
+
+Use four-digit step numbers:
+
+```text
+0540
+0545
+0550
 ```
 
-The fake line is intentionally harmless. Its purpose is paste termination: if the final newline is lost, the useful command has already been terminated by the following line. If the terminal remains waiting, it should wait on a fake line, not on the useful command.
+Generate numbered and `LAST` artifacts:
+
+```text
+NNNN-Richiesta_Generazione_<name>.txt
+NNNN-Comando_Eseguito_<name>.ps1
+NNNN-Output_Completo_<name>.txt
+NNNN-Output_Compatto_<name>.md
+NNNN-Output_Compatto_<name>.docx
+LAST-Richiesta_Generazione.txt
+LAST-Comando_Eseguito.ps1
+LAST-Output_Completo.txt
+LAST-Output_Compatto.md
+LAST-Output_Compatto.docx
+```
+
+DOCX is best-effort. Produce full TXT and compact Markdown first. If DOCX fails, write a non-blocking warning and a `.docx.failed.txt` or placeholder where useful.
+
+## Publication
+
+Publishing to `main` is PR-first by default:
+
+1. commit on the step branch;
+2. push the step branch;
+3. run `gh pr create`;
+4. run `gh pr merge`;
+5. run `git checkout main`;
+6. run `git pull --ff-only origin main`;
+7. run final verification.
+
+Do not default to `git push origin main`.
+
+If local `main` is ahead of `origin/main`:
+
+```text
+main...origin/main [ahead N]
+```
+
+Do not push `main` directly. Create a publish branch from local `main`, push that branch, open a PR, merge the PR, realign local `main`, then verify.
+
+## LF/CRLF
+
+LF/CRLF warnings on Windows are non-blocking only when all of these pass:
+
+- `git --no-pager diff --check`;
+- tests;
+- workflow health check;
+- verify gate.
+
+## Provenance
+
+STEP 536 introduced the Safe Bootstrap hardening. STEP 540 validated it in a real ASF publication flow with safe bootstrap plus branch/PR. STEP 545 finalized the reusable draft. STEP 546 exports this file as the installable skill form.

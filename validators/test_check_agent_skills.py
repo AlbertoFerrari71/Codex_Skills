@@ -5,8 +5,11 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import sys
 from datetime import datetime
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import check_agent_skills as validator
 
@@ -144,6 +147,20 @@ Eseguire il controllo.
 
             self.assertIn("backup_file", issue_codes(report))
             self.assertEqual(report.backup_files, ["as-common-valid-skill/SKILL.20260604.bak.md"])
+
+    def test_timestamped_backup_detection(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = write_skill(root, "as-common-valid-skill")
+            (skill_dir / "SKILL.md.bak.20260606T175318Z").write_text("backup", encoding="utf-8")
+
+            report = validator.scan_skills(root)[0]
+
+            self.assertIn("backup_file", issue_codes(report))
+            self.assertEqual(
+                report.backup_files,
+                ["as-common-valid-skill/SKILL.md.bak.20260606T175318Z"],
+            )
 
     def test_archive_directory_is_ignored(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
