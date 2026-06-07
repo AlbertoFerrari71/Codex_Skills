@@ -26,6 +26,7 @@ REQUIRED_PATHS = (
     "validators/repo_health_check.py",
     "validators/smoke_trial_cases.py",
     "validators/test_check_agent_skills.py",
+    ".github/workflows/validate-skills.yml",
 )
 
 STRATEGIC_SKILLS = (

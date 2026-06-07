@@ -26,7 +26,7 @@ Da root repository:
 python validators\repo_health_check.py
 ```
 
-Il comando esegue i controlli locali di base senza dipendenze esterne: validatore catalogo, unit test, smoke trial, release workflow check e `git --no-pager diff --check`.
+Il comando esegue i controlli locali di base senza dipendenze esterne: validatore catalogo in modalita severa, catalog freshness, unit test, smoke trial, release workflow check, `git --no-pager diff --check` e report EOL non bloccante.
 
 Per rigenerare gli artefatti tracciati:
 
@@ -34,3 +34,10 @@ Per rigenerare gli artefatti tracciati:
 python validators\check_agent_skills.py --root . --write-index --write-score
 ```
 
+Per eseguire solo il validator in modalita severa:
+
+```powershell
+python validators\check_agent_skills.py --root . --fail-on-warning
+```
+
+Il repository include anche la GitHub Action `Validate Codex Skills`, eseguita su pull request, push su `main` e `workflow_dispatch`.

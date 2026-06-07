@@ -162,6 +162,131 @@ Eseguire il controllo.
                 ["as-common-valid-skill/SKILL.md.bak.20260606T175318Z"],
             )
 
+    def test_secret_generic_term_is_allowed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(
+                root,
+                "as-common-secret-word",
+                """---
+name: as-common-secret-word
+description: Usa questa skill quando serve verificare parole generiche di sicurezza.
+---
+
+# Scopo
+
+Documentare una policy: do not expose secrets in logs.
+
+# Procedura
+
+Eseguire il controllo.
+""",
+            )
+
+            report = validator.scan_skills(root)[0]
+
+            self.assertNotIn("sensitive_value", issue_codes(report))
+
+    def test_likely_api_key_is_blocking_error(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "README.md").write_text(
+                "OPENAI_API_KEY=sk-abcdefghijklmnopqrstuvwxyz123456\n",
+                encoding="utf-8",
+            )
+
+            issues = validator.scan_repository_files(root)
+
+            self.assertIn("sensitive_value", {issue.code for issue in issues})
+            self.assertIn("ERROR", {issue.level for issue in issues})
+
+    def test_uid_pwd_placeholders_are_allowed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "README.md").write_text(
+                "Connection string: UID=<UID_PLACEHOLDER>;PWD=<PWD_PLACEHOLDER>\n",
+                encoding="utf-8",
+            )
+
+            issues = validator.scan_repository_files(root)
+
+            self.assertEqual(issues, [])
+
+    def test_catalog_freshness_detects_stale_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(root, "as-common-valid-skill")
+            reports = validator.scan_skills(root)
+            validator.write_index(root, reports, now=datetime(2026, 6, 5, 12, 0, 0))
+            validator.write_score(root, reports, now=datetime(2026, 6, 5, 12, 0, 0))
+            self.assertEqual(validator.check_catalog_freshness(root, reports), [])
+
+            (root / "SKILL_SCORE.md").write_text("# stale\n", encoding="utf-8")
+
+            issues = validator.check_catalog_freshness(root, reports)
+
+            self.assertIn("catalog_stale", {issue.code for issue in issues})
+
+    def test_missing_reference_link_is_error(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(
+                root,
+                "as-common-broken-reference",
+                """---
+name: as-common-broken-reference
+description: Usa questa skill quando serve verificare link references mancanti.
+---
+
+# Scopo
+
+Validare link dichiarati.
+
+## References
+
+- [Missing](references/missing.md)
+
+# Procedura
+
+Eseguire il controllo.
+""",
+            )
+
+            report = validator.scan_skills(root)[0]
+
+            self.assertIn("missing_declared_link", issue_codes(report))
+
+    def test_existing_reference_link_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = write_skill(
+                root,
+                "as-common-good-reference",
+                """---
+name: as-common-good-reference
+description: Usa questa skill quando serve verificare link references validi.
+---
+
+# Scopo
+
+Validare link dichiarati.
+
+## References
+
+- [Standard](references/standard.md)
+
+# Procedura
+
+Eseguire il controllo.
+""",
+            )
+            (skill_dir / "references").mkdir()
+            (skill_dir / "references" / "standard.md").write_text("# Standard\n", encoding="utf-8")
+
+            report = validator.scan_skills(root)[0]
+
+            self.assertNotIn("missing_declared_link", issue_codes(report))
+
     def test_archive_directory_is_ignored(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -202,6 +327,18 @@ Eseguire il controllo.
             self.assertIn("# SKILL_SCORE", text)
             self.assertIn("as-common-valid-skill", text)
             self.assertIn("| as-common-valid-skill | 100 | A |", text)
+
+    def test_catalog_write_preserves_timestamp_when_unchanged(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_skill(root, "as-common-valid-skill")
+            reports = validator.scan_skills(root)
+
+            output = validator.write_index(root, reports, now=datetime(2026, 6, 5, 12, 0, 0))
+            first_text = output.read_text(encoding="utf-8")
+            validator.write_index(root, reports, now=None)
+
+            self.assertEqual(output.read_text(encoding="utf-8"), first_text)
 
 
 if __name__ == "__main__":

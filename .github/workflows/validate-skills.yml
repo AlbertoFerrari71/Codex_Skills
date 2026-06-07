@@ -1,0 +1,30 @@
+name: Validate Codex Skills
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Validate skill catalog
+        run: python validators/check_agent_skills.py --root . --fail-on-warning
+
+      - name: Run validator unit tests
+        run: python -m unittest discover -s validators -p "test_*.py"
+
+      - name: Run repository health check
+        run: python validators/repo_health_check.py

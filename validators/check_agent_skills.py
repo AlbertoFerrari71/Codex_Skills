@@ -9,7 +9,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 
 TECHNICAL_DIRS = {".git", "_archive", "docs", "templates", "validators", "__pycache__"}
@@ -35,17 +35,74 @@ SENSITIVE_FILE_PATTERNS = (
     "token*",
     "credentials*",
 )
-SUSPICIOUS_TERMS = (
-    "password",
-    "token",
-    "api_key",
-    "secret",
-    "client_secret",
-    "private_key",
-    "pwd=",
-    "uid=",
-    "connection string",
+REPO_SCAN_ROOT_FILES = (
+    "README.md",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "SKILLS_INDEX.md",
+    "SKILL_SCORE.md",
+    ".gitattributes",
+    ".gitignore",
 )
+REPO_SCAN_DIRS = ("docs", "templates")
+REPO_SCAN_EXCLUDED_DIRS = {
+    ".git",
+    "_archive",
+    "__pycache__",
+    ".pytest_cache",
+    ".venv",
+    "venv",
+    "env",
+}
+PLACEHOLDER_VALUES = {
+    "<uid_placeholder>",
+    "<pwd_placeholder>",
+    "<openai_api_key>",
+    "<api_key>",
+    "<token>",
+    "<bearer_token>",
+    "your-api-key-here",
+    "your-token-here",
+    "your-password-here",
+    "redacted",
+    "***",
+    "****",
+    "xxxxx",
+    "dummy",
+    "sample",
+    "example",
+    "changeme",
+}
+SENSITIVE_VALUE_PATTERNS = (
+    ("openai_api_key", re.compile(r"\bOPENAI_API_KEY\s*[:=]\s*([^\s;,#]+)", re.IGNORECASE)),
+    ("openai_secret_key", re.compile(r"\bsk-[A-Za-z0-9][A-Za-z0-9_-]{19,}\b")),
+    (
+        "github_token",
+        re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{20,}\b|\bgithub_pat_[A-Za-z0-9_]{20,}\b"),
+    ),
+    (
+        "bearer_token",
+        re.compile(r"\b(?:Authorization\s*:\s*)?Bearer\s+([A-Za-z0-9._~+/=-]{20,})", re.IGNORECASE),
+    ),
+    (
+        "generic_assignment",
+        re.compile(r"\b(?:api[_-]?key|token|password|passwd|pwd)\b\s*[:=]\s*([^\s;,#]+)", re.IGNORECASE),
+    ),
+    ("connection_string_credential", re.compile(r"\b(?:UID|PWD)\s*=\s*([^;\s]+)", re.IGNORECASE)),
+)
+REFERENCE_SECTION_TERMS = (
+    "references",
+    "reference files",
+    "examples",
+    "riferimenti",
+    "esempi",
+)
+MARKDOWN_REFERENCE_PATTERN = re.compile(r"\[[^\]]+\]\(((?:references|examples)/[^)\s#]+)\)")
+PLAIN_REFERENCE_PATTERN = re.compile(r"(?<![\w/.-])((?:references|examples)/[A-Za-z0-9_./-]+)")
+GENERATED_TIMESTAMP_PATTERN = re.compile(r"^Aggiornato:\s*(.+?)\s*$", re.MULTILINE)
+CATALOG_REFRESH_COMMAND = "python validators\\check_agent_skills.py --root . --write-index --write-score"
+NON_SKILL_ISSUE_NAME = "repository"
+CATALOG_ISSUE_NAME = "catalog"
 OPERATIONAL_HEADING_TERMS = (
     "scopo",
     "quando usarla",
@@ -78,7 +135,7 @@ SEVERE_ERROR_CODES = {
     "missing_description",
     "name_mismatch",
 }
-SAFETY_WARNING_CODES = {"backup_file", "sensitive_file", "suspicious_terms"}
+SAFETY_WARNING_CODES = {"backup_file", "sensitive_file", "sensitive_value"}
 
 
 @dataclass
@@ -219,6 +276,59 @@ def matches_any_pattern(name: str, patterns: Iterable[str]) -> bool:
     return any(fnmatch.fnmatch(lowered, pattern.lower()) for pattern in patterns)
 
 
+def clean_candidate_value(value: str) -> str:
+    return value.strip().strip("\"'`").strip().rstrip(".,);]")
+
+
+def is_placeholder_value(value: str) -> bool:
+    cleaned = clean_candidate_value(value)
+    lowered = cleaned.lower()
+    if not lowered:
+        return True
+    if lowered in PLACEHOLDER_VALUES:
+        return True
+    if cleaned.startswith("<") and cleaned.endswith(">"):
+        return True
+    if set(cleaned) <= {"*", "x", "X"}:
+        return True
+    placeholder_terms = (
+        "placeholder",
+        "redacted",
+        "your-",
+        "insert-",
+        "sample",
+        "example",
+        "dummy",
+        "fake",
+        "not-a-real",
+        "changeme",
+    )
+    return any(term in lowered for term in placeholder_terms)
+
+
+def find_sensitive_values(text: str) -> list[tuple[str, int]]:
+    findings: list[tuple[str, int]] = []
+    seen: set[tuple[str, int]] = set()
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        for code, pattern in SENSITIVE_VALUE_PATTERNS:
+            for match in pattern.finditer(line):
+                value = match.group(1) if match.groups() else match.group(0)
+                if is_placeholder_value(value):
+                    continue
+                if code == "generic_assignment" and len(clean_candidate_value(value)) < 6:
+                    continue
+                key = (code, line_number)
+                if key in seen:
+                    continue
+                seen.add(key)
+                findings.append(key)
+    return findings
+
+
+def sensitive_issue_message(code: str, rel_path: str, line_number: int) -> str:
+    return f"Valore sensibile verosimile rilevato ({code}) in {rel_path}:{line_number}."
+
+
 def iter_skill_files(skill_dir: Path) -> Iterable[Path]:
     for path in skill_dir.rglob("*"):
         if path.is_dir():
@@ -249,15 +359,68 @@ def scan_files(report: SkillReport, root: Path) -> None:
         text = read_text_file(path)
         if text is None:
             continue
-        lowered = text.lower()
-        found_terms = [term for term in SUSPICIOUS_TERMS if term.lower() in lowered]
-        if found_terms:
-            term_list = ", ".join(found_terms)
+        for code, line_number in find_sensitive_values(text):
+            add_error(
+                report,
+                "sensitive_value",
+                sensitive_issue_message(code, rel_path, line_number),
+                rel_path,
+            )
+
+
+def is_reference_section_heading(line: str) -> bool:
+    match = re.match(r"^\s{0,3}#{2,6}\s+(.+?)\s*$", line)
+    if not match:
+        return False
+    heading = match.group(1).strip().lower()
+    return any(term in heading for term in REFERENCE_SECTION_TERMS)
+
+
+def normalize_reference_path(path: str) -> str:
+    return path.strip().strip("`").rstrip(".,);]")
+
+
+def declared_reference_paths(body: str) -> set[str]:
+    paths: set[str] = set()
+    in_reference_section = False
+    for line in body.splitlines():
+        if re.match(r"^\s{0,3}#{2,6}\s+", line):
+            in_reference_section = is_reference_section_heading(line)
+            continue
+        if not in_reference_section:
+            continue
+        for match in MARKDOWN_REFERENCE_PATTERN.finditer(line):
+            paths.add(normalize_reference_path(match.group(1)))
+        for match in PLAIN_REFERENCE_PATTERN.finditer(line):
+            paths.add(normalize_reference_path(match.group(1)))
+    return paths
+
+
+def directory_has_files(path: Path) -> bool:
+    return path.is_dir() and any(item.is_file() for item in path.rglob("*"))
+
+
+def validate_declared_links(report: SkillReport, body: str, root: Path) -> None:
+    declared_paths = declared_reference_paths(body)
+    declared_kinds = {path.split("/", 1)[0] for path in declared_paths}
+    for rel_link in sorted(declared_paths):
+        target = report.path / rel_link
+        if not target.is_file():
+            add_error(
+                report,
+                "missing_declared_link",
+                f"Riferimento dichiarato mancante: {rel_link}",
+                relative_display(root, target),
+            )
+
+    for dirname, code in (("references", "empty_references_dir"), ("examples", "empty_examples_dir")):
+        folder = report.path / dirname
+        if folder.is_dir() and dirname not in declared_kinds and not directory_has_files(folder):
             add_warning(
                 report,
-                "suspicious_terms",
-                f"Parole sospette in {rel_path}: {term_list}",
-                rel_path,
+                code,
+                f"Cartella {dirname}/ vuota e non dichiarata nel contenuto della skill.",
+                relative_display(root, folder),
             )
 
 
@@ -335,9 +498,71 @@ def validate_skill(skill_dir: Path, root: Path) -> SkillReport:
             "Body senza una sezione operativa chiaramente riconoscibile.",
         )
 
+    validate_declared_links(report, body, root)
     scan_files(report, root)
     calculate_score(report)
     return report
+
+
+def iter_repository_scan_files(root: Path) -> Iterable[Path]:
+    for rel_path in REPO_SCAN_ROOT_FILES:
+        path = root / rel_path
+        if path.is_file():
+            yield path
+
+    for rel_dir in REPO_SCAN_DIRS:
+        base = root / rel_dir
+        if not base.is_dir():
+            continue
+        for path in base.rglob("*"):
+            if path.is_file() and not any(part in REPO_SCAN_EXCLUDED_DIRS for part in path.parts):
+                yield path
+
+    workflow_dir = root / ".github" / "workflows"
+    if workflow_dir.is_dir():
+        for pattern in ("*.yml", "*.yaml"):
+            for path in workflow_dir.glob(pattern):
+                if path.is_file():
+                    yield path
+
+    for path in root.iterdir():
+        if path.is_file() and matches_any_pattern(path.name, SENSITIVE_FILE_PATTERNS):
+            yield path
+
+
+def scan_repository_files(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    seen: set[Path] = set()
+    for path in iter_repository_scan_files(root):
+        resolved = path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        rel_path = relative_display(root, path)
+        if matches_any_pattern(path.name, SENSITIVE_FILE_PATTERNS):
+            issues.append(
+                Issue(
+                    "WARNING",
+                    NON_SKILL_ISSUE_NAME,
+                    "sensitive_file",
+                    f"File potenzialmente sensibile rilevato: {rel_path}",
+                    rel_path,
+                )
+            )
+        text = read_text_file(path)
+        if text is None:
+            continue
+        for code, line_number in find_sensitive_values(text):
+            issues.append(
+                Issue(
+                    "ERROR",
+                    NON_SKILL_ISSUE_NAME,
+                    "sensitive_value",
+                    sensitive_issue_message(code, rel_path, line_number),
+                    rel_path,
+                )
+            )
+    return issues
 
 
 def calculate_score(report: SkillReport) -> None:
@@ -424,7 +649,7 @@ def timestamp(now: datetime | None = None) -> str:
     return (now or datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
 
 
-def write_index(root: Path, reports: list[SkillReport], now: datetime | None = None) -> Path:
+def build_index_text(reports: list[SkillReport], now: datetime | None = None) -> str:
     errors = all_errors(reports)
     warnings = all_warnings(reports)
     backup_files = sorted({item for report in reports for item in report.backup_files})
@@ -479,12 +704,17 @@ def write_index(root: Path, reports: list[SkillReport], now: datetime | None = N
         ]
     )
 
+    return "\n".join(lines)
+
+
+def write_index(root: Path, reports: list[SkillReport], now: datetime | None = None) -> Path:
     output_path = root / "SKILLS_INDEX.md"
-    output_path.write_text("\n".join(lines), encoding="utf-8")
+    write_now = timestamp_for_write(output_path, reports, build_index_text, now)
+    output_path.write_text(build_index_text(reports, write_now), encoding="utf-8", newline="\n")
     return output_path
 
 
-def write_score(root: Path, reports: list[SkillReport], now: datetime | None = None) -> Path:
+def build_score_text(reports: list[SkillReport], now: datetime | None = None) -> str:
     lines = [
         "# SKILL_SCORE",
         "",
@@ -509,10 +739,95 @@ def write_score(root: Path, reports: list[SkillReport], now: datetime | None = N
         )
 
     lines.append("")
+    return "\n".join(lines)
 
+
+def write_score(root: Path, reports: list[SkillReport], now: datetime | None = None) -> Path:
     output_path = root / "SKILL_SCORE.md"
-    output_path.write_text("\n".join(lines), encoding="utf-8")
+    write_now = timestamp_for_write(output_path, reports, build_score_text, now)
+    output_path.write_text(build_score_text(reports, write_now), encoding="utf-8", newline="\n")
     return output_path
+
+
+def normalize_generated_text(text: str) -> str:
+    return text.replace("\r\n", "\n").replace("\r", "\n").rstrip() + "\n"
+
+
+def timestamp_for_write(
+    path: Path,
+    reports: list[SkillReport],
+    builder: Callable[[list[SkillReport], datetime | None], str],
+    now: datetime | None = None,
+) -> datetime:
+    if now is not None:
+        return now
+    current_timestamp = generated_timestamp(path)
+    current_text = read_text_file(path)
+    if current_timestamp is None or current_text is None:
+        return datetime.now()
+    expected = builder(reports, current_timestamp)
+    if normalize_generated_text(current_text) == normalize_generated_text(expected):
+        return current_timestamp
+    return datetime.now()
+
+
+def generated_timestamp(path: Path) -> datetime | None:
+    text = read_text_file(path)
+    if text is None:
+        return None
+    match = GENERATED_TIMESTAMP_PATTERN.search(text)
+    if not match:
+        return None
+    try:
+        return datetime.strptime(match.group(1), "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return None
+
+
+def check_catalog_freshness(root: Path, reports: list[SkillReport]) -> list[Issue]:
+    checks = (
+        ("SKILLS_INDEX.md", build_index_text),
+        ("SKILL_SCORE.md", build_score_text),
+    )
+    issues: list[Issue] = []
+    for rel_path, builder in checks:
+        path = root / rel_path
+        current = read_text_file(path)
+        if current is None:
+            issues.append(
+                Issue(
+                    "ERROR",
+                    CATALOG_ISSUE_NAME,
+                    "catalog_stale",
+                    f"catalog stale: {rel_path} mancante o non leggibile. Rigenerare con: {CATALOG_REFRESH_COMMAND}",
+                    rel_path,
+                )
+            )
+            continue
+        current_timestamp = generated_timestamp(path)
+        if current_timestamp is None:
+            issues.append(
+                Issue(
+                    "ERROR",
+                    CATALOG_ISSUE_NAME,
+                    "catalog_stale",
+                    f"catalog stale: timestamp Aggiornato mancante in {rel_path}. Rigenerare con: {CATALOG_REFRESH_COMMAND}",
+                    rel_path,
+                )
+            )
+            continue
+        expected = builder(reports, current_timestamp)
+        if normalize_generated_text(current) != normalize_generated_text(expected):
+            issues.append(
+                Issue(
+                    "ERROR",
+                    CATALOG_ISSUE_NAME,
+                    "catalog_stale",
+                    f"catalog stale: {rel_path} non allineato. Rigenerare con: {CATALOG_REFRESH_COMMAND}",
+                    rel_path,
+                )
+            )
+    return issues
 
 
 def print_table(reports: list[SkillReport]) -> None:
@@ -558,6 +873,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--write-index", action="store_true", help="Write SKILLS_INDEX.md.")
     parser.add_argument("--write-score", action="store_true", help="Write SKILL_SCORE.md.")
     parser.add_argument(
+        "--check-catalog-freshness",
+        action="store_true",
+        help="Fail when SKILLS_INDEX.md or SKILL_SCORE.md are stale.",
+    )
+    parser.add_argument(
         "--fail-on-warning",
         action="store_true",
         help="Exit with code 1 when warnings are present.",
@@ -575,8 +895,20 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     reports = scan_skills(root)
-    errors = all_errors(reports)
-    warnings = all_warnings(reports)
+
+    written_outputs: list[Path] = []
+    if args.write_index:
+        written_outputs.append(write_index(root, reports))
+    if args.write_score:
+        written_outputs.append(write_score(root, reports))
+
+    repository_issues = scan_repository_files(root)
+    catalog_issues = check_catalog_freshness(root, reports) if args.check_catalog_freshness else []
+    extra_issues = repository_issues + catalog_issues
+    extra_errors = [issue for issue in extra_issues if issue.level == "ERROR"]
+    extra_warnings = [issue for issue in extra_issues if issue.level == "WARNING"]
+    errors = all_errors(reports) + extra_errors
+    warnings = all_warnings(reports) + extra_warnings
 
     print_table(reports)
     print()
@@ -591,12 +923,8 @@ def main(argv: list[str] | None = None) -> int:
     print()
     print(f"Raccomandazione finale: {recommendation}")
 
-    if args.write_index:
-        output = write_index(root, reports)
-        print(f"SKILLS_INDEX.md scritto: {relative_display(root, output)}")
-    if args.write_score:
-        output = write_score(root, reports)
-        print(f"SKILL_SCORE.md scritto: {relative_display(root, output)}")
+    for output in written_outputs:
+        print(f"{output.name} scritto: {relative_display(root, output)}")
 
     if errors:
         return 1

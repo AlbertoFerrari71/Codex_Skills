@@ -36,11 +36,46 @@ def run_check(label: str, args: list[str]) -> int:
     return result.returncode
 
 
+def run_eol_report() -> list[str]:
+    print()
+    print("== Git EOL report ==", flush=True)
+    args = ["git", "ls-files", "--eol"]
+    print(display_command(args), flush=True)
+    try:
+        result = subprocess.run(
+            args,
+            cwd=REPO_ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+    except FileNotFoundError:
+        return ["git command not found; EOL report skipped."]
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.returncode != 0:
+        return [f"git ls-files --eol returned exit code {result.returncode}."]
+
+    warnings: list[str] = []
+    for line in result.stdout.splitlines():
+        if "w/mixed" in line:
+            warnings.append(f"EOL mixed worktree entry: {line}")
+    return warnings
+
+
 def main() -> int:
     checks = [
         (
-            "Skill catalog validator",
-            [sys.executable, str(REPO_ROOT / "validators" / "check_agent_skills.py"), "--root", str(REPO_ROOT)],
+            "Skill catalog validator and catalog freshness",
+            [
+                sys.executable,
+                str(REPO_ROOT / "validators" / "check_agent_skills.py"),
+                "--root",
+                str(REPO_ROOT),
+                "--fail-on-warning",
+                "--check-catalog-freshness",
+            ],
         ),
         (
             "Validator unit tests",
@@ -75,12 +110,20 @@ def main() -> int:
         if exit_code != 0:
             failures.append((label, exit_code))
 
+    non_blocking_warnings = run_eol_report()
+
     print()
     if failures:
         print("REPOSITORY HEALTH: FAIL")
         for label, exit_code in failures:
             print(f"- {label}: exit code {exit_code}")
         return 1
+
+    if non_blocking_warnings:
+        print("REPOSITORY HEALTH: PASS WITH NON-BLOCKING WARNINGS")
+        for warning in non_blocking_warnings:
+            print(f"- WARNING: {warning}")
+        return 0
 
     print("REPOSITORY HEALTH: PASS")
     return 0

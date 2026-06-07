@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 120) Validator Hardening & Automation Gate
+
+Rafforzamento dei gate locali e remoti del catalogo skill.
+
+- esteso scan valori sensibili a docs, templates, file root e GitHub workflow;
+- aggiunto controllo catalog freshness per `SKILLS_INDEX.md` e `SKILL_SCORE.md`;
+- aggiunto link-check minimale per riferimenti `references/` ed `examples/`;
+- rafforzato `validators/repo_health_check.py` come runner unico;
+- aggiunta GitHub Action `Validate Codex Skills`;
+- aggiornati test e documentazione validator.
+
 ## 100) Skill Release Workflow Pack
 
 Creazione del workflow stabile per rilasciare nuove skill o modificare skill esistenti.
