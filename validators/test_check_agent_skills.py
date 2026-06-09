@@ -491,6 +491,59 @@ Restituire report, evidenze e prossimo step.
 
             self.assertEqual(output.read_text(encoding="utf-8"), first_text)
 
+    def test_step_0905_hardening_rules_are_present(self) -> None:
+        root = Path(__file__).resolve().parent.parent
+
+        pwsh_skill = (root / "as-common-pwsh-command-pack" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        safe_flow = (
+            root / "as-common-powershell-git-safe-flow" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        pwsh_standard = (
+            root
+            / "as-common-pwsh-command-pack"
+            / "references"
+            / "pwsh-command-pack-standard.md"
+        ).read_text(encoding="utf-8")
+        known_bugs = (
+            root
+            / "as-common-pwsh-command-pack"
+            / "references"
+            / "pwsh-known-bugs-regression-tests.md"
+        ).read_text(encoding="utf-8")
+
+        bridge_text = (pwsh_skill + "\n" + pwsh_standard).lower()
+        bridge_order = bridge_text[bridge_text.index("operational order:") :]
+        self.assertLess(bridge_order.index("progressive"), bridge_order.index("last-*"))
+        self.assertIn("server_modified", bridge_text)
+        self.assertIn("## cached diff check", bridge_text)
+
+        diagnostics_text = safe_flow + "\n" + pwsh_standard
+        for token in (
+            "git status --short",
+            "git status -sb",
+            "git diff --cached --name-status",
+            "git diff --cached --check",
+            "$LASTEXITCODE",
+        ):
+            self.assertIn(token, diagnostics_text)
+
+        markdown_text = (pwsh_skill + "\n" + safe_flow + "\n" + pwsh_standard).lower()
+        self.assertIn("here-string", markdown_text)
+        self.assertIn("$lines = @()", markdown_text)
+        self.assertIn("triple backticks", markdown_text)
+
+        recovery_text = (pwsh_skill + "\n" + pwsh_standard + "\n" + known_bugs).lower()
+        for token in (
+            "git diff --cached --check",
+            "new blank line at eof",
+            "back up",
+            "restage",
+            "only those files",
+        ):
+            self.assertIn(token, recovery_text)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

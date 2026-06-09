@@ -73,3 +73,4 @@ Non usarla per:
 - Non includere tentativi falliti salvo che servano a evitare di ripetere errori.
 - Mantieni nomi di branch, commit, path e step esattamente come emersi.
 - Se il progetto usa ChatGPT + Codex, conserva sempre l’ultimo step eseguito e il prossimo step operativo.
+- Se il riepilogo dipende da file nel Bridge Dropbox, prova prima a recuperare il file progressivo specifico tramite connettore disponibile; usa `LAST-*` solo come fallback dopo controllo di coerenza su step, nome e timestamp. Se il Bridge non e' accessibile, chiedi solo la sezione minima necessaria, non tutto il report.

@@ -18,6 +18,8 @@ C:\Users\alberto.ferrari\.agents\skills
 
 Per creare nuove skill, modificare skill esistenti e pubblicare aggiornamenti verificati, usare `docs/release-workflow/100_SKILL_RELEASE_WORKFLOW_PACK.md`.
 
+Nota STEP 0905: per output nel Bridge Dropbox, le skill operative devono preferire i file progressivi step-specifici rispetto a `LAST-*`; per diagnostiche Git critiche devono usare comandi diretti e fermare la pubblicazione se `git diff --cached --check` fallisce.
+
 ## Verifica rapida
 
 Da root repository:

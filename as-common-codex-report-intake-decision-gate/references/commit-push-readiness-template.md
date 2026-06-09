@@ -9,7 +9,9 @@ Use this only after the decision gate is GO or GO_WITH_WARNINGS and Alberto expl
 - Check Git status with `git status --porcelain=v1` before staging.
 - Block unexpected paths with an explicit `$allowedPaths` list.
 - Stage only intended paths.
-- Run `git --no-pager diff --cached --check` after staging and before commit.
+- Run `git diff --cached --check` after staging and before commit.
+- If cached diff check fails, stop publication, read the real output, fix only reported files, back them up before automatic edits, restage only those files, and rerun `git diff --cached --check` plus `git diff --check`.
+- Use direct Git diagnostics for fragile gates: `git status --short`, `git status -sb`, `git diff --cached --name-status`, `git diff --cached --check`, `git diff --name-status`, `git diff --check`.
 - Commit only after gates pass.
 - Push only after commit succeeds.
 - Direct push to `main` is allowed when Alberto requested publication and all local gates pass.
@@ -17,6 +19,7 @@ Use this only after the decision gate is GO or GO_WITH_WARNINGS and Alberto expl
 - Verify final status, log, and remote.
 - Use `$ErrorActionPreference = "Stop"`.
 - Prefer `.ps1` execution for long or critical flows.
+- Avoid long pasted here-strings for Markdown reports; build `$Lines` arrays and write with `Set-Content` or UTF-8 helpers.
 - If a multiline block is still provided for paste, end with explicit harmless fake lines.
 - Treat CRLF/LF notices as attention only when `git --no-pager diff --check` exits successfully.
 
@@ -87,7 +90,7 @@ git status --porcelain=v1
 git add -- $PathsToAdd
 if ($LASTEXITCODE -ne 0) { throw "git add failed." }
 
-git --no-pager diff --cached --check
+git diff --cached --check
 if ($LASTEXITCODE -ne 0) { throw "Cached diff check failed." }
 
 git commit -m $CommitMessage

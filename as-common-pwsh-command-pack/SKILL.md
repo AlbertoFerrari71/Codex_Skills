@@ -61,6 +61,10 @@ The `.ps1` script should contain, when pertinent:
 - `git --no-pager` for long Git output;
 - robust Git status parser;
 - scope guard before staging;
+- direct Git diagnostics for fragile gates;
+- staged diff pre-check before Phase B, commit, push, or PR;
+- targeted EOF/whitespace recovery only for files named by `git diff --cached --check`;
+- Markdown report generation with line arrays instead of long pasted here-strings;
 - tests;
 - workflow health check;
 - verify gate;
@@ -150,7 +154,75 @@ LAST-Output_Compatto.md
 LAST-Output_Compatto.docx
 ```
 
+Numbered artifacts are the preferred evidence source for recovery and report intake. `LAST-*` files are convenience pointers and can be stale. When reading an output from the Bridge, prefer the step-specific numbered file cited by the report, use `LAST-*` only as fallback, and verify step, filename, and timestamp/server_modified before trusting it.
+
 DOCX is best-effort. Produce full TXT and compact Markdown first. If DOCX fails, write a non-blocking warning and a `.docx.failed.txt` or placeholder where useful.
+
+## Bridge Retrieval Rule
+
+When an output/log/report path is under:
+
+```text
+D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge
+```
+
+before asking Alberto to paste the content, try to retrieve it through the Dropbox/Bridge connector if available.
+
+Operational order:
+
+1. Search the specific numbered/progressive file first, for example `0910A-Output_Diagnostica_Diretta_Git_Cached_Diff.txt`.
+2. Only if the numbered file is not found, try `LAST-Output_Compatto.md` or `LAST-Output_Completo.txt`.
+3. If `LAST` exists but step, filename, timestamp, or server_modified is old or incoherent, say so and do not use it as evidence.
+4. If the Bridge is not accessible or the file is not synced/indexed yet, ask Alberto for the smallest useful excerpt, such as `## Cached diff check`, `## Cached diff names`, or `## Git status short`, or ask for the exact numbered path.
+
+Do not ask for "paste everything" by default.
+
+## Direct Git Diagnostics
+
+For critical Git diagnostics, especially after a failure, prefer direct commands with the real command visible:
+
+```powershell
+git status --short
+git status -sb
+git diff --cached --name-status
+git diff --cached --check
+git diff --name-status
+git diff --check
+```
+
+Save full output, capture `$LASTEXITCODE` immediately after each command, and continue collecting diagnostic evidence when non-zero exit codes are expected. Avoid generic wrappers that obscure how `git` arguments are passed. Use `git --no-pager` only when the direct form is known to be accepted in that context.
+
+## Markdown Output Generation
+
+For generated Markdown reports, prefer line arrays and explicit joins:
+
+```powershell
+$Lines = @()
+$Lines += "# Titolo"
+$Lines += ""
+$Lines += "## Sezione"
+$Lines += "testo"
+Set-Content -Path $File -Value ($Lines -join "`r`n") -Encoding UTF8
+```
+
+Avoid long pasted here-strings containing Markdown, triple backticks, JSON, interpolation, or non-trivial multiline text. Here-strings are acceptable only for short controlled text without truncation risk.
+
+## Cached Diff Recovery
+
+Before relaunching Phase B or any commit/push/PR phase with staged files, run:
+
+```powershell
+git diff --cached --check
+```
+
+If it fails, stop publication. Read the real output, identify only the reported files, back them up before automatic edits, fix only those files, restage only those files, then rerun:
+
+```powershell
+git diff --cached --check
+git diff --check
+```
+
+Resume Phase B only when both checks pass. For `new blank line at EOF`, remove extra final blank lines only from the files named by the cached diff check, leaving exactly one final newline.
 
 ## Publication
 

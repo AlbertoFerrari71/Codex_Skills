@@ -23,6 +23,17 @@ For each claim, identify the evidence:
 - warning claim -> warning text and classification;
 - branch claim -> `git --no-pager branch --show-current`.
 
+## Bridge Evidence Retrieval
+
+If the report or log is under `D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge`, try the Dropbox/Bridge connector before asking Alberto to paste content.
+
+Use this order:
+
+1. retrieve the exact numbered/progressive file for the step;
+2. use `LAST-Output_Compatto.md` or `LAST-Output_Completo.txt` only if the progressive file is unavailable;
+3. reject `LAST-*` as evidence if step, filename, timestamp, or server_modified is stale or incoherent;
+4. if the Bridge is unavailable, ask only for the smallest needed section, for example `## Cached diff check`, `## Cached diff names`, or `## Git status short`.
+
 ## Missing Or Vague Test Claims
 
 If a report says tests passed without commands, do not classify the gate as GO. Ask for command output, rerun the check, or mark the decision as NEEDS_CLARIFICATION or NO_GO_FIXABLE.

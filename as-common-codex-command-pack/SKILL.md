@@ -67,6 +67,23 @@ Use the next available four-digit number and a short kebab-case slug.
 
 After writing LAST-Prompt_Codex.md, copy its full content to clipboard with Set-Clipboard when available.
 
+## Bridge retrieval and LAST policy
+
+Numbered prompt/report files are the preferred source for recovery. `LAST-*` files are convenience fallbacks and can be stale.
+
+When Alberto references an output/log/report under:
+
+```text
+D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge
+```
+
+before asking him to paste content, try to retrieve the file through the Dropbox/Bridge connector if available:
+
+1. Look first for the specific numbered/progressive file named by the step, for example `0910A-Output_Diagnostica_Diretta_Git_Cached_Diff.txt`.
+2. Use `LAST-Output_Compatto.md`, `LAST-Output_Completo.txt`, or `LAST-Prompt_Codex.md` only if the progressive file is not available.
+3. If `LAST` exists but step, filename, timestamp, or server_modified is incoherent with the current step, declare it stale and do not use it as evidence.
+4. If Bridge access or Dropbox indexing is unavailable, ask only for the minimum excerpt needed, such as `## Cached diff check`, `## Cached diff names`, `## Git status short`, or the exact progressive path.
+
 ## Codex prompt contract
 
 Every Codex prompt must include:

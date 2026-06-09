@@ -24,6 +24,11 @@ This standard records the hardening audit for `as-common-pwsh-command-pack`.
 | 18 | Payload `.ps1` reale salvato e poi lanciato | Partial | Documented hard requirement. | `SKILL.md`, `pwsh-command-pack-template.ps1` |
 | 19 | Successo/fallimento sempre in clipboard | Partial | Ensured compact output copy is attempted in `finally`. | `pwsh-command-pack-template.ps1` |
 | 20 | Demo trial storica che riproduce bug reali dello STEP 490 e successivi | Missing | Added regression-test reference. | `pwsh-known-bugs-regression-tests.md` |
+| 21 | Bridge progressivo prima di `LAST-*` | Missing | Added retrieval order and stale LAST policy. | `SKILL.md`, `pwsh-command-pack-standard.md`, `codex-command-pack-standard.md` |
+| 22 | Diagnostiche Git dirette per gate critici | Partial | Added direct-command diagnostic rule and exit-code capture. | `SKILL.md`, `pwsh-command-pack-standard.md`, `as-common-powershell-git-safe-flow/SKILL.md` |
+| 23 | No here-string Markdown fragili | Partial | Added line-array Markdown generation rule for pasted/generated reports. | `SKILL.md`, `pwsh-command-pack-standard.md`, `as-common-powershell-git-safe-flow/SKILL.md` |
+| 24 | Stop su `git diff --cached --check` prima di Phase B | Partial | Added recovery sequence: read output, fix only reported files, restage, rerun cached and unstaged checks. | `SKILL.md`, `pwsh-command-pack-standard.md`, `pwsh-known-bugs-regression-tests.md` |
+| 25 | Fix mirato `new blank line at EOF` | Partial | Added backup plus scoped EOF blank-line recovery rule. | `SKILL.md`, `pwsh-command-pack-standard.md`, `pwsh-known-bugs-regression-tests.md` |
 
 ## Final Rule
 

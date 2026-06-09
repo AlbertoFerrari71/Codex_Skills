@@ -77,6 +77,55 @@ Non usarla per:
 5. I warning LF/CRLF non sono fallimento se test, verify gate e `git diff --check` passano.
 6. Il push diretto su `main` e' consentito quando Alberto lo richiede e tutti i gate locali passano; branch + PR resta alternativa per repository protette o step che richiedono review.
 
+# Diagnostiche Git critiche
+
+Per diagnostiche delicate usa comandi Git diretti ed espliciti, soprattutto se un gate fallisce:
+
+```powershell
+git status --short
+git status -sb
+git diff --cached --name-status
+git diff --cached --check
+git diff --name-status
+git diff --check
+```
+
+Evita wrapper generici che costruiscono array di argomenti Git in modo opaco quando devi capire un errore reale. In questi casi salva l'output completo, registra subito `$LASTEXITCODE`, non fermare la raccolta evidenze al primo exit code diverso da zero se lo scopo e' diagnostico, e usa `git --no-pager` solo quando la forma del comando e' certa.
+
+# Here-string Markdown fragili
+
+Nei blocchi PowerShell da incollare in terminale evita here-string lunghe che contengono Markdown complesso, triple backtick, JSON, interpolazioni o testo multilinea non banale. Se l'incolla viene troncato o la chiusura non arriva, PowerShell resta nel prompt `>>`.
+
+Per report Markdown generati da PowerShell preferisci righe esplicite:
+
+```powershell
+$Lines = @()
+$Lines += "# Titolo"
+$Lines += ""
+$Lines += "## Sezione"
+$Lines += "testo"
+Set-Content -Path $File -Value ($Lines -join "`r`n") -Encoding UTF8
+```
+
+Usa here-string solo per testi brevi, controllati, senza triple backtick e senza rischio di troncamento.
+
+# Cached diff check e fix mirato EOF
+
+Prima di rilanciare una Phase B o prima di commit/push/PR quando esistono file staged, esegui:
+
+```powershell
+git diff --cached --check
+```
+
+Se fallisce, non rilanciare la fase e non pubblicare. Leggi l'output reale, identifica solo i file segnalati, fai backup prima di qualunque correzione automatica, correggi solo quei file, ristagia solo quei file e poi riesegui:
+
+```powershell
+git diff --cached --check
+git diff --check
+```
+
+Per `new blank line at EOF`, rimuovi righe vuote finali extra solo dai file indicati dal diff check, lasciando una sola newline finale. Non usare reset, clean o fix globali su tutta la repository.
+
 # Gestione `gh pr checks --watch`
 
 Quando usi `gh pr checks --watch`, gestisci i casi "no checks reported" o pending con exit code 1 oppure 8 senza errore rosso invasivo, se l'output testuale conferma che non si tratta di fallimento reale:

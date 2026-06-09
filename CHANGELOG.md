@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 0905) PowerShell, Bridge and Codex Skill Hardening
+
+Rafforzamento operativo dalle lezioni emerse durante la pubblicazione ASF STEP 0900.
+
+- preferenza al file Bridge progressivo prima di `LAST-*`, con controllo coerenza;
+- diagnostiche Git dirette per gate critici e output/exit code salvati;
+- divieto operativo di here-string Markdown lunghe nei blocchi da incollare;
+- stop su `git diff --cached --check` prima di Phase B/pubblicazione;
+- procedura EOF blank-line mirata solo sui file segnalati, con backup e ristaging selettivo;
+- aggiunto test di regressione sui concetti 0905.
+
 ## 150) Installed Skills Sync Checker
 
 Controllo read-only dello stato installato delle skill rispetto a Git e ai cataloghi generati.

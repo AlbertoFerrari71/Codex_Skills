@@ -43,6 +43,23 @@ git --no-pager diff --check
 
 Add project-specific tests only when they are relevant to the requested change.
 
+## Bridge Evidence Retrieval
+
+When a report, log, or prompt is under:
+
+```text
+D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge
+```
+
+the recovery order is:
+
+1. retrieve the exact numbered/progressive file for the step;
+2. use `LAST-*` only if the progressive file is unavailable;
+3. reject `LAST-*` as evidence when step, name, timestamp, or server_modified is stale or incoherent;
+4. if the Bridge connector cannot read the file, request only the smallest relevant excerpt or the exact progressive path.
+
+Do not default to asking Alberto to paste the whole report.
+
 ## Output Contract
 
 The final Codex report should make clear:

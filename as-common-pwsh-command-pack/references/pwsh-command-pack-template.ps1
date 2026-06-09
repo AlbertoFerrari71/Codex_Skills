@@ -425,8 +425,15 @@ function Repair-TextFileEndings {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string[]]$Paths
+        [string[]]$Paths,
+
+        [Parameter(Mandatory)]
+        [string]$BackupRoot
     )
+
+    if (-not (Test-Path -LiteralPath $BackupRoot -PathType Container)) {
+        New-Item -ItemType Directory -Path $BackupRoot -Force | Out-Null
+    }
 
     foreach ($path in $Paths) {
         if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
@@ -436,11 +443,14 @@ function Repair-TextFileEndings {
         if ($bytes -contains 0) {
             continue
         }
+
+        $leaf = Split-Path -Leaf $path
+        $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+        Copy-Item -LiteralPath $path -Destination (Join-Path $BackupRoot "$stamp-$leaf.bak") -Force
+
         $text = [System.Text.Encoding]::UTF8.GetString($bytes)
-        $cleaned = ($text -split "`r?`n" | ForEach-Object { $_.TrimEnd() }) -join [Environment]::NewLine
-        if (-not $cleaned.EndsWith([Environment]::NewLine)) {
-            $cleaned += [Environment]::NewLine
-        }
+        $cleaned = $text -replace "(`r?`n)+$", ''
+        $cleaned += [Environment]::NewLine
         if ($cleaned -ne $text) {
             Write-Utf8NoBomFile -Path $path -Content $cleaned
         }
