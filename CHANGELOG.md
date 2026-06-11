@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 170) Install and publish project instructions builder
+
+Review e pubblicazione della skill `as-common-project-instructions-builder`.
+
+- aggiunta sezione compatta in `AGENTS.md` per il project instructions builder workflow;
+- registrata nel documento applicativo la decisione di non creare Copilot instructions;
+- confermata pubblicazione solo dopo review semantica, gate locali, PR e merge.
+
+## 160) Project Instructions Builder
+
+Nuova skill comune per creare istruzioni di progetto ChatGPT/Codex mantenibili.
+
+- aggiunta skill `as-common-project-instructions-builder`;
+- aggiunti template per Project Instructions, documento esteso, `AGENTS.md` e Copilot;
+- aggiunta checklist quality gate per istruzioni di progetto;
+- creata prima applicazione reale per `Codex_Skills` in `docs/project-instructions/`;
+- aggiunti casi trigger-eval per distinguere istruzioni progetto da prompt temporanei, runbook e riepiloghi.
+
 ## 0905) PowerShell, Bridge and Codex Skill Hardening
 
 Rafforzamento operativo dalle lezioni emerse durante la pubblicazione ASF STEP 0900.

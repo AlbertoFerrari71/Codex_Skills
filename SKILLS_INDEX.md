@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-07 18:25:05
+Aggiornato: 2026-06-11 18:54:23
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 17 |
+| Skill totali | 18 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -25,6 +25,7 @@ Aggiornato: 2026-06-07 18:25:05
 | as-common-docs-runbook-builder | as-common-docs-runbook-builder | Use this skill when Alberto asks to create or update persistent repository documentation, runbooks, AGENTS.md, README sections, workflow guides, or operational manuals. Do not use it for temporary Codex handoff prompts, numbered step lifecycle management, or chat restart summaries. | no | no | 0 | 0 |
 | as-common-opencv-image-pipeline | as-common-opencv-image-pipeline | Usa questa skill per pipeline immagini di Alberto con OpenCV/Python/C++: debug visuale, QR, glitter, superfici, segmentazione, soglie, omografia e report intermedi. | no | no | 0 | 0 |
 | as-common-powershell-git-safe-flow | as-common-powershell-git-safe-flow | Usa questa skill quando devi generare o verificare comandi PowerShell/Git sicuri, linee guida Git o blocchi brevi per Alberto su Windows. Non usarla per costruire command pack PowerShell completi con Bridge, report e artifact riutilizzabili. | no | no | 0 | 0 |
+| as-common-project-instructions-builder | as-common-project-instructions-builder | Use this skill when Alberto needs to create, audit, or refresh durable project instructions for ChatGPT Projects, Codex AGENTS.md, repository-wide agent rules, Copilot instructions, instruction templates, or quality gates. Do not use it for one-shot Codex prompts, numbered step lifecycle management, generic runbooks, or chat restart summaries. | si | si | 0 | 0 |
 | as-common-project-riepilogo-operativo | as-common-project-riepilogo-operativo | Usa questa skill quando Alberto chiede un riepilogo operativo di continuità per chiudere una chat lunga e ripartire in una nuova chat dello stesso progetto. Non usarla per README, runbook o documentazione persistente di repository. | no | no | 0 | 0 |
 | as-common-pwsh-command-pack | as-common-pwsh-command-pack | Generate safe logged PowerShell command packs for Alberto with short safe bootstraps, generated .ps1 scripts, numbered and LAST outputs, compact Markdown/DOCX reports, clipboard copy, robust Git parsing, PR-first publication, and Git/Codex/ASF guardrails. | si | si | 0 | 0 |
 | as-common-python-fastapi-debug | as-common-python-fastapi-debug | Usa questa skill per progetti Python/FastAPI/pytest di Alberto: debug guidato, test, venv, uvicorn, strutture semplici e verifiche incrementali. | no | no | 0 | 0 |

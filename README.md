@@ -9,6 +9,7 @@ Questa repository contiene:
 - documentazione
 - validator
 - linee guida operative
+- istruzioni di progetto ChatGPT/Codex e relativi template
 
 Le skill sono utilizzate direttamente da Codex tramite:
 
@@ -72,3 +73,6 @@ Le description devono essere concrete e orientate a quando usare o non usare la
 skill. Per le skill strategiche o Codex-facing preferire inglese tecnico
 semplice; per skill personali o di dominio Alberto e' ammesso l'italiano.
 Il mix e' accettabile quando aiuta a ridurre ambiguita di routing.
+
+Per creare o aggiornare istruzioni durevoli di progetto per ChatGPT, Codex,
+`AGENTS.md` o Copilot usare `as-common-project-instructions-builder`.
