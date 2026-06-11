@@ -2,7 +2,7 @@
 
 Pagella automatica delle skill. `StructureScore` misura igiene e riproducibilita; `OperationalQualityScore` e' euristico e misura chiarezza operativa e rischio di collisione trigger.
 
-Aggiornato: 2026-06-07 18:25:05
+Aggiornato: 2026-06-11 18:54:23
 
 | Skill | StructureScore | OperationalQualityScore | Grade | Errors | Warnings | Recommendation |
 |---|---:|---:|---|---:|---:|---|
@@ -15,6 +15,7 @@ Aggiornato: 2026-06-07 18:25:05
 | as-common-docs-runbook-builder | 100 | 75 | B | 0 | 0 | Aggiungere examples/references reali |
 | as-common-opencv-image-pipeline | 100 | 75 | B | 0 | 0 | Aggiungere examples/references reali |
 | as-common-powershell-git-safe-flow | 100 | 90 | A | 0 | 0 | Aggiungere examples/references reali |
+| as-common-project-instructions-builder | 100 | 95 | A | 0 | 0 | Mantenere |
 | as-common-project-riepilogo-operativo | 100 | 90 | A | 0 | 0 | Aggiungere examples/references reali |
 | as-common-pwsh-command-pack | 100 | 93 | A | 0 | 0 | Mantenere |
 | as-common-python-fastapi-debug | 100 | 75 | B | 0 | 0 | Aggiungere examples/references reali |

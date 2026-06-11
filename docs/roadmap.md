@@ -9,6 +9,7 @@
 - 085) PowerShell Command Pack Hardening Rules
 - 090) Skill Smoke Trial Pack
 - 100) Skill Release Workflow Pack
+- 160) as-common-project-instructions-builder
 
 ## Next strategic skills
 

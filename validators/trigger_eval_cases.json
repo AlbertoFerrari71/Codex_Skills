@@ -152,5 +152,19 @@
     "expected_skill": "as-common-docs-runbook-builder",
     "negative_skills": ["as-common-project-riepilogo-operativo", "as-common-codex-command-pack"],
     "tags": ["readme", "documentazione", "collaboratori"]
+  },
+  {
+    "id": "project_instructions_builder_positive_001",
+    "input": "prepara le Project Instructions ChatGPT per questo repository usando README AGENTS e roadmap",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-docs-runbook-builder"],
+    "tags": ["project-instructions", "chatgpt", "agents"]
+  },
+  {
+    "id": "project_instructions_builder_positive_002",
+    "input": "crea istruzioni progetto compatte con AGENTS.md consigliato checklist quality gate e copilot opzionale",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-project-riepilogo-operativo", "as-common-codex-step-manager"],
+    "tags": ["project-instructions", "quality-gate", "copilot"]
   }
 ]
