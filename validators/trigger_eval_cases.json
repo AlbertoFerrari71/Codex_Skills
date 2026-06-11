@@ -299,5 +299,33 @@
     "expected_skill": "as-common-project-riepilogo-operativo",
     "negative_skills": ["as-common-project-instructions-builder", "as-common-docs-runbook-builder"],
     "tags": ["borderline", "riepilogo", "new-chat"]
+  },
+  {
+    "id": "model_effort_positive_codex_megastep_001",
+    "input": "che livello uso per un prompt Codex Mega-step ASF con molti file e decision gate",
+    "expected_skill": "as-common-model-effort-advisor",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-codex-step-manager"],
+    "tags": ["model-effort", "codex", "asf", "megastep"]
+  },
+  {
+    "id": "model_effort_positive_report_pass_001",
+    "input": "devo analizzare un report Codex standard PASS recuperato dal Bridge: posso scendere a Media",
+    "expected_skill": "as-common-model-effort-advisor",
+    "negative_skills": ["as-common-codex-report-intake-decision-gate", "as-common-project-riepilogo-operativo"],
+    "tags": ["model-effort", "report", "codex", "bridge"]
+  },
+  {
+    "id": "model_effort_positive_warning_merge_001",
+    "input": "sto usando Media ma il report ha warning e devo decidere merge pubblicazione: controlla se il modello e giusto",
+    "expected_skill": "as-common-model-effort-advisor",
+    "negative_skills": ["as-common-codex-report-intake-decision-gate", "as-common-verification-gate-test-eval-pack"],
+    "tags": ["model-effort", "warning", "merge", "publication"]
+  },
+  {
+    "id": "model_effort_positive_skill_asf_001",
+    "input": "serve Pro Estesa per creare una skill trasversale che cambia workflow ASF",
+    "expected_skill": "as-common-model-effort-advisor",
+    "negative_skills": ["as-common-skill-authoring", "as-common-project-instructions-builder"],
+    "tags": ["model-effort", "skill", "asf", "workflow"]
   }
 ]

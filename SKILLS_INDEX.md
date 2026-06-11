@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-11 18:54:23
+Aggiornato: 2026-06-11 20:36:56
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 18 |
+| Skill totali | 19 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -23,6 +23,7 @@ Aggiornato: 2026-06-11 18:54:23
 | as-common-codex-step-manager | as-common-codex-step-manager | Use this skill when Alberto is managing a numbered Codex/ASF step, including scope, phases, acceptance criteria, report format, completion status, and next recommended step. Do not use it only to draft a one-shot Codex prompt, write persistent runbook documentation, or summarize a chat restart. | no | no | 0 | 0 |
 | as-common-deep-research-industriale | as-common-deep-research-industriale | Usa questa skill quando Alberto vuole impostare, organizzare o scrivere una ricerca tecnica industriale approfondita su materiali, processi, prodotti, norme, brevetti o mercato. | no | no | 0 | 0 |
 | as-common-docs-runbook-builder | as-common-docs-runbook-builder | Use this skill when Alberto asks to create or update persistent repository documentation, runbooks, AGENTS.md, README sections, workflow guides, or operational manuals. Do not use it for temporary Codex handoff prompts, numbered step lifecycle management, or chat restart summaries. | no | no | 0 | 0 |
+| as-common-model-effort-advisor | as-common-model-effort-advisor | Usa questa skill quando Alberto chiede quale livello ChatGPT usare o serve un model effort check per compiti Codex, ASF, coding, ricerca, review, decision gate, merge o skill trasversali. Non usarla per cambiare modello automaticamente o per interventi ordinari senza mismatch evidente. | no | no | 0 | 0 |
 | as-common-opencv-image-pipeline | as-common-opencv-image-pipeline | Usa questa skill per pipeline immagini di Alberto con OpenCV/Python/C++: debug visuale, QR, glitter, superfici, segmentazione, soglie, omografia e report intermedi. | no | no | 0 | 0 |
 | as-common-powershell-git-safe-flow | as-common-powershell-git-safe-flow | Usa questa skill quando devi generare o verificare comandi PowerShell/Git sicuri, linee guida Git o blocchi brevi per Alberto su Windows. Non usarla per costruire command pack PowerShell completi con Bridge, report e artifact riutilizzabili. | no | no | 0 | 0 |
 | as-common-project-instructions-builder | as-common-project-instructions-builder | Use this skill when Alberto needs to create, audit, or refresh durable project instructions for ChatGPT Projects, Codex AGENTS.md, repository-wide agent rules, Copilot instructions, instruction templates, or quality gates. Do not use it for one-shot Codex prompts, numbered step lifecycle management, generic runbooks, or chat restart summaries. | si | si | 0 | 0 |

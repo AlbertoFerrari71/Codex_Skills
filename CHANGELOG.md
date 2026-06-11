@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 190) Model Effort Advisor Skill
+
+Nuova skill comune per scegliere il livello ChatGPT adeguato a compiti ordinari, tecnici e ASF/Codex.
+
+- aggiunta skill `as-common-model-effort-advisor`;
+- definita matrice Alberto/ASF per Istantanea, Media, Alta, Extra Elevata, Pro Standard e Pro Estesa;
+- aggiunte regole di onesta' sul livello corrente non verificabile e sul mancato cambio automatico del modello;
+- aggiunti casi trigger-eval mirati per evitare collisioni con prompt Codex, report intake e skill authoring;
+- rigenerati `SKILLS_INDEX.md` e `SKILL_SCORE.md`.
+
 ## 180) Trigger eval and project instructions adoption review
 
 Verifica di adozione della skill `as-common-project-instructions-builder` e

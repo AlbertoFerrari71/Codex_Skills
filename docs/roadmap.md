@@ -10,6 +10,7 @@
 - 090) Skill Smoke Trial Pack
 - 100) Skill Release Workflow Pack
 - 160) as-common-project-instructions-builder
+- 190) as-common-model-effort-advisor
 
 ## Next strategic skills
 
@@ -20,4 +21,3 @@
 
 - as-common-security-supply-chain-auditor
 - as-common-mcp-connector-bridge-planner
-
