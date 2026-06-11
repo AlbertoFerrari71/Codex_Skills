@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 180) Trigger eval and project instructions adoption review
+
+Verifica di adozione della skill `as-common-project-instructions-builder` e
+rafforzamento dei casi trigger-eval per ridurre collisioni con skill affini.
+
+- aggiunto documento `docs/project-instructions/0180_PROJECT_INSTRUCTIONS_ADOPTION_REVIEW.md`;
+- esteso `validators/trigger_eval_cases.json` con casi positivi, negativi e borderline;
+- confermato che la UI ChatGPT resta fatto dichiarato da Alberto, non verificabile localmente;
+- mantenuti invariati skill, `AGENTS.md` e smoke trial per evitare rumore.
+
 ## 170) Install and publish project instructions builder
 
 Review e pubblicazione della skill `as-common-project-instructions-builder`.

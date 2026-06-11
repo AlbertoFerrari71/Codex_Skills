@@ -166,5 +166,138 @@
     "expected_skill": "as-common-project-instructions-builder",
     "negative_skills": ["as-common-project-riepilogo-operativo", "as-common-codex-step-manager"],
     "tags": ["project-instructions", "quality-gate", "copilot"]
+  },
+  {
+    "id": "project_instructions_builder_positive_003",
+    "input": "vorrei fare le istruzioni perfette per questo progetto",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-project-riepilogo-operativo"],
+    "tags": ["project-instructions", "istruzioni", "progetto"]
+  },
+  {
+    "id": "project_instructions_builder_positive_004",
+    "input": "mi prepari le Project Instructions ChatGPT per questa repo",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-docs-runbook-builder"],
+    "tags": ["project-instructions", "chatgpt", "repo"]
+  },
+  {
+    "id": "project_instructions_builder_positive_005",
+    "input": "genera AGENTS.md consigliato per il progetto con regole Codex e gate locali",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-agent-context-governor"],
+    "tags": ["project-instructions", "agents", "codex"]
+  },
+  {
+    "id": "project_instructions_builder_positive_006",
+    "input": "facciamo audit delle istruzioni progetto e separiamo regole globali da regole repo",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-agent-context-governor", "as-common-repo-readiness-review"],
+    "tags": ["project-instructions", "audit", "rules"]
+  },
+  {
+    "id": "project_instructions_builder_positive_007",
+    "input": "trasformiamo questa procedura in una skill trasversale per creare istruzioni progetto",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-skill-authoring", "as-common-docs-runbook-builder"],
+    "tags": ["project-instructions", "skill", "procedure"]
+  },
+  {
+    "id": "project_instructions_builder_positive_008",
+    "input": "ho un nuovo progetto analizza il materiale e prepara istruzioni personalizzate per ChatGPT e Codex",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-repo-readiness-review"],
+    "tags": ["project-instructions", "chatgpt", "codex"]
+  },
+  {
+    "id": "project_instructions_vs_summary_negative_001",
+    "input": "fai un riepilogo operativo della chat e un prompt di ripartenza per domani",
+    "expected_skill": "as-common-project-riepilogo-operativo",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-docs-runbook-builder"],
+    "tags": ["negative-project-instructions", "riepilogo", "handoff"]
+  },
+  {
+    "id": "project_instructions_vs_codex_prompt_negative_001",
+    "input": "prepara il prompt Codex temporaneo per implementare lo step 190",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-codex-step-manager"],
+    "tags": ["negative-project-instructions", "codex", "prompt"]
+  },
+  {
+    "id": "project_instructions_vs_report_intake_negative_001",
+    "input": "leggi il report finale Codex e dimmi se il gate e GO o NO_GO",
+    "expected_skill": "as-common-codex-report-intake-decision-gate",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-verification-gate-test-eval-pack"],
+    "tags": ["negative-project-instructions", "report", "decision-gate"]
+  },
+  {
+    "id": "project_instructions_vs_skill_authoring_negative_001",
+    "input": "crea una nuova skill generica per organizzare prompt e riferimenti",
+    "expected_skill": "as-common-skill-authoring",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-codex-command-pack"],
+    "tags": ["negative-project-instructions", "skill-authoring", "generic"]
+  },
+  {
+    "id": "project_instructions_vs_repo_readiness_negative_001",
+    "input": "fai una readiness review read-only della repository prima dello step",
+    "expected_skill": "as-common-repo-readiness-review",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-agent-context-governor"],
+    "tags": ["negative-project-instructions", "readiness", "read-only"]
+  },
+  {
+    "id": "project_instructions_vs_runbook_negative_001",
+    "input": "scrivi un runbook tecnico stabile per deploy manutenzione e troubleshooting",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-codex-command-pack"],
+    "tags": ["negative-project-instructions", "runbook", "docs"]
+  },
+  {
+    "id": "project_instructions_vs_context_negative_001",
+    "input": "pulisci il contesto agente e riconcilia istruzioni developer AGENTS e memoria",
+    "expected_skill": "as-common-agent-context-governor",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-repo-readiness-review"],
+    "tags": ["negative-project-instructions", "context", "governance"]
+  },
+  {
+    "id": "project_instructions_vs_verification_negative_001",
+    "input": "definisci test gate smoke eval e stop policy per questo step Codex",
+    "expected_skill": "as-common-verification-gate-test-eval-pack",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-codex-report-intake-decision-gate"],
+    "tags": ["negative-project-instructions", "verification", "gate"]
+  },
+  {
+    "id": "project_instructions_borderline_skill_handoff_001",
+    "input": "crea una skill per fare handoff dei progetti",
+    "expected_skill": "as-common-skill-authoring",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-project-riepilogo-operativo"],
+    "tags": ["borderline", "skill-authoring", "handoff"]
+  },
+  {
+    "id": "project_instructions_borderline_agents_update_001",
+    "input": "aggiorna AGENTS.md per questo repo con regole agentiche e quality gate",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-agent-context-governor"],
+    "tags": ["borderline", "agents", "quality-gate"]
+  },
+  {
+    "id": "project_instructions_borderline_codex_step_001",
+    "input": "prepara istruzioni per Codex per lo step 190",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-codex-step-manager"],
+    "tags": ["borderline", "codex", "step"]
+  },
+  {
+    "id": "project_instructions_borderline_then_prompt_001",
+    "input": "rivedi le istruzioni progetto e poi prepara un prompt Codex per installarle",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-docs-runbook-builder"],
+    "tags": ["borderline", "project-instructions", "codex-prompt"]
+  },
+  {
+    "id": "project_instructions_borderline_summary_new_chat_001",
+    "input": "fai un riepilogo operativo e suggerisci le istruzioni per una nuova chat",
+    "expected_skill": "as-common-project-riepilogo-operativo",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-docs-runbook-builder"],
+    "tags": ["borderline", "riepilogo", "new-chat"]
   }
 ]
