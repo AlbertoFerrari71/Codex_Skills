@@ -558,5 +558,313 @@
     "expected_skill": "as-common-opencv-image-pipeline",
     "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-web-ui-design-review", "as-common-python-fastapi-debug"],
     "tags": ["negative-web-ui-linguistic-visual-qa", "opencv", "cpp"]
+  },
+  {
+    "id": "deep_research_positive_material_coating_0280_001",
+    "input": "devo valutare un coating industriale per glitter e microdiamanti: servono fonti, limiti, fornitori, rischi e piano prove laboratorio",
+    "expected_skill": "as-common-deep-research-industriale",
+    "negative_skills": ["as-common-technical-patent-draft", "as-common-business-email-draft", "as-common-opencv-image-pipeline"],
+    "tags": ["deep-research", "materials", "coating", "sources"]
+  },
+  {
+    "id": "deep_research_positive_supplier_norm_0280_001",
+    "input": "cerca come impostare scouting fornitori e norme tecniche per un additivo minerale usato in malte industriali",
+    "expected_skill": "as-common-deep-research-industriale",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-business-email-draft", "as-common-model-effort-advisor"],
+    "tags": ["deep-research", "supplier-scouting", "standards", "minerals"]
+  },
+  {
+    "id": "deep_research_positive_process_benchmark_0280_001",
+    "input": "fammi una ricerca tecnica su processi produttivi alternativi per materiali ad alta temperatura con benchmark industriale e stime economiche separate dalle ipotesi",
+    "expected_skill": "as-common-deep-research-industriale",
+    "negative_skills": ["as-common-technical-patent-draft", "as-common-python-fastapi-debug", "as-common-codex-command-pack"],
+    "tags": ["deep-research", "process", "benchmark", "estimates"]
+  },
+  {
+    "id": "deep_research_vs_email_negative_0280_001",
+    "input": "scrivi una mail al fornitore chiedendo scheda tecnica e campioni del coating, con tono cortese ma fermo",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-docs-runbook-builder", "as-common-codex-command-pack"],
+    "tags": ["negative-deep-research", "email", "supplier"]
+  },
+  {
+    "id": "deep_research_vs_project_instructions_negative_0280_001",
+    "input": "prepara le Project Instructions ChatGPT per questa repo con AGENTS.md e quality gate locali",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-docs-runbook-builder", "as-common-codex-step-manager"],
+    "tags": ["negative-deep-research", "project-instructions", "agents"]
+  },
+  {
+    "id": "deep_research_vs_model_effort_negative_0280_001",
+    "input": "per una ricerca industriale su fornitori e norme devo usare livello medio o alto di ChatGPT?",
+    "expected_skill": "as-common-model-effort-advisor",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-codex-prompt-length-advisor", "as-common-codex-command-pack"],
+    "tags": ["negative-deep-research", "model-effort", "research-planning"]
+  },
+  {
+    "id": "deep_research_borderline_patent_sources_0280_001",
+    "input": "ho trovato brevetti su coating industriali: voglio usarli come fonte tecnica per capire materiali, varianti e test, non per claim legali",
+    "expected_skill": "as-common-deep-research-industriale",
+    "negative_skills": ["as-common-technical-patent-draft", "as-common-codex-report-intake-decision-gate", "as-common-web-ui-design-review"],
+    "tags": ["deep-research", "borderline", "patent-as-source", "technical"]
+  },
+  {
+    "id": "technical_patent_positive_disclosure_algorithm_0280_001",
+    "input": "prepara una invention disclosure per il consulente brevettuale su algoritmo QR glitter con problema tecnico, soluzione, varianti e figure suggerite",
+    "expected_skill": "as-common-technical-patent-draft",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-opencv-image-pipeline", "as-common-business-email-draft"],
+    "tags": ["patent-draft", "disclosure", "algorithm", "consultant"]
+  },
+  {
+    "id": "technical_patent_positive_process_material_0280_001",
+    "input": "scrivi una bozza tecnica non legale per consulente su processo industriale e coating, distinguendo elementi noti e differenze inventive",
+    "expected_skill": "as-common-technical-patent-draft",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-docs-runbook-builder", "as-common-codex-command-pack"],
+    "tags": ["patent-draft", "process", "coating", "technical"]
+  },
+  {
+    "id": "technical_patent_positive_claim_draft_0280_001",
+    "input": "aiutami a preparare claim draft solo come bozza tecnica per un sistema R&D, con avvisi su prior art e FTO da verificare col consulente",
+    "expected_skill": "as-common-technical-patent-draft",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-business-email-draft", "as-common-model-effort-advisor"],
+    "tags": ["patent-draft", "claim-draft", "legal-boundary", "fto"]
+  },
+  {
+    "id": "technical_patent_vs_research_negative_0280_001",
+    "input": "fai benchmark mercato e fornitori per tecnologie emergenti di microdiamanti con fonti, dati e incertezze commerciali",
+    "expected_skill": "as-common-deep-research-industriale",
+    "negative_skills": ["as-common-technical-patent-draft", "as-common-business-email-draft", "as-common-web-ui-design-review"],
+    "tags": ["negative-patent-draft", "deep-research", "market", "suppliers"]
+  },
+  {
+    "id": "technical_patent_vs_email_negative_0280_001",
+    "input": "scrivi una email breve al consulente brevettuale per chiedere disponibilita a una call e allegare la disclosure",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-technical-patent-draft", "as-common-deep-research-industriale", "as-common-codex-command-pack"],
+    "tags": ["negative-patent-draft", "email", "consultant"]
+  },
+  {
+    "id": "technical_patent_vs_prompt_negative_0280_001",
+    "input": "prepara un prompt Codex per generare una bozza di disclosure tecnica con vincoli e report finale",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-technical-patent-draft", "as-common-codex-step-manager", "as-common-docs-runbook-builder"],
+    "tags": ["negative-patent-draft", "codex-prompt", "handoff"]
+  },
+  {
+    "id": "technical_patent_borderline_prior_art_0280_001",
+    "input": "ho una prior art preliminare e devo spiegare al consulente differenze tecniche, vantaggi, esempi e domande aperte senza dare parere legale",
+    "expected_skill": "as-common-technical-patent-draft",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-codex-report-intake-decision-gate", "as-common-business-email-draft"],
+    "tags": ["patent-draft", "borderline", "prior-art", "consultant"]
+  },
+  {
+    "id": "business_email_positive_hr_delicate_0280_001",
+    "input": "riscrivi una email delicata a un dipendente: devo essere umano, chiaro e fermo su una scadenza non rispettata",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-technical-patent-draft", "as-common-project-riepilogo-operativo"],
+    "tags": ["business-email", "hr", "delicate", "tone"]
+  },
+  {
+    "id": "business_email_positive_supplier_contestation_0280_001",
+    "input": "prepara risposta a contestazione di un fornitore con tono logico, empatico ma fermo, senza ammettere responsabilita non decise",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-codex-command-pack", "as-common-docs-runbook-builder"],
+    "tags": ["business-email", "supplier", "contest", "risk"]
+  },
+  {
+    "id": "business_email_positive_client_followup_0280_001",
+    "input": "rivedi questa mail a un cliente prima dell'invio e dammi oggetto, versione piu morbida e versione piu ferma",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-docs-runbook-builder", "as-common-codex-prompt-length-advisor"],
+    "tags": ["business-email", "client", "review", "tone-variants"]
+  },
+  {
+    "id": "business_email_vs_research_negative_0280_001",
+    "input": "devo capire tecnicamente se un additivo minerale e' adatto a una malta: servono fonti, dati, incertezze e prove",
+    "expected_skill": "as-common-deep-research-industriale",
+    "negative_skills": ["as-common-business-email-draft", "as-common-docs-runbook-builder", "as-common-model-effort-advisor"],
+    "tags": ["negative-business-email", "deep-research", "materials"]
+  },
+  {
+    "id": "business_email_vs_runbook_negative_0280_001",
+    "input": "crea un runbook operativo per la manutenzione mensile con prerequisiti, comandi, verifiche, stop e rollback",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-business-email-draft", "as-common-codex-step-manager", "as-common-project-riepilogo-operativo"],
+    "tags": ["negative-business-email", "runbook", "maintenance"]
+  },
+  {
+    "id": "business_email_vs_prompt_negative_0280_001",
+    "input": "preparami il command packet Codex per implementare una modifica e salvare report finale nel Bridge",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-business-email-draft", "as-common-codex-step-manager", "as-common-docs-runbook-builder"],
+    "tags": ["negative-business-email", "codex-command", "bridge"]
+  },
+  {
+    "id": "business_email_borderline_technical_notes_0280_001",
+    "input": "trasforma questi appunti tecnici in una mail chiara al fornitore, senza inventare dati e indicando cosa chiediamo come prossimo passo",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-deep-research-industriale", "as-common-docs-runbook-builder", "as-common-technical-patent-draft"],
+    "tags": ["business-email", "borderline", "technical-notes", "supplier"]
+  },
+  {
+    "id": "docs_runbook_positive_deploy_0280_001",
+    "input": "crea un runbook di deploy locale con prerequisiti, passi, comandi, verifiche, rollback e ownership",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-codex-step-manager", "as-common-business-email-draft"],
+    "tags": ["docs-runbook", "deploy", "rollback", "ownership"]
+  },
+  {
+    "id": "docs_runbook_positive_troubleshooting_0280_001",
+    "input": "documenta una procedura ripetibile di troubleshooting con checklist manutenzione e condizioni di stop",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-project-riepilogo-operativo", "as-common-codex-command-pack"],
+    "tags": ["docs-runbook", "troubleshooting", "maintenance", "stop"]
+  },
+  {
+    "id": "docs_runbook_positive_onboarding_0280_001",
+    "input": "scrivi una guida operativa persistente per onboarding di un collaboratore con comandi verificati e aggiornamento futuro",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-business-email-draft", "as-common-repo-readiness-review"],
+    "tags": ["docs-runbook", "onboarding", "persistent-docs"]
+  },
+  {
+    "id": "docs_runbook_vs_project_instructions_negative_0280_001",
+    "input": "crea istruzioni progetto ChatGPT e AGENTS.md con regole Codex, quality gate e comportamento dell'assistente",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-codex-command-pack", "as-common-agent-context-governor"],
+    "tags": ["negative-docs-runbook", "project-instructions", "agents"]
+  },
+  {
+    "id": "docs_runbook_vs_summary_negative_0280_001",
+    "input": "fammi un riepilogo operativo della chat lunga e un prompt di ripartenza per continuare domani",
+    "expected_skill": "as-common-project-riepilogo-operativo",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-codex-command-pack", "as-common-project-instructions-builder"],
+    "tags": ["negative-docs-runbook", "chat-summary", "handoff"]
+  },
+  {
+    "id": "docs_runbook_vs_step_manager_negative_0280_001",
+    "input": "gestisci lo step 0340 con branch, test, commit, PR, merge e report finale",
+    "expected_skill": "as-common-codex-step-manager",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-codex-command-pack", "as-common-repo-readiness-review"],
+    "tags": ["negative-docs-runbook", "codex-step", "git"]
+  },
+  {
+    "id": "docs_runbook_vs_prompt_length_negative_0280_001",
+    "input": "valuta se questo mega-prompt da 45k caratteri rischia troncamento o perdita di END_OF_PROMPT",
+    "expected_skill": "as-common-codex-prompt-length-advisor",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-codex-command-pack", "as-common-model-effort-advisor"],
+    "tags": ["negative-docs-runbook", "prompt-length", "mega-prompt"]
+  },
+  {
+    "id": "docs_runbook_borderline_readme_procedure_0280_001",
+    "input": "trasforma questa procedura ripetibile in README operativo con comandi verificati, troubleshooting e rollback esplicito",
+    "expected_skill": "as-common-docs-runbook-builder",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-project-riepilogo-operativo", "as-common-codex-command-pack"],
+    "tags": ["docs-runbook", "borderline", "readme", "procedure"]
+  },
+  {
+    "id": "opencv_positive_qr_homography_0280_001",
+    "input": "progetta pipeline OpenCV per QR con omografia, binarizzazione, salvataggio immagini intermedie e metriche di confronto",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-web-ui-design-review", "as-common-technical-patent-draft"],
+    "tags": ["opencv", "qr", "homography", "debug-images"]
+  },
+  {
+    "id": "opencv_positive_cpp_style_0280_001",
+    "input": "scrivi esempio C++ OpenCV per segmentazione glitter rispettando stile Alberto con namespace globali e funzione principale all'inizio",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-vba-excel-access-alberto", "as-common-python-fastapi-debug", "as-common-codex-command-pack"],
+    "tags": ["opencv", "cpp", "style", "segmentation"]
+  },
+  {
+    "id": "opencv_positive_masks_histograms_0280_001",
+    "input": "debugga confronto tra maschera attesa e reale: voglio istogrammi, soglie, overlay contorni e parametri da tarare",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-web-ui-design-review", "as-common-python-fastapi-debug"],
+    "tags": ["opencv", "mask", "histogram", "parameters"]
+  },
+  {
+    "id": "opencv_vs_ui_review_negative_0280_001",
+    "input": "fai review visuale della dashboard locale da screenshot: gerarchia, spaziature, microcopy e responsive",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-opencv-image-pipeline", "as-common-web-ui-linguistic-visual-qa", "as-common-python-fastapi-debug"],
+    "tags": ["negative-opencv", "ui-review", "screenshot"]
+  },
+  {
+    "id": "opencv_vs_fastapi_negative_0280_001",
+    "input": "l'endpoint FastAPI che carica immagini torna 500 nei test pytest: leggi trace e proponi fix minimo",
+    "expected_skill": "as-common-python-fastapi-debug",
+    "negative_skills": ["as-common-opencv-image-pipeline", "as-common-web-ui-design-review", "as-common-codex-step-manager"],
+    "tags": ["negative-opencv", "fastapi", "pytest", "endpoint"]
+  },
+  {
+    "id": "opencv_vs_patent_negative_0280_001",
+    "input": "prepara disclosure tecnica per consulente brevettuale su algoritmo di verifica immagini con varianti e limiti legali",
+    "expected_skill": "as-common-technical-patent-draft",
+    "negative_skills": ["as-common-opencv-image-pipeline", "as-common-deep-research-industriale", "as-common-business-email-draft"],
+    "tags": ["negative-opencv", "patent-draft", "algorithm"]
+  },
+  {
+    "id": "opencv_borderline_qr_not_read_0280_001",
+    "input": "il QR non viene letto dopo il warp: voglio pipeline di debug con immagini intermedie, omografia, soglie e metriche",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-web-ui-design-review", "as-common-technical-patent-draft"],
+    "tags": ["opencv", "borderline", "qr", "warp"]
+  },
+  {
+    "id": "python_fastapi_positive_pytest_fixture_0280_001",
+    "input": "in FastAPI un test pytest fallisce con status code 422: controlla fixture, payload endpoint e fix minimo",
+    "expected_skill": "as-common-python-fastapi-debug",
+    "negative_skills": ["as-common-opencv-image-pipeline", "as-common-web-ui-design-review", "as-common-codex-step-manager"],
+    "tags": ["fastapi", "pytest", "fixture", "status-code"]
+  },
+  {
+    "id": "python_fastapi_positive_sqlalchemy_uvicorn_0280_001",
+    "input": "Uvicorn mostra un trace SQLAlchemy diverso da pytest: separa ambiente locale server e proponi passi minimi",
+    "expected_skill": "as-common-python-fastapi-debug",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-repo-readiness-review", "as-common-model-effort-advisor"],
+    "tags": ["fastapi", "sqlalchemy", "uvicorn", "trace"]
+  },
+  {
+    "id": "python_fastapi_positive_jinja_template_0280_001",
+    "input": "il template Jinja renderizza errore 500 in una route FastAPI: voglio test mirato e patch piccola",
+    "expected_skill": "as-common-python-fastapi-debug",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-web-ui-linguistic-visual-qa", "as-common-docs-runbook-builder"],
+    "tags": ["fastapi", "jinja", "template", "minimal-fix"]
+  },
+  {
+    "id": "python_fastapi_vs_ui_review_negative_0280_001",
+    "input": "controlla screenshot mobile e desktop della web app per overflow, contrasto e microcopy",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-opencv-image-pipeline", "as-common-web-ui-linguistic-visual-qa"],
+    "tags": ["negative-fastapi", "ui-review", "screenshots"]
+  },
+  {
+    "id": "python_fastapi_vs_opencv_negative_0280_001",
+    "input": "crea pipeline OpenCV Python per binarizzare QR e salvare overlay contorni su immagini di test",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-web-ui-design-review", "as-common-vba-excel-access-alberto"],
+    "tags": ["negative-fastapi", "opencv", "python", "qr"]
+  },
+  {
+    "id": "python_fastapi_vs_git_publish_negative_0280_001",
+    "input": "fai branch, commit, push, PR e merge dello step dopo aver eseguito i gate locali",
+    "expected_skill": "as-common-codex-step-manager",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-codex-command-pack", "as-common-powershell-git-safe-flow"],
+    "tags": ["negative-fastapi", "git-publish", "step-manager"]
+  },
+  {
+    "id": "python_fastapi_vs_vba_negative_0280_001",
+    "input": "debugga una maschera Excel VBA con ADODB e UserForm generato via codice",
+    "expected_skill": "as-common-vba-excel-access-alberto",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-opencv-image-pipeline", "as-common-docs-runbook-builder"],
+    "tags": ["negative-fastapi", "vba", "excel", "adodb"]
+  },
+  {
+    "id": "python_fastapi_borderline_jinja_500_0280_001",
+    "input": "la pagina web e' brutta perche mostra errore 500, ma serve leggere trace FastAPI e capire se e' route o template Jinja",
+    "expected_skill": "as-common-python-fastapi-debug",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-web-ui-linguistic-visual-qa", "as-common-opencv-image-pipeline"],
+    "tags": ["fastapi", "borderline", "jinja", "500"]
   }
 ]
