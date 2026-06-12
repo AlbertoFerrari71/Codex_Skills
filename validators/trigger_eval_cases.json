@@ -327,5 +327,61 @@
     "expected_skill": "as-common-model-effort-advisor",
     "negative_skills": ["as-common-skill-authoring", "as-common-project-instructions-builder"],
     "tags": ["model-effort", "skill", "asf", "workflow"]
+  },
+  {
+    "id": "prompt_length_positive_split_001",
+    "input": "valuta se questo prompt Codex da 70k caratteri va diviso in prompt packet o puo restare monolitico",
+    "expected_skill": "as-common-codex-prompt-length-advisor",
+    "negative_skills": ["as-common-codex-command-pack", "as-common-model-effort-advisor"],
+    "tags": ["prompt-length", "codex", "packet"]
+  },
+  {
+    "id": "prompt_length_positive_integrity_001",
+    "input": "controlla rischio troncamento prompt con END_OF_PROMPT REGOLE FINALI e CONTROLLO INTEGRITA PROMPT",
+    "expected_skill": "as-common-codex-prompt-length-advisor",
+    "negative_skills": ["as-common-agent-context-governor", "as-common-codex-command-pack"],
+    "tags": ["prompt-length", "integrity", "sentinel"]
+  },
+  {
+    "id": "prompt_length_positive_context_growth_001",
+    "input": "questo mega-prompt Codex fa crescere troppo il context used durante il run con log e diff completi",
+    "expected_skill": "as-common-codex-prompt-length-advisor",
+    "negative_skills": ["as-common-verification-gate-test-eval-pack", "as-common-codex-step-manager"],
+    "tags": ["prompt-length", "context-growth", "mega-prompt"]
+  },
+  {
+    "id": "prompt_length_positive_threshold_001",
+    "input": "prompt length advisor per un prompt monolitico da 45k caratteri: dimmi se e OK_GRANDE o REVIEW",
+    "expected_skill": "as-common-codex-prompt-length-advisor",
+    "negative_skills": ["as-common-model-effort-advisor", "as-common-codex-command-pack"],
+    "tags": ["prompt-length", "threshold", "monolithic"]
+  },
+  {
+    "id": "prompt_length_vs_command_pack_negative_001",
+    "input": "preparami il prompt Codex temporaneo per implementare lo step 220 con report finale",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-codex-prompt-length-advisor", "as-common-project-instructions-builder"],
+    "tags": ["negative-prompt-length", "codex", "prompt"]
+  },
+  {
+    "id": "prompt_length_vs_step_manager_negative_001",
+    "input": "gestisci lo step 220 nel repository, crea file, esegui validator e scrivi il report finale",
+    "expected_skill": "as-common-codex-step-manager",
+    "negative_skills": ["as-common-codex-prompt-length-advisor", "as-common-codex-command-pack"],
+    "tags": ["negative-prompt-length", "step", "repository"]
+  },
+  {
+    "id": "prompt_length_vs_model_effort_negative_001",
+    "input": "che livello uso per un prompt Codex Mega-step molto lungo: Alta o Pro Estesa",
+    "expected_skill": "as-common-model-effort-advisor",
+    "negative_skills": ["as-common-codex-prompt-length-advisor", "as-common-codex-command-pack"],
+    "tags": ["negative-prompt-length", "model-effort", "mega-step"]
+  },
+  {
+    "id": "prompt_length_vs_verification_negative_001",
+    "input": "definisci test gate smoke eval e stop policy per verificare questo step Codex",
+    "expected_skill": "as-common-verification-gate-test-eval-pack",
+    "negative_skills": ["as-common-codex-prompt-length-advisor", "as-common-codex-report-intake-decision-gate"],
+    "tags": ["negative-prompt-length", "verification", "gate"]
   }
 ]
