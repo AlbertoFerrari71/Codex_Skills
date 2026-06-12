@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 270) Web UI Design Review Smoke Trial And Catalog Consistency Check
+
+Verifica reale della skill `as-common-web-ui-design-review` e dello stato del
+catalogo skill dopo gli step successivi alla pubblicazione 0260.
+
+- confermata coerenza locale, `origin/main`, GitHub API e raw GitHub con 22
+  skill totali;
+- chiarito che l'atteso 21 skill del report 0260 e' uno snapshot storico
+  superato dai commit successivi `1370-1450` e `1460`;
+- aggiunto smoke trial read-only su `AI_Release_Radar` usando template, CSS e
+  documenti UI, senza browser/server e senza modifiche al repo target;
+- aggiunta review trigger/overlap per distinguere design review da project
+  instructions, repo readiness, command pack, step manager, prompt length,
+  OpenCV, Python/FastAPI e linguistic visual QA;
+- nessuna installazione Impeccable, nessuna modifica a skill operative,
+  cataloghi o repository target.
+
 ## 1460) Web UI Linguistic Visual QA Adoption Matrix
 
 Piano di adozione della skill `as-common-web-ui-linguistic-visual-qa` sui progetti web/dashboard attivi.
