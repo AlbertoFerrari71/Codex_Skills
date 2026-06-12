@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 0340-0400) Final Skills Closure, ASF Trial And Adoption Pack
+
+Chiusura finale del ciclo skill dopo 0280-0330, senza creare nuove skill e senza refactor ampi.
+
+- aggiunti audit finale release, sync/catalog integrity, adoption matrix, ASF end-to-end trial, known issues e readiness gate;
+- confermato catalogo a 22 skill con 0 errori e 0 warning nel validator catalogo;
+- confermati 124 casi trigger eval con copertura di tutte le 22 skill;
+- documentata adozione logica sui progetti attivi di Alberto senza audit tecnico dei repository esterni;
+- mantenuti visibili warning non bloccanti: cache `__pycache__`, mixed-EOL storici, assenza `quick_validate.py`, smoke documentali;
+- nessuna skill modificata e nessuna normalizzazione line endings.
+
 ## 0280-0330) Mature Skills Hardening, Trigger Boundaries And Real-Use Quality Pack
 
 Rafforzamento mirato di sei skill mature del catalogo senza creare nuove skill.
