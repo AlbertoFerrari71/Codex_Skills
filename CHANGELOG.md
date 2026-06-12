@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1460) Web UI Linguistic Visual QA Adoption Matrix
+
+Piano di adozione della skill `as-common-web-ui-linguistic-visual-qa` sui progetti web/dashboard attivi.
+
+- aggiunta matrice di priorita per AI Release Radar, ASF Blueprint Studio, Mansionario Vivo, Family Photo Organizer, AI Software Factory e candidato ambiguo AI Software Factory 2;
+- aggiunto piano operativo con ordine pilot, safety read-only, gestione progetti sensibili e regole anti-contaminazione;
+- nessuna modifica ai repo target e nessun server target avviato;
+- nessuna modifica a skill, `SKILLS_INDEX.md`, `SKILL_SCORE.md` o trigger eval.
+
 ## 1370-1450) Web UI Linguistic Visual QA Skill Pack
 
 Creazione della skill comune `as-common-web-ui-linguistic-visual-qa` per QA linguistica e visuale di web app/dashboard locali.
