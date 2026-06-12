@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-11 20:36:56
+Aggiornato: 2026-06-11 23:02:36
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 19 |
+| Skill totali | 20 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -19,6 +19,7 @@ Aggiornato: 2026-06-11 20:36:56
 | as-common-agent-context-governor | as-common-agent-context-governor | Use this skill when reviewing, creating, or reconciling project instructions, AGENTS.md files, Codex prompts, skill usage, repository rules, handoff summaries, or context conflicts before starting or closing an agentic coding step. Do not use it for a purely technical repository readiness review. | si | si | 0 | 0 |
 | as-common-business-email-draft | as-common-business-email-draft | Usa questa skill quando Alberto vuole correggere, riscrivere o preparare email commerciali, tecniche o delicate in italiano o inglese per clienti, fornitori e collaboratori. | no | no | 0 | 0 |
 | as-common-codex-command-pack | as-common-codex-command-pack | Use this skill when Alberto asks to prepare one executable Codex prompt or command packet for implementation, debugging, review, or repository work. Use it for temporary handoff prompts to Codex. Do not use it for numbered step governance, durable docs, or restart summaries. | si | si | 0 | 0 |
+| as-common-codex-prompt-length-advisor | as-common-codex-prompt-length-advisor | Usa questa skill quando Alberto deve valutare un prompt Codex troppo lungo, mega-prompt o prompt monolitico con rischio troncamento, END_OF_PROMPT, REGOLE FINALI, CONTROLLO INTEGRITÀ PROMPT, prompt packet, prompt da 20k/30k/45k/70k/100k caratteri, context used in Codex o crescita contesto durante il run. Non usarla per scrivere prompt generici, scegliere il modello o gestire uno step numerato end-to-end. | si | no | 0 | 0 |
 | as-common-codex-report-intake-decision-gate | as-common-codex-report-intake-decision-gate | Use this skill when Alberto provides a completed Codex final report and needs it compared with the original prompt, Git status, diffs, tests, warnings, and evidence to decide GO, GO_WITH_WARNINGS, NO_GO, clarification needs, or corrective follow-up. Do not use it to design test gates before work starts. | si | si | 0 | 0 |
 | as-common-codex-step-manager | as-common-codex-step-manager | Use this skill when Alberto is managing a numbered Codex/ASF step, including scope, phases, acceptance criteria, report format, completion status, and next recommended step. Do not use it only to draft a one-shot Codex prompt, write persistent runbook documentation, or summarize a chat restart. | no | no | 0 | 0 |
 | as-common-deep-research-industriale | as-common-deep-research-industriale | Usa questa skill quando Alberto vuole impostare, organizzare o scrivere una ricerca tecnica industriale approfondita su materiali, processi, prodotti, norme, brevetti o mercato. | no | no | 0 | 0 |

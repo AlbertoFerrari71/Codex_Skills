@@ -11,6 +11,7 @@
 - 100) Skill Release Workflow Pack
 - 160) as-common-project-instructions-builder
 - 190) as-common-model-effort-advisor
+- 220) as-common-codex-prompt-length-advisor
 
 ## Next strategic skills
 

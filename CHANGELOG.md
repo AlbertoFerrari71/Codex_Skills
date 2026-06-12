@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 220) Codex Prompt Length Advisor Skill
+
+Nuova skill comune per valutare lunghezza, integrita', rumore e rischio di
+crescita contesto dei prompt Codex.
+
+- aggiunta skill `as-common-codex-prompt-length-advisor`;
+- aggiunto script CLI standard-library per output testuale e JSON;
+- aggiunte reference su soglie, integrita' prompt e crescita contesto runtime;
+- aggiunti test unitari per soglie, stdin, JSON, integrity, runtime risk e publish safety;
+- aggiunti casi trigger-eval mirati per evitare collisioni con command pack, step manager, model effort e verification gate;
+- rigenerati `SKILLS_INDEX.md` e `SKILL_SCORE.md`.
+
 ## 190) Model Effort Advisor Skill
 
 Nuova skill comune per scegliere il livello ChatGPT adeguato a compiti ordinari, tecnici e ASF/Codex.
