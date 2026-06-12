@@ -12,9 +12,12 @@
 - 160) as-common-project-instructions-builder
 - 190) as-common-model-effort-advisor
 - 220) as-common-codex-prompt-length-advisor
+- 250) Impeccable external design skill evaluation
+- 260) as-common-web-ui-design-review
 
 ## Next strategic skills
 
+- 270. Web UI Design Review Real Project Smoke Trial
 - 110. Skill Trigger Optimization Pack
 - 120. AI Software Factory Skill Adoption Step
 

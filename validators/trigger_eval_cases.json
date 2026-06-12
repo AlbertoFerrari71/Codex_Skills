@@ -383,5 +383,103 @@
     "expected_skill": "as-common-verification-gate-test-eval-pack",
     "negative_skills": ["as-common-codex-prompt-length-advisor", "as-common-codex-report-intake-decision-gate"],
     "tags": ["negative-prompt-length", "verification", "gate"]
+  },
+  {
+    "id": "web_ui_design_review_positive_dashboard_001",
+    "input": "fai review della UI della dashboard di AI Release Radar con priorita P0 P1 P2 P3 e controlla gerarchia responsive e microcopy",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-project-instructions-builder", "as-common-repo-readiness-review", "as-common-verification-gate-test-eval-pack"],
+    "tags": ["web-ui-design-review", "dashboard", "ai-release-radar", "responsive"]
+  },
+  {
+    "id": "web_ui_design_review_positive_screenshot_001",
+    "input": "valuta questo screenshot della web app Mansionario_Vivo: layout form, contrasto, stati errore e accessibilita base",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-opencv-image-pipeline", "as-common-python-fastapi-debug", "as-common-business-email-draft"],
+    "tags": ["web-ui-design-review", "screenshot", "mansionario-vivo", "accessibility"]
+  },
+  {
+    "id": "web_ui_design_review_positive_asf_blueprint_001",
+    "input": "controlla ASF Blueprint Studio lato UX: dashboard workflow, action hierarchy, empty states e anti AI slop",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-codex-step-manager", "as-common-agent-context-governor", "as-common-repo-readiness-review"],
+    "tags": ["web-ui-design-review", "asf-blueprint-studio", "dashboard", "anti-ai-slop"]
+  },
+  {
+    "id": "web_ui_design_review_positive_family_photo_001",
+    "input": "review visuale della web UI Family_Photo_Organizer_ASF per stati di conferma, empty state, microcopy e sicurezza percepita",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-opencv-image-pipeline", "as-common-repo-readiness-review", "as-common-verification-gate-test-eval-pack"],
+    "tags": ["web-ui-design-review", "family-photo-organizer-asf", "empty-state", "microcopy"]
+  },
+  {
+    "id": "web_ui_design_review_positive_landing_001",
+    "input": "analizza questa landing page locale prima della release: hero, CTA, immagini reali, contrasto e pattern da AI slop",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-docs-runbook-builder", "as-common-codex-command-pack", "as-common-project-instructions-builder"],
+    "tags": ["web-ui-design-review", "landing", "release", "anti-ai-slop"]
+  },
+  {
+    "id": "web_ui_design_review_positive_templates_001",
+    "input": "controlla questi template HTML CSS della dashboard locale per visual QA, spacing, component consistency e responsive mobile desktop",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-python-fastapi-debug", "as-common-verification-gate-test-eval-pack", "as-common-codex-prompt-length-advisor"],
+    "tags": ["web-ui-design-review", "html-css", "visual-qa", "responsive"]
+  },
+  {
+    "id": "web_ui_design_review_positive_release_frontend_001",
+    "input": "prima della release fai audit visuale UX della web app: stati loading errore vuoto, accessibilita base e dashboard usability",
+    "expected_skill": "as-common-web-ui-design-review",
+    "negative_skills": ["as-common-repo-readiness-review", "as-common-verification-gate-test-eval-pack", "as-common-codex-step-manager"],
+    "tags": ["web-ui-design-review", "release", "frontend", "accessibility"]
+  },
+  {
+    "id": "web_ui_design_review_vs_project_instructions_negative_001",
+    "input": "prepara Project Instructions ChatGPT e AGENTS.md per un nuovo progetto web con quality gate Codex",
+    "expected_skill": "as-common-project-instructions-builder",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-codex-command-pack", "as-common-docs-runbook-builder"],
+    "tags": ["negative-web-ui-design-review", "project-instructions", "agents", "web"]
+  },
+  {
+    "id": "web_ui_design_review_vs_prompt_length_negative_001",
+    "input": "valuta se questo prompt Codex sulla UI da 70k caratteri rischia troncamento e va diviso in packet",
+    "expected_skill": "as-common-codex-prompt-length-advisor",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-codex-command-pack", "as-common-model-effort-advisor"],
+    "tags": ["negative-web-ui-design-review", "prompt-length", "codex", "ui"]
+  },
+  {
+    "id": "web_ui_design_review_vs_repo_readiness_negative_001",
+    "input": "fai readiness review read-only del repo frontend: branch status test docs e rischi prima dello step",
+    "expected_skill": "as-common-repo-readiness-review",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-agent-context-governor", "as-common-codex-step-manager"],
+    "tags": ["negative-web-ui-design-review", "repo-readiness", "frontend", "read-only"]
+  },
+  {
+    "id": "web_ui_design_review_vs_command_pack_negative_001",
+    "input": "prepara il prompt Codex temporaneo per modificare layout e microcopy della dashboard con report finale",
+    "expected_skill": "as-common-codex-command-pack",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-codex-step-manager", "as-common-project-instructions-builder"],
+    "tags": ["negative-web-ui-design-review", "codex-command-pack", "dashboard", "microcopy"]
+  },
+  {
+    "id": "web_ui_design_review_vs_step_manager_negative_001",
+    "input": "gestisci lo step 270 nel repository web: crea branch, modifica frontend, esegui validator, commit push PR e report",
+    "expected_skill": "as-common-codex-step-manager",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-codex-command-pack", "as-common-repo-readiness-review"],
+    "tags": ["negative-web-ui-design-review", "step-manager", "frontend", "git"]
+  },
+  {
+    "id": "web_ui_design_review_vs_backend_negative_001",
+    "input": "debugga endpoint FastAPI e test pytest falliti della dashboard senza guardare la UI",
+    "expected_skill": "as-common-python-fastapi-debug",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-verification-gate-test-eval-pack", "as-common-repo-readiness-review"],
+    "tags": ["negative-web-ui-design-review", "backend", "fastapi", "pytest"]
+  },
+  {
+    "id": "web_ui_design_review_vs_image_pipeline_negative_001",
+    "input": "analizza con OpenCV screenshot e immagini per segmentazione QR soglie e omografia",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-python-fastapi-debug", "as-common-verification-gate-test-eval-pack"],
+    "tags": ["negative-web-ui-design-review", "opencv", "image-analysis", "screenshot"]
   }
 ]
