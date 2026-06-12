@@ -2,6 +2,7 @@
 
 ## Completed
 
+- 1460) Web UI Linguistic Visual QA adoption matrix
 - 1370-1450) as-common-web-ui-linguistic-visual-qa
 - 050) as-common-agent-context-governor
 - 060) as-common-verification-gate-test-eval-pack
