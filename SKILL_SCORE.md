@@ -2,7 +2,7 @@
 
 Pagella automatica delle skill. `StructureScore` misura igiene e riproducibilita; `OperationalQualityScore` e' euristico e misura chiarezza operativa e rischio di collisione trigger.
 
-Aggiornato: 2026-06-12 06:06:56
+Aggiornato: 2026-06-12 06:50:16
 
 | Skill | StructureScore | OperationalQualityScore | Grade | Errors | Warnings | Recommendation |
 |---|---:|---:|---|---:|---:|---|
@@ -27,3 +27,4 @@ Aggiornato: 2026-06-12 06:06:56
 | as-common-vba-excel-access-alberto | 100 | 85 | A | 0 | 0 | Mantenere |
 | as-common-verification-gate-test-eval-pack | 100 | 95 | A | 0 | 0 | Mantenere |
 | as-common-web-ui-design-review | 100 | 83 | B | 0 | 0 | Mantenere |
+| as-common-web-ui-linguistic-visual-qa | 100 | 100 | A | 0 | 0 | Mantenere |

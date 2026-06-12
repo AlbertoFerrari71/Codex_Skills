@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1370-1450) Web UI Linguistic Visual QA Skill Pack
+
+Creazione della skill comune `as-common-web-ui-linguistic-visual-qa` per QA linguistica e visuale di web app/dashboard locali.
+
+- aggiunta skill instruction-only per i18n, residui lingua baseline, enum raw, DOM text extraction, browser walkthrough, fallback headless/HTTP, screenshot matrix e merge readiness;
+- aggiunti prompt template, checklist pratica, case study AI Release Radar 1360, fixture HTML statica e runbook di adozione;
+- estesi i casi trigger-eval positivi e negativi per distinguere QA linguistica/visuale da design review, prompt Codex, email, Excel, brevetti e OpenCV;
+- pianificati pilot read-only su AI Release Radar e secondo pilot/fixture con evidenze Bridge;
+- nessuna dipendenza esterna o runtime LLM aggiunta.
+
 ## 260) Web UI Design Review Skill Pilot
 
 Pubblicazione dei documenti 0250 su Impeccable e creazione della skill comune `as-common-web-ui-design-review`.

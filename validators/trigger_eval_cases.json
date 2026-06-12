@@ -481,5 +481,82 @@
     "expected_skill": "as-common-opencv-image-pipeline",
     "negative_skills": ["as-common-web-ui-design-review", "as-common-python-fastapi-debug", "as-common-verification-gate-test-eval-pack"],
     "tags": ["negative-web-ui-design-review", "opencv", "image-analysis", "screenshot"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_positive_dashboard_001",
+    "input": "controlla la dashboard, in italiano vedo ancora parole inglesi e voglio screenshot e DOM visible text",
+    "expected_skill": "as-common-web-ui-linguistic-visual-qa",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-project-instructions-builder", "as-common-repo-readiness-review"],
+    "tags": ["web-ui-linguistic-visual-qa", "dashboard", "i18n", "dom"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_positive_fr_de_es_001",
+    "input": "verifica se nelle traduzioni FR DE ES ci sono residui inglesi o fallback n/a non localizzati",
+    "expected_skill": "as-common-web-ui-linguistic-visual-qa",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-business-email-draft", "as-common-codex-prompt-length-advisor"],
+    "tags": ["web-ui-linguistic-visual-qa", "translations", "fr-de-es", "baseline-residue"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_positive_walkthrough_001",
+    "input": "naviga la web app pagina per pagina e controlla testi tagliati badge card e layout mobile desktop",
+    "expected_skill": "as-common-web-ui-linguistic-visual-qa",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-codex-step-manager", "as-common-repo-readiness-review"],
+    "tags": ["web-ui-linguistic-visual-qa", "walkthrough", "responsive", "visual-qa"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_positive_screenshot_001",
+    "input": "fai QA visuale della UI locale con screenshot matrix e visible_text per ogni lingua",
+    "expected_skill": "as-common-web-ui-linguistic-visual-qa",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-opencv-image-pipeline", "as-common-verification-gate-test-eval-pack"],
+    "tags": ["web-ui-linguistic-visual-qa", "screenshot", "visible-text", "local-ui"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_positive_dom_enum_001",
+    "input": "verifica DOM e testi visibili delle pagine e controlla enum tecnici esposti nella UI",
+    "expected_skill": "as-common-web-ui-linguistic-visual-qa",
+    "negative_skills": ["as-common-web-ui-design-review", "as-common-python-fastapi-debug", "as-common-repo-readiness-review"],
+    "tags": ["web-ui-linguistic-visual-qa", "dom", "enum", "ui-text"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_positive_pr_review_001",
+    "input": "review della PR web prima del merge: controlla i18n residui inglesi overflow e badge troppo stretti",
+    "expected_skill": "as-common-web-ui-linguistic-visual-qa",
+    "negative_skills": ["as-common-codex-report-intake-decision-gate", "as-common-web-ui-design-review", "as-common-codex-step-manager"],
+    "tags": ["web-ui-linguistic-visual-qa", "pr-review", "merge-readiness", "i18n"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_vs_generic_translation_negative_001",
+    "input": "traduci questo paragrafo commerciale in inglese e rendilo adatto a una mail per un cliente",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-web-ui-design-review", "as-common-codex-command-pack"],
+    "tags": ["negative-web-ui-linguistic-visual-qa", "translation", "email"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_vs_email_negative_001",
+    "input": "scrivi una mail commerciale delicata in italiano per un fornitore",
+    "expected_skill": "as-common-business-email-draft",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-codex-step-manager", "as-common-docs-runbook-builder"],
+    "tags": ["negative-web-ui-linguistic-visual-qa", "email", "business"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_vs_excel_negative_001",
+    "input": "analizza un file Excel Access con macro VBA e controlla le query ADODB",
+    "expected_skill": "as-common-vba-excel-access-alberto",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-web-ui-design-review", "as-common-python-fastapi-debug"],
+    "tags": ["negative-web-ui-linguistic-visual-qa", "excel", "vba"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_vs_patent_negative_001",
+    "input": "fai una ricerca brevetti e prepara una bozza tecnica per il consulente brevettuale",
+    "expected_skill": "as-common-technical-patent-draft",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-deep-research-industriale", "as-common-codex-command-pack"],
+    "tags": ["negative-web-ui-linguistic-visual-qa", "patent", "technical-draft"]
+  },
+  {
+    "id": "web_ui_linguistic_visual_qa_vs_opencv_negative_001",
+    "input": "crea codice C++ OpenCV per segmentazione soglie QR e omografia su immagini",
+    "expected_skill": "as-common-opencv-image-pipeline",
+    "negative_skills": ["as-common-web-ui-linguistic-visual-qa", "as-common-web-ui-design-review", "as-common-python-fastapi-debug"],
+    "tags": ["negative-web-ui-linguistic-visual-qa", "opencv", "cpp"]
   }
 ]
