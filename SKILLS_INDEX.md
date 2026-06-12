@@ -2,13 +2,13 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-12 06:06:56
+Aggiornato: 2026-06-12 06:50:16
 
 ## Riepilogo
 
 | Voce | Valore |
 |---|---:|
-| Skill totali | 21 |
+| Skill totali | 22 |
 | Skill con errors | 0 |
 | Skill con warnings | 0 |
 
@@ -37,6 +37,7 @@ Aggiornato: 2026-06-12 06:06:56
 | as-common-vba-excel-access-alberto | as-common-vba-excel-access-alberto | Usa questa skill per codice VBA/Excel/Access di Alberto, inclusi UserForm generati via codice, eSolver read-only, ADODB/ODBC, performance, debug flag e fogli Excel. | si | si | 0 | 0 |
 | as-common-verification-gate-test-eval-pack | as-common-verification-gate-test-eval-pack | Use this skill when designing or enforcing tests, smoke checks, health checks, evals, golden samples, verification gates, evidence requirements, or stop policies before or during a Codex-driven step. Do not use it to intake a completed Codex final report; use the report-intake decision gate instead. | si | si | 0 | 0 |
 | as-common-web-ui-design-review | as-common-web-ui-design-review | Skill comune per review di UI web, UX visuale e design consistency su progetti web/dashboard/landing, con output prioritizzato e azioni pratiche, senza dipendere da Impeccable o da tool esterni. Usala per screenshot, pagine web, dashboard locali, web app e frontend review; non usarla per project instructions, repo readiness generica, prompt Codex, backend-only, generazione immagini o installazione di tool esterni. | si | no | 0 | 0 |
+| as-common-web-ui-linguistic-visual-qa | as-common-web-ui-linguistic-visual-qa | Use this skill for multilingual web UI linguistic and visual QA on local web apps or dashboards: i18n checks, baseline-language residue, raw enum/status labels, DOM visible-text extraction, browser or headless fallback walkthroughs, screenshot matrix, mobile/desktop overflow, and merge-readiness review. Do not use it for generic translation, email, Excel/VBA, OpenCV, image generation, scheduler changes, or merge without review. | no | si | 0 | 0 |
 
 ## File backup rilevati
 

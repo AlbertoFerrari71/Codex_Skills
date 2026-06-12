@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fixture Web UI QA</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #1f2933; }
+    main { max-width: 920px; margin: 0 auto; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .card { border: 1px solid #ccd3dc; border-radius: 6px; padding: 12px; }
+    .badge { display: inline-block; border: 1px solid #8a98a8; border-radius: 999px; padding: 2px 8px; max-width: 100%; }
+    .raw { font-family: Consolas, monospace; background: #f3f5f7; padding: 8px; overflow-wrap: anywhere; }
+    @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Dashboard dimostrativa</h1>
+  <p>Questa fixture contiene esempi intenzionali per DOM scan e visual QA.</p>
+  <section class="grid" aria-label="Schede stato">
+    <article class="card"><h2>Stato</h2><span class="badge">PASS_READY_FOR_HUMAN_MERGE</span></article>
+    <article class="card"><h2>Azione</h2><span class="badge">auto-action</span></article>
+    <article class="card"><h2>Revisione</h2><span class="badge">Review pending</span></article>
+  </section>
+  <section>
+    <h2>Dettaglio tecnico</h2>
+    <p class="raw">run_id=demo-2026-06-12 endpoint=/api/demo/status file=report.json</p>
+  </section>
+</main>
+</body>
+</html>
