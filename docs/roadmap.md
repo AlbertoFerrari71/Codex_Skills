@@ -2,6 +2,7 @@
 
 ## Completed
 
+- 0280-0330) Mature Skills Hardening, Trigger Boundaries and Real-Use Quality Pack
 - 270) Web UI Design Review Real Project Smoke Trial
 - 1460) Web UI Linguistic Visual QA adoption matrix
 - 1370-1450) as-common-web-ui-linguistic-visual-qa
@@ -20,9 +21,7 @@
 
 ## Next strategic skills
 
-- 280. Mature Low-Score Skills Review and Targeted Hardening Plan
-- 110. Skill Trigger Optimization Pack
-- 120. AI Software Factory Skill Adoption Step
+- 0340) Codex Skills - Final Catalog Release Review and Skill Usage Playbook
 
 ## Future skills
 

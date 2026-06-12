@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 0280-0330) Mature Skills Hardening, Trigger Boundaries And Real-Use Quality Pack
+
+Rafforzamento mirato di sei skill mature del catalogo senza creare nuove skill.
+
+- hardenate `as-common-deep-research-industriale`,
+  `as-common-technical-patent-draft`, `as-common-business-email-draft`,
+  `as-common-docs-runbook-builder`, `as-common-opencv-image-pipeline` e
+  `as-common-python-fastapi-debug`;
+- aggiunti trigger, anti-trigger, output contract, reference leggere e test
+  contrattuali per le sei skill candidate;
+- esteso `validators/trigger_eval_cases.json` con 44 casi positivi, negativi e
+  borderline per ridurre overlap con project instructions, command pack, step
+  manager, prompt length, model effort, UI review, OpenCV, FastAPI, VBA,
+  research e patent draft;
+- creati audit e report qualità 0280-0330 in `docs/quality/` e smoke pack
+  documentale in `docs/smoke-trials/`;
+- aggiunto `pytest.ini` minimale per consentire `python -m pytest` con piu
+  file `tests/test_skill_contract.py` in cartelle skill kebab-case;
+- nessuna installazione esterna, nessuna nuova skill, nessuna normalizzazione
+  EOL intenzionale.
+
 ## 270) Web UI Design Review Smoke Trial And Catalog Consistency Check
 
 Verifica reale della skill `as-common-web-ui-design-review` e dello stato del
