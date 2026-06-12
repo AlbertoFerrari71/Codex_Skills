@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 260) Web UI Design Review Skill Pilot
+
+Pubblicazione dei documenti 0250 su Impeccable e creazione della skill comune `as-common-web-ui-design-review`.
+
+- aggiunta skill instruction-only per review UI web, dashboard, landing e visual QA;
+- aggiunti reference su checklist, rubric P0/P1/P2/P3, input modes e anti-AI-slop;
+- aggiunto test di contratto della skill senza dipendenze esterne;
+- estesi i casi trigger-eval per distinguere review UI da project instructions, prompt length, repo readiness, command pack e step manager;
+- confermato che Impeccable resta benchmark/tool esterno opzionale: non installato, non vendorizzato, senza dipendenza Node/npm/browser obbligatoria.
+
+## 250) Impeccable Design Skill Evaluation
+
+Valutazione documentale della skill esterna Impeccable e piano di adozione sicura per workflow web/UI.
+
+- aggiunta valutazione in `docs/external-skills/0250_IMPECCABLE_DESIGN_SKILL_EVALUATION.md`;
+- aggiunto piano di adozione in `docs/external-skills/0250_IMPECCABLE_SAFE_ADOPTION_PLAN.md`;
+- aggiunto mapping verso skill Codex esistenti in `docs/external-skills/0250_IMPECCABLE_MAPPING_TO_CODEX_SKILLS.md`;
+- confermata raccomandazione: non installare Impeccable in `Codex_Skills`, valutare futura skill wrapper `as-common-web-ui-design-review`;
+- nessuna skill operativa creata o modificata; cataloghi skill non rigenerati.
+
 ## 220) Codex Prompt Length Advisor Skill
 
 Nuova skill comune per valutare lunghezza, integrita', rumore e rischio di
