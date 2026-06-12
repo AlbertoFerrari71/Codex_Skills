@@ -1,0 +1,35 @@
+# 0360 Active Projects Skill Adoption Matrix
+
+Data step: 2026-06-12
+
+Questa matrice e' una mappa logica di adozione delle skill. Non e' un audit tecnico dei repository esterni e non dichiara stato corrente dei progetti.
+
+## Matrice
+
+| Progetto | Skill piu rilevanti | Quando usarle | Quando NON usarle | Rischi overlap | Note operative | Trigger naturale |
+|---|---|---|---|---|---|---|
+| AI Software Factory | `as-common-codex-step-manager`, `as-common-verification-gate-test-eval-pack`, `as-common-codex-report-intake-decision-gate`, `as-common-pwsh-command-pack`, `as-common-powershell-git-safe-flow` | Step numerati, gate, report intake, publish runner, command pack PowerShell verificabili. | Non usare skill applicative come FastAPI/OpenCV/UI se il task riguarda solo governance ASF. | Step manager vs command pack; verification gate vs report intake. | Separare preparazione prompt, esecuzione step e valutazione report finale. | "Gestisci STEP 0923 e verifica gate prima del merge." |
+| ASF Blueprint Studio | `as-common-web-ui-design-review`, `as-common-web-ui-linguistic-visual-qa`, `as-common-python-fastapi-debug`, `as-common-repo-readiness-review` | Review UI/dashboard, QA linguistica, debug backend locale, readiness prima di step. | Non usare UI skill per policy AGENTS o project instructions. | Design review vs linguistic visual QA. | Prima review read-only, poi fix separato se richiesto. | "Fai review UX della dashboard Blueprint Studio prima della PR." |
+| AI Release Radar | `as-common-project-instructions-builder`, `as-common-web-ui-design-review`, `as-common-web-ui-linguistic-visual-qa`, `as-common-codex-step-manager`, `as-common-repo-readiness-review` | Istruzioni durevoli, dashboard review, QA UI, step ASF repo-specifici. | Non usare runbook builder quando il task e' AGENTS/project instructions. | Project instructions vs docs runbook; UI design vs UI linguistic QA. | Rispettare policy repo-specifica: artifact numerati, niente `LAST-*` in-repo. | "Aggiorna le project instructions di AI Release Radar e fai gate." |
+| Codex Skills | `as-common-skill-authoring`, `as-common-codex-step-manager`, `as-common-verification-gate-test-eval-pack`, `as-common-powershell-git-safe-flow`, `as-common-agent-context-governor` | Creare/migliorare skill, step numerati, validator, PR/merge controllati, conflitti istruzioni. | Non usare skill domain-specific per cambiare cataloghi o release flow. | Skill authoring vs step manager; context governor vs project instructions builder. | Usare staging allow-list e validator locali prima di push/PR. | "Crea una nuova skill as-common-* e aggiorna catalogo." |
+| Family Photo Organizer ASF | `as-common-codex-step-manager`, `as-common-repo-readiness-review`, `as-common-docs-runbook-builder`, `as-common-verification-gate-test-eval-pack` | Step safety-first, audit read-only, docs di procedure, gate test. | Non usare OpenCV pipeline salvo task immagine esplicito con sample e scope chiaro. | Docs runbook vs project instructions; readiness vs implementation step. | Preferire document-only quando richiesto; non anticipare implementation. | "Fai audit read-only della safety roadmap foto." |
+| Conti Chiari AI | `as-common-python-fastapi-debug`, `as-common-codex-step-manager`, `as-common-docs-runbook-builder`, `as-common-business-email-draft` | Debug app locale, procedure operative, step di sviluppo, comunicazioni operative. | Non usare business email per documentazione tecnica persistente. | FastAPI debug vs step manager; runbook vs project instructions. | Distinguere fix locale, documento procedurale e comunicazione esterna. | "Debugga endpoint FastAPI che torna 500 nei test." |
+| Mansionario Vivo | `as-common-python-fastapi-debug`, `as-common-docs-runbook-builder`, `as-common-web-ui-design-review`, `as-common-vba-excel-access-alberto` | Debug backend/web, procedure deploy/manutenzione, review UI admin, integrazioni Office se presenti. | Non usare UI review per deploy readiness backend-only. | Runbook builder vs step manager; UI review vs FastAPI debug. | Mantenere i vincoli runtime/deploy gia documentati nel repo target. | "Prepara runbook di deploy e verifica smoke locale." |
+| AggloDetect | `as-common-opencv-image-pipeline`, `as-common-deep-research-industriale`, `as-common-verification-gate-test-eval-pack`, `as-common-technical-patent-draft` | Pipeline immagini, materiali/processi, test plan, disclosure tecnica se emerge invenzione. | Non usare patent draft per pareri legali o FTO definitivo. | Deep research vs patent draft; OpenCV pipeline vs research industriale. | Tenere separati prove algoritmo, benchmark tecnico e materiale brevettuale. | "Analizza pipeline immagini e prepara test plan con output intermedi." |
+| DiamSign / DiamondSign | `as-common-opencv-image-pipeline`, `as-common-technical-patent-draft`, `as-common-deep-research-industriale`, `as-common-verification-gate-test-eval-pack` | QR/omografia/binarizzazione, disclosure tecnica, ricerca processi/materiali, golden sample. | Non usare OpenCV per generazione creativa o UI review generica. | Patent draft vs deep research; OpenCV vs verification gate. | Esempi DiamSign sono contesto utile, non vincolo esclusivo. | "Prepara debug visuale per omografia e QR su immagini campione." |
+| Progetti VBA/Excel/Access | `as-common-vba-excel-access-alberto`, `as-common-powershell-git-safe-flow`, `as-common-docs-runbook-builder`, `as-common-business-email-draft` | Macro, UserForm, ADODB/ODBC, eSolver read-only, procedure operative, email a stakeholder. | Non usare FastAPI/OpenCV se il problema e' Office/VBA puro. | VBA skill vs runbook; business email vs fix tecnico. | Favorire codice VBA pratico, flag debug e attenzione a workbook/Access reali. | "Correggi una UserForm VBA generata via codice." |
+
+## Regole di adozione
+
+- Se il prompt e' uno step numerato con Git/report/gate, partire da `as-common-codex-step-manager`.
+- Se il prompt chiede solo un pacchetto da incollare in Codex, usare `as-common-codex-command-pack` o `as-common-pwsh-command-pack`.
+- Se il prompt chiede istruzioni durevoli per AGENTS, ChatGPT Project o Copilot, usare `as-common-project-instructions-builder`.
+- Se il prompt chiede una procedura ripetibile, troubleshooting o deploy notes, usare `as-common-docs-runbook-builder`.
+- Se il task contiene dominio tecnico specifico, scegliere la skill di dominio solo dopo aver separato governance, Git e report.
+
+## Rischi generali di overlap
+
+- `as-common-codex-step-manager` governa lifecycle e publish; non sostituisce le skill di dominio.
+- `as-common-verification-gate-test-eval-pack` progetta e applica gate; `as-common-codex-report-intake-decision-gate` valuta un report gia prodotto.
+- `as-common-web-ui-design-review` valuta UX/visual; `as-common-web-ui-linguistic-visual-qa` cerca residui lingua, enum raw e overflow/testi visibili.
+- `as-common-deep-research-industriale` produce ricerca tecnica con fonti; `as-common-technical-patent-draft` prepara materiale tecnico per consulente brevettuale, senza parere legale.

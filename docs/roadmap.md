@@ -2,6 +2,7 @@
 
 ## Completed
 
+- 0340-0400) Final Skills Closure, ASF End-to-End Trial and Active Projects Adoption Pack
 - 0280-0330) Mature Skills Hardening, Trigger Boundaries and Real-Use Quality Pack
 - 270) Web UI Design Review Real Project Smoke Trial
 - 1460) Web UI Linguistic Visual QA adoption matrix
@@ -21,7 +22,7 @@
 
 ## Next strategic skills
 
-- 0340) Codex Skills - Final Catalog Release Review and Skill Usage Playbook
+- Nessun nuovo ciclo skill grosso pianificato: riaprire solo su falsi trigger reali, gap operativi concreti o nuovo workflow ASF/Bridge da standardizzare.
 
 ## Future skills
 
