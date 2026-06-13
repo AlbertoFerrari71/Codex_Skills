@@ -8,7 +8,10 @@ standard library Python e non scrivono file, salvo quando indicato.
 Da root repository:
 
 ```powershell
+Clear-Host
 python validators\repo_health_check.py
+# terminatore copia-incolla
+
 ```
 
 Il comando esegue:
@@ -28,6 +31,7 @@ senza fallire il gate se tutti i controlli bloccanti passano.
 ## Comandi singoli
 
 ```powershell
+Clear-Host
 python validators\check_agent_skills.py --root .
 python validators\check_agent_skills.py --root . --fail-on-warning
 python validators\check_agent_skills.py --root . --fail-on-warning --check-catalog-freshness
@@ -36,6 +40,8 @@ python -m unittest discover -s validators -p "test_*.py"
 python validators\smoke_trial_cases.py
 python validators\release_workflow_check.py
 git --no-pager diff --check
+# terminatore copia-incolla
+
 ```
 
 ## Installed skills sync check
@@ -69,7 +75,10 @@ informazione e non fallisce per la posizione della root.
 Aggiorna indice e score solo quando vuoi rigenerare gli artefatti tracciati:
 
 ```powershell
+Clear-Host
 python validators\check_agent_skills.py --root . --write-index --write-score
+# terminatore copia-incolla
+
 ```
 
 Prima di rigenerare, rimuovere o archiviare eventuali backup locali se non
@@ -104,13 +113,19 @@ Il test verifica formato JSON, ID univoci, input non vuoti, tags presenti e
 skill attese/negative esistenti. Per lanciarlo singolarmente:
 
 ```powershell
+Clear-Host
 python -m unittest validators.test_trigger_eval
+# terminatore copia-incolla
+
 ```
 
 Il comando di discovery generale lo include automaticamente:
 
 ```powershell
+Clear-Host
 python -m unittest discover -s validators -p "test_*.py"
+# terminatore copia-incolla
+
 ```
 
 ## Sensitive values scan

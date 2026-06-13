@@ -13,7 +13,10 @@ Lo scopo e' segnalare problemi, non correggerli automaticamente.
 Da root repository:
 
 ```powershell
+Clear-Host
 python validators\installed_skills_sync_check.py --root .
+# terminatore copia-incolla
+
 ```
 
 Exit code:

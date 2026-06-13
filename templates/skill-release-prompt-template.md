@@ -22,6 +22,7 @@ Describe the skill release objective, expected outcome, and publication policy.
 ## Preflight
 
 ```powershell
+Clear-Host
 pwd
 git --no-pager branch --show-current
 git status --porcelain=v1
@@ -32,7 +33,8 @@ python validators/check_agent_skills.py
 python validators/check_agent_skills.py --write-index --write-score
 python validators/check_agent_skills.py
 if (Test-Path "validators/smoke_trial_cases.py") { python validators/smoke_trial_cases.py }
-Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+# terminatore copia-incolla
+
 ```
 
 ## Files to create/modify
@@ -43,6 +45,7 @@ Write-Host "Linea fake - se resta in attesa, premere Enter qui"
 ## Validation commands
 
 ```powershell
+Clear-Host
 python validators/test_check_agent_skills.py
 python validators/check_agent_skills.py
 python validators/check_agent_skills.py --write-index --write-score
@@ -52,7 +55,8 @@ if (Test-Path "validators/release_workflow_check.py") { python validators/releas
 git --no-pager diff --check
 git status --porcelain=v1
 git --no-pager diff --stat
-Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+# terminatore copia-incolla
+
 ```
 
 ## Smoke trial requirements
@@ -67,9 +71,10 @@ Write-Host "Linea fake - se resta in attesa, premere Enter qui"
 Run:
 
 ```powershell
+Clear-Host
 python validators/check_agent_skills.py --write-index --write-score
-Write-Host "Linea fake 1 - termina il comando utile precedente"
-Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
+# terminatore copia-incolla
+
 ```
 
 ## Changelog update
@@ -89,6 +94,7 @@ Add:
 Direct `git push origin main` is allowed only if all mandatory local gates pass and the current step authorizes publication. Use branch plus PR if remote protection rejects direct push or Alberto asks for review.
 
 ```powershell
+Clear-Host
 git add .
 git --no-pager diff --cached --check
 git commit -m "<step-number>) <message>"
@@ -96,7 +102,8 @@ git push origin main
 git status --short
 git --no-pager log --oneline --max-count=10
 git remote -v
-Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+# terminatore copia-incolla
+
 ```
 
 ## Final report format

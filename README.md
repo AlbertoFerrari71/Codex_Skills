@@ -26,7 +26,10 @@ Nota STEP 0905: per output nel Bridge Dropbox, le skill operative devono preferi
 Da root repository:
 
 ```powershell
+Clear-Host
 python validators\repo_health_check.py
+# terminatore copia-incolla
+
 ```
 
 Il comando esegue i controlli locali di base senza dipendenze esterne: validatore catalogo in modalita severa, catalog freshness, unit test, smoke trial, release workflow check, `git --no-pager diff --check` e report EOL non bloccante.
@@ -34,7 +37,10 @@ Il comando esegue i controlli locali di base senza dipendenze esterne: validator
 Include anche lo sync checker installato:
 
 ```powershell
+Clear-Host
 python validators\installed_skills_sync_check.py --root .
+# terminatore copia-incolla
+
 ```
 
 Il controllo e' read-only: confronta cartelle skill attive, Git tracking,
@@ -44,7 +50,10 @@ copia, non cancella e non modifica file.
 Per rigenerare gli artefatti tracciati:
 
 ```powershell
+Clear-Host
 python validators\check_agent_skills.py --root . --write-index --write-score
+# terminatore copia-incolla
+
 ```
 
 `SKILL_SCORE.md` usa lo scoring v2:
@@ -56,13 +65,19 @@ Le cartelle `references/` ed `examples/` vuote non aggiungono punti cosmetici.
 Per validare la base trigger-eval deterministica:
 
 ```powershell
+Clear-Host
 python -m unittest validators.test_trigger_eval
+# terminatore copia-incolla
+
 ```
 
 Per eseguire solo il validator in modalita severa:
 
 ```powershell
+Clear-Host
 python validators\check_agent_skills.py --root . --fail-on-warning
+# terminatore copia-incolla
+
 ```
 
 Il repository include anche la GitHub Action `Validate Codex Skills`, eseguita su pull request, push su `main` e `workflow_dispatch`.

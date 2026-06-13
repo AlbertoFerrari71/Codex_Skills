@@ -13,10 +13,13 @@ Alberto decision D3-C applies:
 Mandatory local gates before direct push:
 
 ```powershell
+Clear-Host
 python validators/test_check_agent_skills.py
 python validators/check_agent_skills.py
 git --no-pager diff --check
 git diff --cached --check
+# terminatore copia-incolla
+
 ```
 
 Use project-specific tests in place of validator commands when working outside this repository.
@@ -24,8 +27,11 @@ Use project-specific tests in place of validator commands when working outside t
 If `git diff --cached --check` fails, stop publication and do not rerun the push/PR phase. Read the real output, fix only the files named by Git, create a backup before automatic edits, restage only the fixed files, then rerun:
 
 ```powershell
+Clear-Host
 git diff --cached --check
 git diff --check
+# terminatore copia-incolla
+
 ```
 
 Resume only after both pass. For `new blank line at EOF`, remove extra final blank lines only from the reported files and leave exactly one final newline.
@@ -66,9 +72,12 @@ If `git push origin main` is rejected by branch protection:
 If a local `main` realignment requires `git reset --hard`, first create a backup branch:
 
 ```powershell
+Clear-Host
 $Stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 git branch "backup/main-before-$Stamp"
 git reset --hard origin/main
+# terminatore copia-incolla
+
 ```
 
 Only use this when Alberto explicitly authorizes the reset path.

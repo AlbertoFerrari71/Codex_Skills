@@ -533,6 +533,9 @@ Restituire report, evidenze e prossimo step.
         self.assertIn("here-string", markdown_text)
         self.assertIn("$lines = @()", markdown_text)
         self.assertIn("triple backticks", markdown_text)
+        self.assertIn("clear-host", markdown_text)
+        self.assertIn("# terminatore copia-incolla", markdown_text)
+        self.assertIn("never use `set-clipboard -path`", markdown_text)
 
         recovery_text = (pwsh_skill + "\n" + pwsh_standard + "\n" + known_bugs).lower()
         for token in (

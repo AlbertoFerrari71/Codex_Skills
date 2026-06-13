@@ -2,45 +2,44 @@
 
 ## Purpose
 
-This standard defines how `as-common-pwsh-command-pack` prepares robust PowerShell command packs for Alberto. The goal is to avoid fragile paste-heavy command lines by generating a complete `.ps1` script that logs execution, creates stable artifacts, copies the compact report to the clipboard, and keeps publication actions human-gated.
+This standard defines how `as-common-pwsh-command-pack` prepares robust PowerShell command packs for Alberto. The goal is to avoid fragile paste-heavy command lines by generating a complete `.ps1` script that logs execution, creates stable artifacts, keeps the compact report recoverable from Bridge files, and keeps publication actions human-gated.
 
 ## Required Launcher
 
 Use this launcher shape:
 
 ```powershell
+Clear-Host
 pwsh -NoProfile -ExecutionPolicy Bypass -File "D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge\AI_Software_Factory\pwsh_command\NNNN-Comando_Eseguito_<nome>.ps1"
+# terminatore copia-incolla
+
 ```
 
 For long or conditional work, do not ask Alberto to paste a large inline command. Generate a script file and give only the short launcher.
 
 ## PowerShell Paste Termination
 
-Do not rely on a final `Write-Host ";";` to force execution. It is only a visual marker.
-
-For one useful command provided as copy/paste text, use two harmless fake lines after the useful command:
+Every operational PowerShell block intended for copy/paste into PowerShell or Windows Terminal must start with `Clear-Host` and end with the sentinel comment `# terminatore copia-incolla` followed by one real blank final line.
 
 ```powershell
+Clear-Host
 <useful command>
-Write-Host "Linea fake 1 - termina il comando utile precedente"
-Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
-```
+# terminatore copia-incolla
 
-For two or more useful commands, use one harmless fake line after the useful commands:
-
-```powershell
-<useful command 1>
-<useful command 2>
-Write-Host "Linea fake - se resta in attesa, premere Enter qui"
 ```
 
 For long or critical workflows, write a `.ps1` file and run it with:
 
 ```powershell
+Clear-Host
 pwsh -NoProfile -ExecutionPolicy Bypass -File <script.ps1>
+# terminatore copia-incolla
+
 ```
 
-The fake line is a paste-termination safety line. If the final newline is lost, the useful command should already be complete, and any waiting prompt should sit on a harmless fake line.
+Use this terminator by default, including one-line blocks. Do not use `WScript.Shell`, `SendKeys`, or auto-Enter as automatic paste-completion workarounds. `WScript.Shell` is only an explicit fallback for rare cases.
+
+Do not rely on a final `Write-Host ";";` to force execution. It is only a visual marker and does not replace the sentinel terminator.
 
 ## Command Wrapper
 
@@ -243,9 +242,20 @@ NNNN-Comando_Eseguito_<nome>.ps1
 
 Then launch that file. Do not save only a narrative description of the command.
 
-## Clipboard in Success and Failure
+## Compact Output Handoff
 
-The `finally` path must try to create and copy `Output_Compatto.md` to the clipboard even when a command fails.
+The `finally` path must try to create `Output_Compatto.md` even when a command fails. Do not write to the OS clipboard automatically by default.
+
+If Alberto explicitly requests clipboard handoff for a file, copy file content with:
+
+```powershell
+Clear-Host
+Get-Content -Path $File -Raw | Set-Clipboard
+# terminatore copia-incolla
+
+```
+
+Never use `Set-Clipboard -Path`.
 
 ## Regression/Demo Trial
 
@@ -292,7 +302,7 @@ NNNN-Output_Compatto_<nome>.md
 NNNN-Output_Compatto_<nome>.docx
 ```
 
-And the matching LAST artifacts:
+Create matching `LAST-*` artifacts only when Alberto explicitly requests compatibility pointers:
 
 ```text
 LAST-Richiesta_Generazione.txt
@@ -302,7 +312,7 @@ LAST-Output_Compatto.md
 LAST-Output_Compatto.docx
 ```
 
-`LAST-Output_Compatto.md` must be copied to the clipboard with `Set-Clipboard`. If clipboard access fails, the script must log a warning and still write the file.
+If `LAST-Output_Compatto.md` is explicitly requested, it must remain readable from the Bridge. If Alberto explicitly requests clipboard handoff, copy its content with `Get-Content -Path $File -Raw | Set-Clipboard`; never use `Set-Clipboard -Path`. If clipboard access fails, the script must log a warning and still write the file.
 
 The numbered/progressive artifact is the authoritative retrieval target. `LAST-*` is only a convenience pointer and can be stale after retries, partial reruns, or Dropbox sync delays.
 
@@ -319,7 +329,7 @@ A robust script must include:
 - `$LASTEXITCODE` captured immediately after native commands;
 - compact Markdown generation;
 - DOCX generation or a documented fallback if DOCX cannot be produced;
-- final artifact copy to `LAST-*` names;
+- optional final artifact copy to `LAST-*` names only when explicitly requested;
 - a non-zero process exit on failed required gates.
 
 Use splatting for commands with many named parameters. Use `Tee-Object` or explicit logging wrappers when console output and file output both matter. Avoid relying only on `Start-Transcript`: transcripts are useful as a supplemental record but can miss or format streams in ways that are less suitable than explicit command logs.

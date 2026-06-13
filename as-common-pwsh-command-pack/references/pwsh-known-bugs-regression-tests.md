@@ -13,7 +13,7 @@ Use these historical cases as a regression checklist for non-trivial command pac
 | Lost repo location | Output function left the session outside the repository. | `Write-CompactOutput` must call `Set-Location -Path $RepoRoot`. |
 | Pending PR checks | `gh pr checks` pending state returned exit code 8. | Treat exit code 8 as controlled only when local gates pass and output confirms pending state. |
 | LF/CRLF warnings | Line-ending warnings were confused with gate failure. | Treat as non-blocking only when diff-check exit code is 0. |
-| Paste termination | Final newline loss left a useful command waiting. | Apply step 080 fake-line rule or prefer a real `.ps1` file. |
+| Paste termination | Final newline loss left a useful command waiting. | Start operational pasted PowerShell blocks with `Clear-Host` and end them with `# terminatore copia-incolla` plus one real blank final line, or prefer a real `.ps1` file. |
 | STEP 0900 stale LAST | Bridge was readable but `LAST-*` could be older than the progressive output. | Retrieve the numbered/progressive file first; use `LAST-*` only after checking step, filename, and timestamp/server_modified. |
 | STEP 0900 Git wrapper usage | A generic PowerShell wrapper passed Git arguments incorrectly and returned only Git usage. | For failed diagnostics, run direct visible commands and capture output plus `$LASTEXITCODE` immediately. |
 | STEP 0900 Markdown here-string | A pasted Markdown here-string remained open at the PowerShell `>>` prompt. | Use line arrays for generated Markdown reports; allow here-strings only for short controlled text without triple backticks. |

@@ -2,7 +2,7 @@
 
 Catalogo automatico delle skill presenti nella repository.
 
-Aggiornato: 2026-06-12 18:21:54
+Aggiornato: 2026-06-13 11:46:16
 
 ## Riepilogo
 
@@ -29,7 +29,7 @@ Aggiornato: 2026-06-12 18:21:54
 | as-common-powershell-git-safe-flow | as-common-powershell-git-safe-flow | Usa questa skill quando devi generare o verificare comandi PowerShell/Git sicuri, linee guida Git o blocchi brevi per Alberto su Windows. Non usarla per costruire command pack PowerShell completi con Bridge, report e artifact riutilizzabili. | no | no | 0 | 0 |
 | as-common-project-instructions-builder | as-common-project-instructions-builder | Use this skill when Alberto needs to create, audit, or refresh durable project instructions for ChatGPT Projects, Codex AGENTS.md, repository-wide agent rules, Copilot instructions, instruction templates, or quality gates. Do not use it for one-shot Codex prompts, numbered step lifecycle management, generic runbooks, or chat restart summaries. | si | si | 0 | 0 |
 | as-common-project-riepilogo-operativo | as-common-project-riepilogo-operativo | Usa questa skill quando Alberto chiede un riepilogo operativo di continuità per chiudere una chat lunga e ripartire in una nuova chat dello stesso progetto. Non usarla per README, runbook o documentazione persistente di repository. | no | no | 0 | 0 |
-| as-common-pwsh-command-pack | as-common-pwsh-command-pack | Generate safe logged PowerShell command packs for Alberto with short safe bootstraps, generated .ps1 scripts, numbered and LAST outputs, compact Markdown/DOCX reports, clipboard copy, robust Git parsing, PR-first publication, and Git/Codex/ASF guardrails. | si | si | 0 | 0 |
+| as-common-pwsh-command-pack | as-common-pwsh-command-pack | Generate safe logged PowerShell command packs for Alberto with short safe bootstraps, generated .ps1 scripts, numbered outputs, optional LAST mirrors on explicit request, compact Markdown/DOCX reports, explicit file handoff, robust Git parsing, PR-first publication, and Git/Codex/ASF guardrails. | si | si | 0 | 0 |
 | as-common-python-fastapi-debug | as-common-python-fastapi-debug | Usa questa skill per debug locale Python/FastAPI/pytest di Alberto: endpoint, status code, trace, fixture, SQLAlchemy, Uvicorn, Jinja, template rendering, venv e fix minimi verificati. Non usarla per UI visual review, project instructions, prompt Codex, OpenCV, VBA o Git publish flow. | si | no | 0 | 0 |
 | as-common-repo-readiness-review | as-common-repo-readiness-review | Usa questa skill per fare una revisione tecnica iniziale read-only di una repository prima di uno step Codex: branch, stato Git, struttura, test, documenti, rischi e readiness. Non usarla per riconciliare istruzioni, AGENTS.md o conflitti di contesto agente. | no | no | 0 | 0 |
 | as-common-skill-authoring | as-common-skill-authoring | Usa questa skill quando Alberto vuole creare, rinominare, migliorare o organizzare skill Codex secondo il naming as-common-* e as-<project-key>-*. | no | no | 0 | 0 |

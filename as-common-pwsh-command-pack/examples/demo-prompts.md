@@ -1,6 +1,6 @@
 # Demo Prompts
 
-These examples show progressive uses of `as-common-pwsh-command-pack`. Each prompt should produce a `.ps1` script, numbered artifacts, LAST artifacts, compact Markdown/DOCX output, and clipboard copy.
+These examples show progressive uses of `as-common-pwsh-command-pack`. Each prompt should produce a `.ps1` script, numbered artifacts, compact Markdown/DOCX output, and explicit file handoff. Do not write automatically to the clipboard; when Alberto explicitly asks to copy a file, use `Get-Content -Path $File -Raw | Set-Clipboard`.
 
 ## Demo 1 - Read-only Git snapshot
 
@@ -16,7 +16,8 @@ Expected shape:
 - FASE A only.
 - Uses `git --no-pager`.
 - Stops on native command failures.
-- Produces numbered and LAST artifacts.
+- Produces numbered artifacts and explicit file paths.
+- Any pasted PowerShell launcher starts with `Clear-Host` and ends with `# terminatore copia-incolla` plus one real blank final line.
 
 ## Demo 2 - ASF verification pack
 
@@ -32,7 +33,7 @@ Expected shape:
 - FASE A only.
 - `pwsh -NoProfile -ExecutionPolicy Bypass -File` launcher.
 - Compact report states pass/fail and warnings.
-- Clipboard receives `LAST-Output_Compatto.md`.
+- Compact report is available as a Bridge file.
 
 ## Demo 3 - Human-gated PR checks
 

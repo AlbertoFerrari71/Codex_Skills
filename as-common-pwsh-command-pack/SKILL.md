@@ -1,6 +1,6 @@
 ---
 name: as-common-pwsh-command-pack
-description: Generate safe logged PowerShell command packs for Alberto with short safe bootstraps, generated .ps1 scripts, numbered and LAST outputs, compact Markdown/DOCX reports, clipboard copy, robust Git parsing, PR-first publication, and Git/Codex/ASF guardrails.
+description: Generate safe logged PowerShell command packs for Alberto with short safe bootstraps, generated .ps1 scripts, numbered outputs, optional LAST mirrors on explicit request, compact Markdown/DOCX reports, explicit file handoff, robust Git parsing, PR-first publication, and Git/Codex/ASF guardrails.
 ---
 
 # as-common-pwsh-command-pack
@@ -27,7 +27,7 @@ Safe Bootstrap PowerShell Command Pack:
 7. The outer wrapper does not contain complex Git logic.
 8. The outer wrapper does not contain nested here-strings.
 9. The outer wrapper does not use fragile `try/finally`.
-10. The final line is actually executable, for example `Write-Host ";"`.
+10. The pasted terminal block starts with `Clear-Host` and ends with `# terminatore copia-incolla` followed by one real blank final line.
 
 ## Bootstrap Requirements
 
@@ -36,16 +36,16 @@ The bootstrap must include:
 - wrapper `& { ... }`;
 - `$ErrorActionPreference = "Stop"`;
 - `$PSNativeCommandUseErrorActionPreference = $false`;
+- `Clear-Host` as the first executable line in the pasted bootstrap;
 - Bridge directory creation;
 - request file generation;
 - command `.ps1` generation;
-- `LAST-Richiesta_Generazione.txt`;
-- `LAST-Comando_Eseguito.ps1`;
+- optional `LAST-Richiesta_Generazione.txt` and `LAST-Comando_Eseguito.ps1` only when explicitly requested;
 - parse-check with `[scriptblock]::Create($ScriptText) | Out-Null`;
 - execution with `pwsh -NoProfile -ExecutionPolicy Bypass -File $CommandFile`;
 - explicit `$LASTEXITCODE` handling;
 - clear final message;
-- executable final line.
+- paste terminator comment plus one real trailing blank line.
 
 ## Generated Script Requirements
 
@@ -55,8 +55,8 @@ The `.ps1` script should contain, when pertinent:
 - full output artifact;
 - compact Markdown artifact;
 - DOCX best-effort/non-blocking artifact;
-- `LAST` files always updated;
-- `Set-Clipboard` best-effort;
+- numbered artifacts always updated; `LAST-*` mirrors only when explicitly requested;
+- no automatic clipboard write; if Alberto explicitly requests clipboard copy, use `Get-Content -Path $File -Raw | Set-Clipboard` and never `Set-Clipboard -Path`;
 - native command wrapper with allowed exit codes;
 - `git --no-pager` for long Git output;
 - robust Git status parser;
@@ -139,7 +139,7 @@ Use four-digit step numbers:
 0550
 ```
 
-Generate numbered and `LAST` artifacts:
+Generate numbered artifacts:
 
 ```text
 NNNN-Richiesta_Generazione_<name>.txt
@@ -147,6 +147,11 @@ NNNN-Comando_Eseguito_<name>.ps1
 NNNN-Output_Completo_<name>.txt
 NNNN-Output_Compatto_<name>.md
 NNNN-Output_Compatto_<name>.docx
+```
+
+Create `LAST-*` mirrors only when Alberto explicitly requests compatibility pointers:
+
+```text
 LAST-Richiesta_Generazione.txt
 LAST-Comando_Eseguito.ps1
 LAST-Output_Completo.txt

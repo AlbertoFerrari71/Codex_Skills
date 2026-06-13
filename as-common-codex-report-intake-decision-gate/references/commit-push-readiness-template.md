@@ -20,12 +20,13 @@ Use this only after the decision gate is GO or GO_WITH_WARNINGS and Alberto expl
 - Use `$ErrorActionPreference = "Stop"`.
 - Prefer `.ps1` execution for long or critical flows.
 - Avoid long pasted here-strings for Markdown reports; build `$Lines` arrays and write with `Set-Content` or UTF-8 helpers.
-- If a multiline block is still provided for paste, end with explicit harmless fake lines.
+- If a multiline block is still provided for paste, start it with `Clear-Host` and end with `# terminatore copia-incolla` followed by one real blank final line.
 - Treat CRLF/LF notices as attention only when `git --no-pager diff --check` exits successfully.
 
 ## Generic PowerShell Template
 
 ```powershell
+Clear-Host
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = (Resolve-Path ".").Path
@@ -103,8 +104,8 @@ git status --short
 git --no-pager log --oneline --max-count=5
 git remote -v
 
-Write-Host "Fine blocco PowerShell. Se il terminale resta qui, premere Enter."
-Write-Host "Linea fake - terminazione incolla"
+# terminatore copia-incolla
+
 ```
 
 ## Readiness Checklist
