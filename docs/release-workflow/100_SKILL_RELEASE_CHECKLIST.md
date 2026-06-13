@@ -85,6 +85,7 @@
 ## Base commands
 
 ```powershell
+Clear-Host
 python validators/test_check_agent_skills.py
 python validators/check_agent_skills.py
 python validators/check_agent_skills.py --write-index --write-score
@@ -97,5 +98,6 @@ git commit -m "<step>) <message>"
 git push origin main
 git status --short
 git --no-pager log --oneline --max-count=8
-Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+# terminatore copia-incolla
+
 ```

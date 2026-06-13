@@ -13,9 +13,12 @@ Linee guida per creare nuove skill.
 Eseguire il validator dalla root repository:
 
 ```powershell
+Clear-Host
 python validators/check_agent_skills.py
 python validators/check_agent_skills.py --write-index --write-score
 python validators/test_check_agent_skills.py
+# terminatore copia-incolla
+
 ```
 
 Il comando base controlla naming, frontmatter, campi obbligatori, body operativo, cartelle consigliate, file backup/temp e possibili segnali di segreti.

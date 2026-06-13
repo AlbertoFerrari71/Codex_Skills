@@ -22,7 +22,7 @@ This standard records the hardening audit for `as-common-pwsh-command-pack`.
 | 16 | Warning LF/CRLF non bloccanti se exit code e' 0 | Present | Preserved and restated. | `pwsh-command-pack-standard.md`, linked workflow docs |
 | 17 | Funzioni standard obbligatorie per command pack non banali | Missing | Added required helper list. | `SKILL.md`, `pwsh-command-pack-standard.md`, `pwsh-command-pack-template.ps1` |
 | 18 | Payload `.ps1` reale salvato e poi lanciato | Partial | Documented hard requirement. | `SKILL.md`, `pwsh-command-pack-template.ps1` |
-| 19 | Successo/fallimento sempre in clipboard | Partial | Ensured compact output copy is attempted in `finally`. | `pwsh-command-pack-template.ps1` |
+| 19 | Output compatto sempre su file; clipboard solo esplicita | Updated | Ensure compact output is written in `finally`; if clipboard copy is explicitly requested, use `Get-Content -Path $File -Raw | Set-Clipboard`. | `pwsh-command-pack-template.ps1` |
 | 20 | Demo trial storica che riproduce bug reali dello STEP 490 e successivi | Missing | Added regression-test reference. | `pwsh-known-bugs-regression-tests.md` |
 | 21 | Bridge progressivo prima di `LAST-*` | Missing | Added retrieval order and stale LAST policy. | `SKILL.md`, `pwsh-command-pack-standard.md`, `codex-command-pack-standard.md` |
 | 22 | Diagnostiche Git dirette per gate critici | Partial | Added direct-command diagnostic rule and exit-code capture. | `SKILL.md`, `pwsh-command-pack-standard.md`, `as-common-powershell-git-safe-flow/SKILL.md` |

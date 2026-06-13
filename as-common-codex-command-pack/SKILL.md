@@ -15,14 +15,14 @@ Every Codex prompt must be:
 - traceable;
 - reproducible;
 - stored in codex_command;
-- available as LAST-Prompt_Codex.md;
-- copied to clipboard when possible.
+- available as a numbered step-specific prompt file;
+- copied to clipboard only when explicitly requested, using file-content piping.
 
 ## Use This Skill When
 
 - Alberto needs one executable prompt or command packet to paste into Codex.
 - The output is a temporary handoff prompt for implementation, debugging, review, verification, or repository work.
-- The prompt must be saved in the Bridge with numbered and `LAST-Prompt_Codex.md` files.
+- The prompt must be saved in the Bridge with numbered files; create `LAST-*` mirrors only when Alberto explicitly asks for them.
 
 ## Do Not Use This Skill When
 
@@ -52,12 +52,15 @@ D:\FG-SAB Dropbox\Alberto Ferrari\ChatGPT_Bridge\<Project_Name>\codex_command
 
 ## Required output files
 
-Create numbered files and LAST files:
+Create numbered files:
 
 - NNNN-Richiesta_Generazione_<slug>.txt
 - NNNN-Prompt_Codex_<slug>.md
 - NNNN-Checklist_Codex_<slug>.md
 - NNNN-Report_Atteso_<slug>.md
+
+Create these `LAST-*` mirrors only when Alberto explicitly requests them:
+
 - LAST-Richiesta_Generazione.txt
 - LAST-Prompt_Codex.md
 - LAST-Checklist_Codex.md
@@ -65,7 +68,7 @@ Create numbered files and LAST files:
 
 Use the next available four-digit number and a short kebab-case slug.
 
-After writing LAST-Prompt_Codex.md, copy its full content to clipboard with Set-Clipboard when available.
+If `LAST-Prompt_Codex.md` was explicitly requested, copy its full content to clipboard only when explicitly requested too. Use `Get-Content -Path $LastPromptPath -Raw | Set-Clipboard`; never use `Set-Clipboard -Path`.
 
 ## Bridge retrieval and LAST policy
 
@@ -126,6 +129,7 @@ Use these support files for non-trivial prompt packs:
 - Stop and report if the working tree is dirty before making changes.
 - Prefer small, reversible, testable changes.
 - No new dependencies unless clearly justified.
+- If the prompt includes operational PowerShell blocks for Alberto to paste, require `Clear-Host` as the first line and `# terminatore copia-incolla` followed by one real blank final line.
 
 ## Required checks
 

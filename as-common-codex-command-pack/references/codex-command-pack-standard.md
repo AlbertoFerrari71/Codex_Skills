@@ -35,10 +35,13 @@ Unless Alberto asks otherwise, every prompt must state:
 Prefer commands that are easy to reproduce:
 
 ```powershell
+Clear-Host
 git --no-pager branch --show-current
 git status --short
 git --no-pager log --oneline --max-count=5
 git --no-pager diff --check
+# terminatore copia-incolla
+
 ```
 
 Add project-specific tests only when they are relevant to the requested change.

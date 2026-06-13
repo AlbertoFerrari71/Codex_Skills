@@ -32,26 +32,31 @@ Non usarla per:
 
 # Regole PowerShell per Alberto
 
-1. Non usare `Write-Host ";";` come garanzia tecnica di esecuzione: è solo un marker visivo.
-2. Per un solo comando utile destinato al copia/incolla, usa due righe fake dopo il comando:
+1. Ogni blocco PowerShell operativo destinato al copia/incolla in PowerShell o Windows Terminal deve iniziare con `Clear-Host` e terminare con:
    ```powershell
+   Clear-Host
    <comando utile>
-   Write-Host "Linea fake 1 - termina il comando utile precedente"
-   Write-Host "Linea fake 2 - se resta in attesa, premere Enter qui"
+   # terminatore copia-incolla
+
    ```
-3. Per due o più comandi utili, aggiungi una sola riga fake finale:
+   Il commento sentinella deve essere seguito da una riga vuota finale reale.
+2. Usa questo terminatore come default anche per blocchi da una sola riga.
+3. Non usare `WScript.Shell`, `SendKeys` o auto-Enter come workaround automatici. `WScript.Shell` resta solo fallback esplicito per casi rari.
+4. Non usare `Write-Host ";";` come garanzia tecnica di esecuzione: e' solo un marker visivo e non sostituisce il terminatore.
+5. Per blocchi lunghi o critici, preferisci un file `.ps1` eseguito con `pwsh -NoProfile -ExecutionPolicy Bypass -File ...`.
+6. Non usare `Set-Clipboard -Path`. Per copiare un file negli appunti usa:
    ```powershell
-   <comando utile 1>
-   <comando utile 2>
-   Write-Host "Linea fake - se resta in attesa, premere Enter qui"
+   Clear-Host
+   Get-Content -Path $File -Raw | Set-Clipboard
+   # terminatore copia-incolla
+
    ```
-4. Per blocchi lunghi o critici, preferisci un file `.ps1` eseguito con `pwsh -NoProfile -ExecutionPolicy Bypass -File ...`.
-5. Non usare `setx PATH ...` per modifiche permanenti del PATH: può troncare il PATH. Usa invece:
+7. Non usare `setx PATH ...` per modifiche permanenti del PATH: puo' troncare il PATH. Usa invece:
    ```powershell
    [Environment]::SetEnvironmentVariable("Path", $nuovoPath, "User")
    ```
-6. Evita comandi distruttivi (`Remove-Item -Recurse -Force`, reset, clean, checkout forzati) senza spiegare cosa eliminano e senza conferma esplicita.
-7. Se uno script `.ps1` è bloccato da Execution Policy, preferisci soluzioni trasparenti:
+8. Evita comandi distruttivi (`Remove-Item -Recurse -Force`, reset, clean, checkout forzati) senza spiegare cosa eliminano e senza conferma esplicita.
+9. Se uno script `.ps1` e' bloccato da Execution Policy, preferisci soluzioni trasparenti:
    - comando manuale;
    - `.cmd`/`.bat` controllabile;
    - oppure `powershell.exe -NoProfile -ExecutionPolicy Bypass -File ...` solo se serve davvero.
